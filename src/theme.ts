@@ -1,11 +1,6 @@
 import { createMuiTheme } from '@material-ui/core'
-import { blue, green } from '@material-ui/core/colors'
 
-export default const theme = createMuiTheme({
-    palette: {
-        primary: green,
-        secondary: blue
-    },
+const theme = createMuiTheme({
     typography: {
         fontFamily: 'Poppins',
         fontWeightLight: 400,
@@ -14,3 +9,5 @@ export default const theme = createMuiTheme({
         fontWeightBold: 700,
     }
 })
+
+export default theme
