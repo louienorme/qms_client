@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/core'
 import theme from './theme'
 
 import './App.css';
-import AdminLogin from './pages/AdminLogin/AdminLogin';
+import { AdminLogin, Dashboard } from './pages';
 
 const App = () => {
   return (
@@ -14,7 +14,10 @@ const App = () => {
           {/* Auth */}
           <Redirect exact from='/' to='/login' />
           <Route exact path='/login' component={AdminLogin} />
-          <Route />
+          
+          {/* Admin Dashboard */}
+          <Route exact path='/dashboard' component={Dashboard} />
+
         </Switch>
       </Router>
     </ThemeProvider>

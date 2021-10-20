@@ -1,6 +1,5 @@
 import { FC, ReactNode } from 'react'
 import {
-    Box,
     Grid,
     Typography,
     Container,
