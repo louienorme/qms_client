@@ -1,6 +1,8 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import {
     AppBar,
+    Box,
     Toolbar,
     Typography,
     Avatar,
@@ -15,7 +17,11 @@ import {
     ListItemText
 } from '@material-ui/core'
 import {
-    Menu 
+    Menu, 
+    ViewDashboard,
+    AccountCircle,
+    AccountBoxMultiple,
+    Backburger
 } from 'mdi-material-ui'
 
 const drawerWidth = 240
@@ -25,6 +31,9 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex'
         },
+        active: {
+          background: '#f4f4f4'
+        }, 
         drawer: {
             width: drawerWidth
         },
@@ -33,7 +42,14 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         title: {
             padding: theme.spacing(2),
-            display: 'inline-block'
+            display: 'flex',
+            alignItems: 'center'
+        },
+        brandName: {
+            fontSize: theme.typography.pxToRem(12),
+            fontWeight: theme.typography.fontWeightBold,
+            marginLeft: theme.spacing(2),
+            textAlign: 'left'
         },
         appBar: {
             width: `calc(100% - ${drawerWidth}px)`,
@@ -44,6 +60,25 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const AdminWrapper: FC = ({ children }) => {
     const classes = useStyles()
+    const history = useHistory()
+    const location = useLocation()
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const toggleDrawer = () => setDrawerOpen(!drawerOpen);
+
+    const menuItems = [
+        {
+            text: 'Dashboard',
+            icon: <ViewDashboard />,
+            path: '/dashboard'
+        },
+        {
+            text: 'Account Manager',
+            icon: <AccountBoxMultiple />,
+            path: '/'
+        }
+    ];
     
     return (
         <div className={classes.root}>
@@ -54,8 +89,12 @@ const AdminWrapper: FC = ({ children }) => {
               elevation={0}
             >
                 <Toolbar>
-                    <IconButton>
-                        <Menu />
+                    <IconButton> 
+                        <Backburger />
+                    </IconButton>
+                    <Box style={{ flexGrow: 1 }} />
+                    <IconButton> 
+                        <AccountCircle />
                     </IconButton>
                 </Toolbar>
             </AppBar>
@@ -69,10 +108,26 @@ const AdminWrapper: FC = ({ children }) => {
             >
                 <div className={classes.title}>
                     <Avatar>Q</Avatar>
-                    <Typography>
+                    <Typography className={classes.brandName}>
                         Queue Management System
                     </Typography>
                 </div>
+
+                {/** Link Items */}
+                <List>  
+                    {menuItems.map((item) => (
+                        <ListItem
+                            button
+                            key={item.text}
+                            onClick={() => history.push(item.path)}
+                            className={location.pathname === item.path ? classes.active : '' }
+                        >
+                            <ListItemIcon>{item.icon}</ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItem>
+                    ))}
+                </List>
+
             </Drawer>
 
             {/* Main Content */}
