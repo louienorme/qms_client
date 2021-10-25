@@ -34,14 +34,14 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex'
         },
         active: {
-          background: '#f4f4f4'
+            background: '#f4f4f4'
         }, 
         drawer: {
-            width: drawerWidth
+            width: drawerWidth,
         },
         drawerPaper: {
             width: drawerWidth,
-        },
+        },  
         title: {
             padding: theme.spacing(2),
             display: 'flex',
@@ -102,7 +102,7 @@ const AdminWrapper: FC = ({ children }) => {
             >
                 <Toolbar>
                     <IconButton onClick={toggleDrawer}> 
-                        <Backburger />
+                        { drawerOpen ? <MenuIcon /> : <Backburger /> }
                     </IconButton>
                     <Box style={{ flexGrow: 1 }} />
                     <IconButton onClick={handleClick}> 
@@ -129,10 +129,10 @@ const AdminWrapper: FC = ({ children }) => {
 
             {/* Side Drawer */}
             <Drawer
-              className={classes.drawer}
+              className={ classes.drawer }
               variant='permanent'
               anchor='left'
-              classes={{ paper: classes.drawerPaper }}
+              classes={ { paper: classes.drawerPaper }}
             >
                 <div className={classes.title}>
                     <Avatar>Q</Avatar>
@@ -151,7 +151,7 @@ const AdminWrapper: FC = ({ children }) => {
                             className={location.pathname === item.path ? classes.active : '' }
                         >
                             <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.text} />
+                            <ListItemText secondary={item.text} />
                         </ListItem>
                     ))}
                 </List>
