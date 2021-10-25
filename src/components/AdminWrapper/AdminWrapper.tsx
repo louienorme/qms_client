@@ -8,6 +8,8 @@ import {
     Avatar,
     Drawer,
     IconButton,
+    Menu,
+    MenuItem,
     makeStyles,
     createStyles,
     Theme,
@@ -17,7 +19,7 @@ import {
     ListItemText
 } from '@material-ui/core'
 import {
-    Menu, 
+    Menu as MenuIcon, 
     ViewDashboard,
     AccountCircle,
     AccountBoxMultiple,
@@ -64,6 +66,16 @@ const AdminWrapper: FC = ({ children }) => {
     const location = useLocation()
 
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
@@ -89,13 +101,29 @@ const AdminWrapper: FC = ({ children }) => {
               elevation={0}
             >
                 <Toolbar>
-                    <IconButton> 
+                    <IconButton onClick={toggleDrawer}> 
                         <Backburger />
                     </IconButton>
                     <Box style={{ flexGrow: 1 }} />
-                    <IconButton> 
+                    <IconButton onClick={handleClick}> 
                         <AccountCircle />
                     </IconButton>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={!!open}
+                      onClose={handleClose}
+                      getContentAnchorEl={null}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                    >
+                        <MenuItem>Logout</MenuItem>
+                    </Menu>
                 </Toolbar>
             </AppBar>
 
