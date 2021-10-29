@@ -5,6 +5,13 @@ import theme from './theme'
 
 import './App.css';
 import { AdminLogin, Dashboard } from './pages';
+import { ProtectedRoute } from './routes';
+
+// Axios Interceptors
+import { setupInterceptorsTo } from './axios/interceptors';
+import axios from 'axios';
+
+setupInterceptorsTo(axios);
 
 const App = () => {
   return (
@@ -16,7 +23,7 @@ const App = () => {
           <Route exact path='/login' component={AdminLogin} />
           
           {/* Admin Dashboard */}
-          <Route exact path='/dashboard' component={Dashboard} />
+          <ProtectedRoute exact path='/dashboard' component={Dashboard} />
 
         </Switch>
       </Router>

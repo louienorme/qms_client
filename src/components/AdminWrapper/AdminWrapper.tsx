@@ -1,7 +1,9 @@
-import { FC, useState } from 'react'
+import { FC, Fragment, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import {
     AppBar,
+    Collapse,
+    Fade,
     Box,
     Toolbar,
     Typography,
@@ -38,10 +40,17 @@ const useStyles = makeStyles((theme: Theme) =>
         }, 
         drawer: {
             width: drawerWidth,
+            flexShrink: 0,
+            boxSizing: 'border-box'
         },
         drawerPaper: {
             width: drawerWidth,
-        },  
+        },
+        drawerContent: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+        },
         title: {
             padding: theme.spacing(2),
             display: 'flex',
@@ -102,7 +111,7 @@ const AdminWrapper: FC = ({ children }) => {
             >
                 <Toolbar>
                     <IconButton onClick={toggleDrawer}> 
-                        { drawerOpen ? <MenuIcon /> : <Backburger /> }
+                        { drawerOpen ? <Backburger /> : <MenuIcon /> }
                     </IconButton>
                     <Box style={{ flexGrow: 1 }} />
                     <IconButton onClick={handleClick}> 
@@ -122,7 +131,7 @@ const AdminWrapper: FC = ({ children }) => {
                         horizontal: 'right',
                       }}
                     >
-                        <MenuItem>Logout</MenuItem>
+                        <MenuItem>Sign out</MenuItem>
                     </Menu>
                 </Toolbar>
             </AppBar>
@@ -134,27 +143,31 @@ const AdminWrapper: FC = ({ children }) => {
               anchor='left'
               classes={ { paper: classes.drawerPaper }}
             >
-                <div className={classes.title}>
-                    <Avatar>Q</Avatar>
-                    <Typography className={classes.brandName}>
-                        Queue Management System
-                    </Typography>
-                </div>
+                <div className={classes.drawerContent} > 
+                    <div className={classes.title}>
+                        <Avatar>Q</Avatar>
+                        <Typography className={classes.brandName} >
+                            Queue Management System
+                        </Typography>
+                    </div>
 
-                {/** Link Items */}
-                <List>  
-                    {menuItems.map((item) => (
-                        <ListItem
-                            button
-                            key={item.text}
-                            onClick={() => history.push(item.path)}
-                            className={location.pathname === item.path ? classes.active : '' }
-                        >
-                            <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText secondary={item.text} />
-                        </ListItem>
-                    ))}
-                </List>
+                    {/** Link Items */}
+                    <List>  
+                        {menuItems.map((item, index) => (
+                            <Fragment key={index} >
+                                <ListItem
+                                    button
+                                    key={item.text}
+                                    onClick={() => history.push(item.path)}
+                                    className={location.pathname === item.path ? classes.active : '' }
+                                >
+                                    <ListItemIcon>{item.icon}</ListItemIcon>
+                                    <ListItemText secondary={item.text} />
+                                </ListItem>
+                            </Fragment>
+                        ))}
+                    </List>
+                </div>
 
             </Drawer>
 
