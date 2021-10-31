@@ -28,7 +28,9 @@ const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig  => {
   const token = localStorage.getItem('token');
 
   if (token) {
-    // config.headers.common['Authorization'] = token;
+    config.headers = {
+        Authorization: token
+    }
   }
 
   return config;

@@ -9,9 +9,10 @@ const customAxios = axios.create({
     baseURL,
 });
 
-// Handlersx
+// Handlers
 const requestHandler = (req: AxiosRequestConfig) => {
-    // req.headers.Authorization = token;
+    // @ts-ignore
+    req.headers.Authorization = token;
     return req;
 }
 
