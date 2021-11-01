@@ -11,6 +11,7 @@ import {
     createStyles,
     Theme
 } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui';
@@ -18,9 +19,10 @@ import { Eye, EyeOff } from 'mdi-material-ui'
 
 import { LoginBase } from '../../components'
 import { IAdminLogin } from '../../types'
+import { adminLogin } from '../../services'
 
 const useStyles = makeStyles((theme: Theme) => 
-    createStyles({
+    createStyles({  
         loginFormContainer: {
             maxWidth: 500,
             height: '100%',
@@ -53,7 +55,17 @@ const AdminLogin: FC = () => {
 
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-    const handleSubmit = async (adminDate: IAdminLogin) => {}
+    const handleSubmit = async (adminData: IAdminLogin) => {
+        try {
+            const { data } = await adminLogin(adminData);
+            setIsInvalid(false);
+            localStorage.setItem('token', data.data);
+            history.push('/dashboard')
+        } catch (err) {
+            console.error(err);
+            setIsInvalid(true);
+        }
+    }
 
     return (
         <LoginBase>
@@ -63,6 +75,11 @@ const AdminLogin: FC = () => {
             style={{ marginBottom: '1.5rem' }} 
             gutterBottom
             >Sign In</Typography>
+            {isInvalid && (
+                <Alert severity='error' style={{ marginBottom: '2rem' }}>
+                Invalid credentials
+                </Alert>
+            )}
             <Formik
               initialValues={{
                   username: '',

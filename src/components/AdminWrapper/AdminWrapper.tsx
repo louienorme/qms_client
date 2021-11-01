@@ -1,13 +1,17 @@
-import { FC, useState } from 'react'
+import { FC, Fragment, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import {
     AppBar,
+    Collapse,
+    Fade,
     Box,
     Toolbar,
     Typography,
     Avatar,
     Drawer,
     IconButton,
+    Menu,
+    MenuItem,
     makeStyles,
     createStyles,
     Theme,
@@ -17,7 +21,7 @@ import {
     ListItemText
 } from '@material-ui/core'
 import {
-    Menu, 
+    Menu as MenuIcon, 
     ViewDashboard,
     AccountCircle,
     AccountBoxMultiple,
@@ -32,13 +36,20 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex'
         },
         active: {
-          background: '#f4f4f4'
+            background: '#f4f4f4'
         }, 
         drawer: {
-            width: drawerWidth
+            width: drawerWidth,
+            flexShrink: 0,
+            boxSizing: 'border-box'
         },
         drawerPaper: {
             width: drawerWidth,
+        },
+        drawerContent: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
         },
         title: {
             padding: theme.spacing(2),
@@ -64,6 +75,22 @@ const AdminWrapper: FC = ({ children }) => {
     const location = useLocation()
 
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const signOut = () => {
+        handleClose();
+        localStorage.removeItem('token');
+        history.push('/');
+    }
 
     const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
@@ -89,44 +116,64 @@ const AdminWrapper: FC = ({ children }) => {
               elevation={0}
             >
                 <Toolbar>
-                    <IconButton> 
-                        <Backburger />
+                    <IconButton onClick={toggleDrawer}> 
+                        { drawerOpen ? <Backburger /> : <MenuIcon /> }
                     </IconButton>
                     <Box style={{ flexGrow: 1 }} />
-                    <IconButton> 
+                    <IconButton onClick={handleClick}> 
                         <AccountCircle />
                     </IconButton>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={!!open}
+                      onClose={handleClose}
+                      getContentAnchorEl={null}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                    >
+                        <MenuItem onClick={signOut} >Sign out</MenuItem>
+                    </Menu>
                 </Toolbar>
             </AppBar>
 
             {/* Side Drawer */}
             <Drawer
-              className={classes.drawer}
+              className={ classes.drawer }
               variant='permanent'
               anchor='left'
-              classes={{ paper: classes.drawerPaper }}
+              classes={ { paper: classes.drawerPaper }}
             >
-                <div className={classes.title}>
-                    <Avatar>Q</Avatar>
-                    <Typography className={classes.brandName}>
-                        Queue Management System
-                    </Typography>
-                </div>
+                <div className={classes.drawerContent} > 
+                    <div className={classes.title}>
+                        <Avatar>Q</Avatar>
+                        <Typography className={classes.brandName} >
+                            Queue Management System
+                        </Typography>
+                    </div>
 
-                {/** Link Items */}
-                <List>  
-                    {menuItems.map((item) => (
-                        <ListItem
-                            button
-                            key={item.text}
-                            onClick={() => history.push(item.path)}
-                            className={location.pathname === item.path ? classes.active : '' }
-                        >
-                            <ListItemIcon>{item.icon}</ListItemIcon>
-                            <ListItemText primary={item.text} />
-                        </ListItem>
-                    ))}
-                </List>
+                    {/** Link Items */}
+                    <List>  
+                        {menuItems.map((item, index) => (
+                            <Fragment key={index} >
+                                <ListItem
+                                    button
+                                    key={item.text}
+                                    onClick={() => history.push(item.path)}
+                                    className={location.pathname === item.path ? classes.active : '' }
+                                >
+                                    <ListItemIcon>{item.icon}</ListItemIcon>
+                                    <ListItemText secondary={item.text} />
+                                </ListItem>
+                            </Fragment>
+                        ))}
+                    </List>
+                </div>
 
             </Drawer>
 
