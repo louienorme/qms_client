@@ -86,6 +86,12 @@ const AdminWrapper: FC = ({ children }) => {
         setAnchorEl(null);
     };
 
+    const signOut = () => {
+        handleClose();
+        localStorage.removeItem('token');
+        history.push('/');
+    }
+
     const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
     const menuItems = [
@@ -131,7 +137,7 @@ const AdminWrapper: FC = ({ children }) => {
                         horizontal: 'right',
                       }}
                     >
-                        <MenuItem>Sign out</MenuItem>
+                        <MenuItem onClick={signOut} >Sign out</MenuItem>
                     </Menu>
                 </Toolbar>
             </AppBar>

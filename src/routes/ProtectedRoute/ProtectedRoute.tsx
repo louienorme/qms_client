@@ -1,20 +1,14 @@
 import { FC } from 'react'
 import { Redirect, Route, RouteProps } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
+import { IDecodedToken as DecodedToken } from '../../types'
 
-interface DecodedToken {
-    __id: string;
-    type: string;
-    username: string;
-    permissions: string[];
-}
-
-const ProtectedRoute: FC<RouteProps> = props => {
+const ProtectedRoute: FC<RouteProps> = ({...rest}) => {
     const token = localStorage.getItem('token');
-    const decodedToken: DecodedToken | null = token ? jwt_decode(token) : null;
+    const decodedToken: DecodedToken | null = token ? jwt_decode(token.split(' ')[1]) : null;
 
-    return decodedToken?.type === 'Super' || 'Queue' || 'Station' || 'Window' ? (
-        <Route {...props} />
+    return decodedToken?.type === 'Super' || 'Queue' || 'Station' ? (
+        <Route {...rest} />
     )   :   (
         <Redirect to='/' />
     );
