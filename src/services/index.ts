@@ -3,3 +3,4 @@ export * from './baseUrl';
 
 // Services
 export * from './authService';
+export * from './accounts';

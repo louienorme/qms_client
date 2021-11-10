@@ -32,6 +32,9 @@ const drawerWidth = 240
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
+        page: {
+            padding: theme.spacing(2)
+        },
         root: {
             display: 'flex'
         },
@@ -65,7 +68,8 @@ const useStyles = makeStyles((theme: Theme) =>
         appBar: {
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
-        }
+        },
+        toolbar: theme.mixins.toolbar,
     })
 )
 
@@ -101,9 +105,9 @@ const AdminWrapper: FC = ({ children }) => {
             path: '/dashboard'
         },
         {
-            text: 'Account Manager',
+            text: 'Management',
             icon: <AccountBoxMultiple />,
-            path: '/'
+            path: '/management'
         }
     ];
     
@@ -178,8 +182,9 @@ const AdminWrapper: FC = ({ children }) => {
             </Drawer>
 
             {/* Main Content */}
-            <div>
-                {children}
+            <div className={classes.page}>
+                <div className={classes.toolbar}></div>
+                { children }
             </div>
         </div>
     )
