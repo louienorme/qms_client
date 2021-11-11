@@ -24,7 +24,7 @@ const columns = [
     {
         Header: 'Name',
         id: 'name',
-        accessor: (originalRow: any) => `${originalRow.name.firstName} ${originalRow.name.lastName}`,
+        accessor: (originalRow: any) => `${originalRow.fullName.firstName} ${originalRow.fullName.lastName}`,
 
     },
     {
@@ -36,7 +36,8 @@ const columns = [
     useEffect(() => {
         const fetchData = async () => {
             try {
-
+                const { data } = await getAccounts();
+                setAccounts(data.data);
             } catch (err) {
                 console.error(err);
             } finally {
@@ -52,14 +53,14 @@ const columns = [
         <>
             {!isLoading ? (
                 <>
-                    <Table columns={columns} data={accounts} actionButtonCount={0} />
+                    <Table columns={columns} data={accounts} />
                 </>
             ) : (
-                <>
+                <div>
                     <Typography>
                         Loading...
                     </Typography>
-                </>
+                </div>
             )}
         </>
     )
