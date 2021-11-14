@@ -30,7 +30,11 @@ const columns = [
     {
         Header: 'Admin ID',
         accessor: 'adminId'
-    }
+    },
+    {
+        Header: 'Status',
+        accessor: (originalRow: any) => originalRow.status ? 'Active' : 'Inactive',
+    },
 ]
 
     useEffect(() => {

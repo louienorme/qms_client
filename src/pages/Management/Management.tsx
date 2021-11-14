@@ -15,6 +15,7 @@ import {
 
 import { AdminWrapper } from '../../components'
 import Accounts from './Accounts'
+import Queues from './Queues'
 
 const tabItems = [
     {
@@ -23,7 +24,7 @@ const tabItems = [
     },
     {
         name: 'Queue Manager',
-        component: '2'
+        component: <Queues />
     }
 ]
 
