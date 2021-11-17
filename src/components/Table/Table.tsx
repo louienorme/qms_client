@@ -14,7 +14,9 @@ import {
     Theme
 } from '@material-ui/core'
 import { useTable, useGlobalFilter, useSortBy } from 'react-table'
+
 import { TableProps } from '../../types'
+import  GlobalFilter from '../GlobalFilter'
 
 const Table: FC<TableProps> = ({
     columns,
@@ -65,11 +67,9 @@ const Table: FC<TableProps> = ({
         headerGroups,
         rows,
         prepareRow,
-        // allColumns,
-        // getToggleHideAllColumnsProps,
-        // state,
-        // preGlobalFilteredRows,
-        // setGlobalFilter,
+        state,
+        // @ts-ignore
+        setGlobalFilter,
       } = useTable(
         {
           columns,
@@ -78,20 +78,14 @@ const Table: FC<TableProps> = ({
         useGlobalFilter,
         useSortBy
     );
+    
+    
+    // @ts-ignore
+    const { globalFilter } = state
 
     return (
         <>
-            {/* {showToolbar && (
-                <TableToolbar
-                preGlobalFilteredRows={preGlobalFilteredRows}
-                globalFilter={state.globalFilter}
-                setGlobalFilter={setGlobalFilter}
-                getToggleHideAllColumnsProps={getToggleHideAllColumnsProps}
-                allColumns={allColumns}
-                showColumnToggle={showColumnToggle}
-                ExtraToolbarActions={ExtraToolbarActions}
-                />
-            )} */}
+            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
             <TableContainer
                 component={Paper}
                 {...TableContainerProps}

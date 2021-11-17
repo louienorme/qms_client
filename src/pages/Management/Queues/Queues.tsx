@@ -3,40 +3,40 @@ import {
     Typography
 } from '@material-ui/core'
 
-import { Table } from '../../../components';
+import { Table, Loader, } from '../../../components';
 import { IQueue } from '../../../types';
 import { getQueues } from '../../../services';
 
 const Queues: FC = () => {
     const [ queues, setQueues ] = useState<IQueue[]>([]);
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
 
     const columns = [
         {
             Header: 'No.',
             id: 'row',
             filterable: false,
-            accesor: (row: any, index: number) => index + 1,
+            accessor: (row: any, index: number) => index + 1,
             cellStyle : {
                 width: 100
             }
         },
         {
-            Header: 'Queue ID',
-            accesor: 'queueId',
-        },
-        {
             Header: 'Name',
             id: 'name',
-            accesor: 'name'
+            accessor: 'name'
+        },
+        {
+            Header: 'Queue ID',
+            accessor: 'queueId',
         },
         {
             Header: 'Status',
-            accesor: 'status'
+            accessor: (originalRow: any) => originalRow.status ? 'Active' : 'Inactive',
         },
         {
             Header: 'Administrator',
-            accesor: (originalRow: any) => `${originalRow}`
+            accessor: (originalRow: any) => `${originalRow.admin}`,
         },
     ]
 
@@ -62,11 +62,7 @@ const Queues: FC = () => {
                     <Table columns={columns} data={queues} />
                 </>
             ) : (
-                <div>
-                    <Typography>
-                        Loading...
-                    </Typography>
-                </div>
+                <Loader />
             )}
         </>
     )

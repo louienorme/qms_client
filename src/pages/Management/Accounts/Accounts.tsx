@@ -1,41 +1,45 @@
 import { FC, useState, useEffect } from 'react'
 import {
-    Typography
+    makeStyles,
+    createStyles,
+    Theme
 } from '@material-ui/core'
 
-import { Table } from '../../../components';
+import { Table, Loader, } from '../../../components';
 import { IAccount } from '../../../types';
 import { getAccounts } from '../../../services';
 
 const Accounts: FC = () => {
     const [ accounts, setAccounts] = useState<IAccount[]>([]);
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
 
-const columns = [
-    {
-        Header: 'No.',
-        id: 'row',
-        filterable: false,
-        accessor: (row: any, index: number) => index + 1,
-        cellStyle: {
-            width: 100
+    const columns = [
+        {
+            Header: 'No.',
+            id: 'row',
+            filterable: false,
+            accessor: (row: any, index: number) => index + 1,
+            cellStyle: {
+                width: 100
+            },
         },
-    },
-    {
-        Header: 'Name',
-        id: 'name',
-        accessor: (originalRow: any) => `${originalRow.fullName.firstName} ${originalRow.fullName.lastName}`,
+        {
+            Header: 'Name',
+            id: 'name',
+            accessor: (originalRow: any) => `${originalRow.fullName.firstName} ${originalRow.fullName.lastName}`,
 
-    },
-    {
-        Header: 'Admin ID',
-        accessor: 'adminId'
-    },
-    {
-        Header: 'Status',
-        accessor: (originalRow: any) => originalRow.status ? 'Active' : 'Inactive',
-    },
-]
+        },
+        {
+            Header: 'Admin ID',
+            accessor: 'adminId'
+        },
+        {
+            Header: 'Status',
+            accessor: (originalRow: any) => originalRow.status ? 'Active' : 'Inactive',
+        },
+    ]
+
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,15 +60,11 @@ const columns = [
     return (
         <>
             {!isLoading ? (
-                <>
+                <>  
                     <Table columns={columns} data={accounts} />
                 </>
             ) : (
-                <div>
-                    <Typography>
-                        Loading...
-                    </Typography>
-                </div>
+                <Loader />
             )}
         </>
     )
