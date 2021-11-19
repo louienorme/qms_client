@@ -51,7 +51,7 @@ const AdminLogin: FC = () => {
     const history = useHistory();
 
     const [showPassword, setShowPassword] = useState(false);
-    const [isInvalid, setIsInvalid] = useState(false)
+    const [isInvalid, setIsInvalid] = useState(false);
 
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 

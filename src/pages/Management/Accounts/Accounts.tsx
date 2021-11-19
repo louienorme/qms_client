@@ -1,17 +1,50 @@
 import { FC, useState, useEffect } from 'react'
 import {
+    IconButton,
+    Button,
     makeStyles,
     createStyles,
     Theme
 } from '@material-ui/core'
+import {
+    Delete,
+    Plus
+} from 'mdi-material-ui'
 
 import { Table, Loader, } from '../../../components';
+import { CreateAccountModal } from './modals';
 import { IAccount } from '../../../types';
 import { getAccounts } from '../../../services';
 
 const Accounts: FC = () => {
+    // Notifiers
+
+    // Data
     const [ accounts, setAccounts] = useState<IAccount[]>([]);
+    const [ selectedAccount, setSelectedAccount ] = useState<IAccount | null>(
+        null
+    );
+
+    // Page Status
     const [ isLoading, setIsLoading ] = useState(true);
+
+    // Modals
+    const [ createModalOpen, setCreateModalOpen ] = useState(false);
+
+    const openCreateModal = () => setCreateModalOpen(true);
+    const closeCreateModal = () => setCreateModalOpen(false);
+
+    const handleCreateAccount = ( newAccount: IAccount ) => {
+        let newQuery= [
+            ...accounts,
+            newAccount
+        ]
+
+        setAccounts(newQuery);
+
+        closeCreateModal();
+    }
+ 
 
     const columns = [
         {
@@ -37,6 +70,21 @@ const Accounts: FC = () => {
             Header: 'Status',
             accessor: (originalRow: any) => originalRow.status ? 'Active' : 'Inactive',
         },
+        {
+            arialLabel: 'actions',
+            id: 'actions',
+            Cell: (({ row }: any) => (
+                <>
+                    <IconButton
+                      size='small'
+                      edge='end'
+                      aria-label='delete account'
+                    >
+                        <Delete fontSize='small' />
+                    </IconButton>
+                </>
+            ))
+        }
     ]
 
     
@@ -61,7 +109,21 @@ const Accounts: FC = () => {
         <>
             {!isLoading ? (
                 <>  
-                    <Table columns={columns} data={accounts} />
+                    <Button
+                      color='primary'
+                      variant='contained'
+                      startIcon={<Plus />}
+                      onClick={openCreateModal}
+                      style={{ marginBottom: '1rem' }}
+                    >
+                        Create
+                    </Button>
+                    <Table columns={columns} data={accounts} actionButtonCount={1} />
+                    <CreateAccountModal 
+                      open={createModalOpen}
+                      onClose={closeCreateModal}
+                      onCreate={handleCreateAccount}
+                    />
                 </>
             ) : (
                 <Loader />
