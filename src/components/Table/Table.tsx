@@ -1,6 +1,7 @@
 import { FC, Fragment } from 'react';
 import clsx from 'clsx';
 import {
+    Button,
     Paper,
     TableContainer,
     Table as MuiTable,
@@ -9,11 +10,12 @@ import {
     TableRow,
     TableCell,
     TableSortLabel,
+    Typography,
     makeStyles,
     createStyles,
     Theme
 } from '@material-ui/core'
-import { useTable, useGlobalFilter, useSortBy } from 'react-table'
+import { useTable, useGlobalFilter, useSortBy, usePagination } from 'react-table'
 
 import { TableProps } from '../../types'
 import  GlobalFilter from '../GlobalFilter'
@@ -57,6 +59,10 @@ const Table: FC<TableProps> = ({
             },
           },
         },
+        toolbar: {
+            display: 'flex',
+            margin: '1rem'
+        }
       })
     );
 
@@ -69,6 +75,14 @@ const Table: FC<TableProps> = ({
         prepareRow,
         state,
         // @ts-ignore
+        pageOptions,
+        // @ts-ignore
+        page,
+        // @ts-ignore
+        nextPage,
+        // @ts-ignore
+        previousPage,
+        // @ts-ignore
         setGlobalFilter,
       } = useTable(
         {
@@ -76,12 +90,13 @@ const Table: FC<TableProps> = ({
           data,
         },
         useGlobalFilter,
-        useSortBy
+        useSortBy,
+        usePagination
     );
     
     
     // @ts-ignore
-    const { globalFilter } = state
+    const { globalFilter, pageIndex } = state
 
     return (
         <>
@@ -150,11 +165,13 @@ const Table: FC<TableProps> = ({
                         ))}
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => {
+                        {// @ts-ignore
+                        page.map((row) => {
                         prepareRow(row);
                         return (
                             <TableRow hover {...row.getRowProps()}>
-                            {row.cells.map((cell) =>
+                            {// @ts-ignore
+                            row.cells.map((cell) =>
                                 // @ts-ignore
                                 !cell.column?.hideColumn ? (
                                 <TableCell
@@ -179,6 +196,19 @@ const Table: FC<TableProps> = ({
                     </TableBody>          
                 </MuiTable>
             </TableContainer>
+            <div className={classes.toolbar}>
+                <Typography variant='overline'>
+                    Total No. of Entries: {rows.length}
+                </Typography>
+                <div style={{ flexGrow: 1, }}></div>
+                <div style={{ alignItems: 'right' }}>
+                    <Button onClick={() => previousPage()}>Previous</Button>
+                    <Typography variant='overline'>
+                        Page {pageIndex + 1} of {pageOptions.length} 
+                    </Typography>
+                    <Button onClick={() => nextPage()}>Next</Button>
+                </div>
+            </div>
         </>
     )
 }
