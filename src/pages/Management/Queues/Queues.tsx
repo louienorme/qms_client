@@ -1,13 +1,17 @@
 import { FC, useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
-    Typography
+    Button
 } from '@material-ui/core'
+import { Plus } from 'mdi-material-ui'
 
 import { Table, Loader, } from '../../../components';
 import { IQueue } from '../../../types';
 import { getQueues } from '../../../services';
 
 const Queues: FC = () => {
+    const history = useHistory();
+
     const [ queues, setQueues ] = useState<IQueue[]>([]);
     const [ isLoading, setIsLoading ] = useState(true);
 
@@ -59,6 +63,15 @@ const Queues: FC = () => {
         <>
             {!isLoading ? (
                 <>
+                    <Button
+                      color='primary'
+                      variant='contained'
+                      startIcon={<Plus/>}
+                      onClick={() => history.push('/management/queue-creation')}
+                      style={{ marginBottom: '1rem' }}
+                    >
+                        Create
+                    </Button>
                     <Table columns={columns} data={queues} />
                 </>
             ) : (
