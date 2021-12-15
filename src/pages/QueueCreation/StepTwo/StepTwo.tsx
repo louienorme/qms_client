@@ -54,19 +54,17 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
     const classes = useStyles();
 
     // Data
-    const [ stationsData, setStations ] = useState<IStation[]>([]);
     const [ accounts, setAccounts ] = useState<IAccount[]>([]);
-    const [ admin, setAdmin ] = useState<IAccount | String>();
+    const [ admin, setAdmin ] = useState([`${accounts[0]}`]);
 
     // Page Status
     const [ isLoading, setIsLoading ] = useState(true);
     const [ isInvalid, setIsInvalid ] = useState(false);
 
     const validationSchema = Yup.object().shape({
-        stations : Yup.array().of(
+        stations : Yup.array().min(1).max(5).of(
             Yup.object().shape({
-                stationNumber: Yup.string().required('This is a required field'),
-                numOfWindows: Yup.number().required('This is a required field'),
+                numOfWindows: Yup.number().min(1).max(5).required('This is a required field'),
                 name: Yup.string().required('This is a required field'),
                 admin: Yup.array().of(
                     Yup.string().required('This is a required field')
@@ -77,14 +75,12 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
 
     const queueName = localStorage.getItem('queue') ? localStorage.getItem('queue') : '' ;
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => setAdmin(event.target.value);
-
-    const handleSubmit = async (editStation: IStation) => {
+    const handleSubmit = async (createStations: any) => {
         console.log('HITS!');
+        console.log(createStations);
         try {
-            console.log(editStation);
             // @ts-ignore
-            await stepTwo(queueName, editStation);
+            await stepTwo(queueName, createStations);
             setIsInvalid(false);
             handleNext();
 
@@ -95,23 +91,11 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
     }
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // @ts-ignore
-                const { data } = await getStations(queueName);
-                setStations(data.data);
-
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-
         const fetchAccounts = async () => {
             try {
                 const { data } = await getAccounts();
-                setAccounts(data.data);
+                setAccounts(data.data)
+                setAdmin(data.data[0].adminId);
 
             } catch (err) {
                 console.error(err);
@@ -120,9 +104,8 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
             }
         }
 
-        fetchData();
         fetchAccounts();
-    }, [ queueName, stationsData])
+    }, [ queueName])
 
     return (
         <>
@@ -132,68 +115,88 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
                     // @ts-ignore
                     initialValues={{
                         stations : [
-                            {
+                            {  
                                 name: '',
-                                numOfWindows: 0,
-                                admin: ['']
+                                numOfWindows: 1,
+                                admin: [`account[${0}]`]
                             }
                         ]
                     }}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
-                    >
+                    render={({ values, isSubmitting, errors }) => (
                         <Form>
-                            <FieldArray name='stations'>
-                                {(({ push }) => (
-                                    <> 
-                                        {stationsData.map((station, index) => (
-                                            <FormControl key={index} className={classes.control}>
-                                                <Typography style={{ marginBottom: '1rem' }}>
-                                                    Station {index + 1}
-                                                </Typography>
-                                                <Field
-                                                    className={classes.input}
-                                                    component={TextField}
-                                                    variant='outlined'
-                                                    required
-                                                    name={`station[${index}].name`}
-                                                    label='Station Name'
-                                                />  
-                                                <Field
-                                                    className={classes.input}
-                                                    component={TextField}
-                                                    variant='outlined'
-                                                    required
-                                                    type='number'
-                                                    name={`station[${index}].numOfWindows`}
-                                                    label='Number of Station Windows'   
-                                                />
-                                                <Field
-                                                    component={TextField}
-                                                    value={admin}
-                                                    onChange={handleChange}
-                                                    variant='outlined'
-                                                    required
-                                                    select
-                                                    autoFocus
-                                                    fullWidth
-                                                    name={`station[${index}].admin[0]`}
-                                                    label='Station Administrator'
-                                                >
-                                                {accounts.map(option => (
-                                                    //@ts-ignore
-                                                    <MenuItem key={option.adminId} value={option.adminId}>
-                                                        {`${option.fullName.firstName} ${option.fullName.lastName}`}
-                                                    </MenuItem>
-                                                ))}
-                                                </Field>
-                                            </FormControl>
+                            <FieldArray 
+                                name='stations'
+                                render={({ push, remove }) => (
+                                    <>
+                                        {values.stations.map((station, index) => (
+                                            <div key={index} >
+                                                <FormControl className={classes.control}>
+                                                    <Typography style={{ marginBottom: '1rem' }}>
+                                                        Station {index + 1}
+                                                        {console.log(errors, values)}
+                                                    </Typography>
+                                                    <Field
+                                                        className={classes.input}
+                                                        component={TextField}
+                                                        variant='outlined'
+                                                        required
+                                                        name={`stations[${index}].name`}
+                                                        label='Station Name'
+                                                    />  
+                                                    <Field
+                                                        className={classes.input}
+                                                        component={TextField}
+                                                        variant='outlined'
+                                                        required
+                                                        type='number'
+                                                        name={`stations[${index}].numOfWindows`}
+                                                        label='Number of Station Windows'   
+                                                    />
+                                                    <FieldArray 
+                                                        name={`stations[${index}].admin[0]`}
+                                                        render={() => (
+                                                            <Field
+                                                                component={TextField}    
+                                                                variant='outlined'
+                                                                required
+                                                                select
+                                                                autoFocus
+                                                                fullWidth
+                                                                name={`stations[${index}].admin[0]`}
+                                                                label='Station Administrator'
+                                                            >
+                                                            {accounts.map((option, index) => (
+                                                                //@ts-ignore
+                                                                <MenuItem key={index} value={option.adminId}>
+                                                                    {`${option.fullName.firstName} ${option.fullName.lastName}`}
+                                                                </MenuItem>
+                                                            ))}
+                                                            </Field>
+                                                        )}
+                                                    />
+                                                </FormControl>
+                                            </div>
                                         ))}
+                                        <Box style={{ marginTop: '1rem' }} className={classes.box} >
+                                            <Button 
+                                                variant='contained'
+                                                onClick={() => push({
+                                                    name: '',
+                                                    numOfWindows: 1,
+                                                    admin: []
+                                                 })}
+                                                >
+                                                Add 
+                                            </Button>
+                                        </Box>
                                     </>
-                                ))}
-                            </FieldArray>
+                                )}
+                            />
                             <Box className={classes.box} >
                                 <Button 
+                                    disabled={isSubmitting}
                                     type='submit'
                                     variant='contained'
                                     >
@@ -201,7 +204,8 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
                                 </Button>
                             </Box>
                         </Form>
-                    </Formik>
+                    )}
+                    />
                 </Container>
             ) : (
                 <Loader />

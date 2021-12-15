@@ -10,7 +10,7 @@ export const stepOne = (data: any) => {
 }
 
 export const stepTwo = (queueName: string, data: any) => {
-    return axios.put(`${baseUrl}/queue/createStepTwo/${queueName}`, data);
+    return axios.post(`${baseUrl}/queue/createStepTwo/${queueName}`, data);
 }
 
 export const stepThree = (queueName: string) => {

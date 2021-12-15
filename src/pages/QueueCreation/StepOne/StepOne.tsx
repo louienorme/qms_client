@@ -49,7 +49,6 @@ const StepOne: FC<Props> = ({ handleNext }) => {
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required('This is a required field'),
-        numOfStations: Yup.number().required('This is a required field'),
     })
 
     const handleSubmit = async (newQueue: IQueue) => {
@@ -81,7 +80,7 @@ const StepOne: FC<Props> = ({ handleNext }) => {
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
-                <Form>
+                <Form autoComplete='off'>
                     <Field
                       className={classes.input}
                       component={TextField}
@@ -96,22 +95,6 @@ const StepOne: FC<Props> = ({ handleNext }) => {
                         </InputAdornment>
                           )
                       }}
-                    />
-                    <Field
-                      className={classes.input}
-                      component={TextField}
-                      variant='outlined'
-                      required
-                      type='number'
-                      name='numOfStations'
-                      label='Number of Stations'
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position='start'>
-                            <FormatListNumbered />
-                          </InputAdornment>
-                        )
-                        }}
                     />
                     <Box className={classes.box} >
                         <Button 
