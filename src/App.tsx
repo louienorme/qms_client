@@ -4,7 +4,7 @@ import { ThemeProvider } from '@material-ui/core'
 import theme from './theme'
 
 import './App.css';
-import { AdminLogin, Dashboard, Management } from './pages';
+import { AdminLogin, Dashboard, Management, QueueCreation } from './pages';
 import { ProtectedRoute } from './routes';
 
 // Axios Interceptors
@@ -27,6 +27,9 @@ const App = () => {
 
           {/* Admin Management */}
           <ProtectedRoute exact path='/management' component={Management} />
+
+            {/* Queue Configuration */}
+            <ProtectedRoute exact path='/management/queue-creation' component={QueueCreation} />
 
         </Switch>
       </Router>
