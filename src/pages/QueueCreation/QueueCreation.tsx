@@ -1,4 +1,5 @@
 import { FC, useState, useEffect, ReactNode } from 'react'
+import { useHistory } from 'react-router-dom'
 import {
     Container,
     Typography,
@@ -15,42 +16,42 @@ import {
 import { ProcessWrapper } from 'components';
 import StepOne from './StepOne'
 import StepTwo from './StepTwo'
+import StepThree from './StepThree'
 
 const steps = [
     'Create your Queue',
-    'Edit Stations',
-    'Create Flashboard & Window Accounts',
-    'Finalize'
+    'Create Stations',
+    'Finalization',
 ]
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
         content: { 
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center'
         }
     })
 )
 
 const QueueCreation: FC = () => {
     const classes = useStyles();
+    const history = useHistory();
 
     const [ activeStep, setActiveStep ] = useState(0);
 
-    const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    const handleDone = () => history.push('/management');
 
-    const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    
-    const handleReset = () => setActiveStep(0);
+    const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
     const renderContent = ( stepCount: any ) => {
         switch(stepCount) {
             case 1:
                 return <StepOne handleNext={handleNext} />;
             case 2:
-                return <StepTwo handleNext={handleNext} handleBack={handleBack} />;
+                return <StepTwo handleNext={handleNext} />;
             case 3: 
-                return '3';
-            case 4:
-                return '4';
+                return <StepThree handleNext={handleNext}/>;
         }
     }
 
@@ -58,7 +59,7 @@ const QueueCreation: FC = () => {
         <>
             <ProcessWrapper>
                 <Container>
-                    <Box className={classes.content}>
+                    <Box>
                         <Stepper activeStep={activeStep}>
                             {steps.map((label, index) => {
                                 const stepProps: { completed?: boolean } = {};
@@ -72,17 +73,25 @@ const QueueCreation: FC = () => {
                             })}
                         </Stepper>
                         {activeStep === steps.length ? (
-                            <>
-                                <Typography>
-                                    All steps completed
+                            <div>
+                                <Typography 
+                                    variant='h3' 
+                                    align='center' 
+                                    gutterBottom
+                                >
+                                    Your Queue has been created!
                                 </Typography>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                    <Box sx={{ flex:'1 1 auto' }} />
-                                    <Button onClick={handleReset}>
-                                        Reset
+                                <Box className={classes.content}>
+                                    <Button 
+                                        style={{ justifyContent: 'center'}} 
+                                        onClick={handleDone}
+                                        color='primary'
+                                        variant='contained'
+                                    >
+                                        Continue
                                     </Button>
                                 </Box>
-                            </>
+                            </div>
                         ) : (
                             <>
                                 <Typography variant='h4'>

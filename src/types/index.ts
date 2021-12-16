@@ -4,3 +4,6 @@ export * from './TableProps';
 export * from './IAccount';
 export * from './IQueue';
 export * from './IStation';
+export * from './IFlashboard';
+export * from './IWindowAccount';
+export * from './IWindow';

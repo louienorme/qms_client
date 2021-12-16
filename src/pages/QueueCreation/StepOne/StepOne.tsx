@@ -14,8 +14,7 @@ import {
     Field,
 } from 'formik'
 import {
-    HumanQueue,
-    FormatListNumbered,
+    HumanQueue
 } from 'mdi-material-ui'
 import { TextField } from 'formik-material-ui'
 import * as Yup from 'yup'
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         box: {
             display: 'flex',
-            float: 'right'
+            justifyContent: 'flex-end'
         }
     })
 )
@@ -91,13 +90,14 @@ const StepOne: FC<Props> = ({ handleNext }) => {
                       InputProps={{
                           startAdornment: (
                             <InputAdornment position='start'>
-                            <HumanQueue />
-                        </InputAdornment>
+                                <HumanQueue />
+                            </InputAdornment>
                           )
                       }}
                     />
                     <Box className={classes.box} >
                         <Button 
+                          size='small'
                           type='submit'
                           variant='contained'
                         >

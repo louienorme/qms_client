@@ -18,13 +18,18 @@ import {
     FieldArray
 } from 'formik'
 import {
-    
+    CardAccountDetails,
+    FormatListNumbered,
+    BadgeAccountHorizontal,
+    Plus,
+    Minus
 } from 'mdi-material-ui'
 import { Loader } from 'components'
 import { TextField } from 'formik-material-ui'
 import * as Yup from 'yup'
-import { IStation, IAccount } from 'types'
-import { stepTwo, getStations, getAccounts } from 'services'
+import { IAccount } from 'types'
+import { stepTwo, getAccounts, createFlashboardsAccounts, 
+    stepThree, createWindowAccounts } from 'services'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
@@ -32,25 +37,25 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: '2rem auto',
         },
         input: {
-            marginBottom: '1rem',
-            width: '100%'
+            margin: '1rem',
         },
         box: {
             display: 'flex',
+            margin: '1rem'
         },
         control: {
-            display: 'block',
-            marginBottom: '1rem'
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center'
         }
     })
 )
 
 interface Props {
     handleNext: () => void;
-    handleBack: () => void;
 }
 
-const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
+const StepTwo: FC<Props> = ({ handleNext }) => {
     const classes = useStyles();
 
     // Data
@@ -62,7 +67,7 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
     const [ isInvalid, setIsInvalid ] = useState(false);
 
     const validationSchema = Yup.object().shape({
-        stations : Yup.array().min(1).max(5).of(
+        stations : Yup.array().length(1).min(1).max(5).of(
             Yup.object().shape({
                 numOfWindows: Yup.number().min(1).max(5).required('This is a required field'),
                 name: Yup.string().required('This is a required field'),
@@ -76,11 +81,15 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
     const queueName = localStorage.getItem('queue') ? localStorage.getItem('queue') : '' ;
 
     const handleSubmit = async (createStations: any) => {
-        console.log('HITS!');
-        console.log(createStations);
         try {
             // @ts-ignore
             await stepTwo(queueName, createStations);
+            // @ts-ignore
+            await createFlashboardsAccounts(queueName);
+            // @ts-ignore
+            await stepThree(queueName);
+            // @ts-ignore
+            await createWindowAccounts(queueName);
             setIsInvalid(false);
             handleNext();
 
@@ -132,27 +141,43 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
                                     <>
                                         {values.stations.map((station, index) => (
                                             <div key={index} >
+                                                <Typography variant='h5' style={{ marginBottom: '1rem' }}>
+                                                    Station {index + 1}
+                                                    {console.log(errors)}
+                                                </Typography>
                                                 <FormControl className={classes.control}>
-                                                    <Typography style={{ marginBottom: '1rem' }}>
-                                                        Station {index + 1}
-                                                        {console.log(errors, values)}
-                                                    </Typography>
                                                     <Field
                                                         className={classes.input}
+                                                        style={{ width: '35%' }}
                                                         component={TextField}
                                                         variant='outlined'
                                                         required
                                                         name={`stations[${index}].name`}
                                                         label='Station Name'
+                                                        InputProps={{
+                                                            startAdornment: (
+                                                              <InputAdornment position='start'>
+                                                                  <CardAccountDetails />
+                                                              </InputAdornment>
+                                                            )
+                                                        }}
                                                     />  
                                                     <Field
                                                         className={classes.input}
                                                         component={TextField}
+                                                        style={{ width: '30%' }}
                                                         variant='outlined'
                                                         required
                                                         type='number'
                                                         name={`stations[${index}].numOfWindows`}
-                                                        label='Number of Station Windows'   
+                                                        label='Number of Station Windows' 
+                                                        InputProps={{
+                                                            startAdornment: (
+                                                              <InputAdornment position='start'>
+                                                                  <FormatListNumbered />
+                                                              </InputAdornment>
+                                                            )
+                                                        }}  
                                                     />
                                                     <FieldArray 
                                                         name={`stations[${index}].admin[0]`}
@@ -160,12 +185,19 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
                                                             <Field
                                                                 component={TextField}    
                                                                 variant='outlined'
+                                                                style={{ width: '30%' }}
                                                                 required
                                                                 select
                                                                 autoFocus
-                                                                fullWidth
                                                                 name={`stations[${index}].admin[0]`}
                                                                 label='Station Administrator'
+                                                                InputProps={{
+                                                                    startAdornment: (
+                                                                      <InputAdornment position='start'>
+                                                                          <CardAccountDetails />
+                                                                      </InputAdornment>
+                                                                    )
+                                                                }}
                                                             >
                                                             {accounts.map((option, index) => (
                                                                 //@ts-ignore
@@ -176,11 +208,27 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
                                                             </Field>
                                                         )}
                                                     />
+                                                    <Box className={classes.box} >
+                                                        {index !== 0 ? (
+                                                            <Button 
+                                                                size='small'
+                                                                variant='contained'
+                                                                onClick={() => remove(index)}
+                                                                >
+                                                                <Minus />
+                                                            </Button> 
+                                                            ) : (
+                                                                ''
+                                                            )
+                                                        }
+                                                    </Box>
                                                 </FormControl>
                                             </div>
                                         ))}
-                                        <Box style={{ marginTop: '1rem' }} className={classes.box} >
+                                        <Box className={classes.box} >
                                             <Button 
+                                                size='small'
+                                                color='primary'
                                                 variant='contained'
                                                 onClick={() => push({
                                                     name: '',
@@ -188,15 +236,16 @@ const StepTwo: FC<Props> = ({ handleNext, handleBack }) => {
                                                     admin: []
                                                  })}
                                                 >
-                                                Add 
+                                                <Plus /> Add Station
                                             </Button>
                                         </Box>
                                     </>
                                 )}
                             />
-                            <Box className={classes.box} >
+                            <Box className={classes.box} style={{ justifyContent: 'flex-end' }}>
                                 <Button 
                                     disabled={isSubmitting}
+                                    size='small'
                                     type='submit'
                                     variant='contained'
                                     >

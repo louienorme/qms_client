@@ -5,14 +5,22 @@ export const getAccounts = () => {
     return axios.get(`${baseUrl}/accounts/`);
 }
 
+export const getWindowAccounts = (queueName: string) => {
+    return axios.get(`${baseUrl}/accounts/windows/${queueName}`);
+}
+
+export const getFlashboards = (queueName: string) => {
+    return axios.get(`${baseUrl}/accounts/flashboards/${queueName}`);
+}
+
 export const postAccount = (data: any) => {
     return axios.post(`${baseUrl}/auth/create`, data);
 }
 
 export const createFlashboardsAccounts = (queueName: string) => {
-    return axios.get(`${baseUrl}/accounts/flashboards/${queueName}`);
+    return axios.put(`${baseUrl}/accounts/flashboards-create/${queueName}`);
 }
 
 export const createWindowAccounts = (queueName: string) => {
-    return axios.get(`${baseUrl}/accounts/windows/${queueName}`);
+    return axios.put(`${baseUrl}/accounts/windows-create/${queueName}`);
 }

@@ -5,6 +5,10 @@ export const getQueues = () => {
     return axios.get(`${baseUrl}/queue/`);
 }
 
+export const getQueue = (queueName: string) => { 
+    return axios.get(`${baseUrl}/queue/${queueName}`);
+}
+
 export const stepOne = (data: any) => {
     return axios.post(`${baseUrl}/queue/createStepOne`, data);
 }
