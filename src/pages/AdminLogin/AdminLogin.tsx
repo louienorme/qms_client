@@ -16,9 +16,10 @@ import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui';
 import { Eye, EyeOff } from 'mdi-material-ui'
+import jwt_decode from 'jwt-decode'
 
 import { LoginBase } from '../../components'
-import { IAdminLogin } from '../../types'
+import { IAdminLogin, IDecodedToken as DecodedToken } from '../../types'
 import { adminLogin } from '../../services'
 
 const useStyles = makeStyles((theme: Theme) => 
@@ -60,7 +61,21 @@ const AdminLogin: FC = () => {
             const { data } = await adminLogin(adminData);
             setIsInvalid(false);
             localStorage.setItem('token', data.data);
-            history.push('/dashboard')
+            let token: any = jwt_decode(data.data.split(' ')[1])
+
+            if (token.type === 'Super') {
+                history.push('/dashboard')
+            }
+            else if (token.type === 'Flashboard') {
+                history.push(`/flashboard`)
+            }
+            else if (token.type === 'Window') {
+                history.push(`/window`)
+            }
+            else {
+                return null;
+            }
+
         } catch (err) {
             console.error(err);
             setIsInvalid(true);
