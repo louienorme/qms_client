@@ -67,7 +67,7 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
     const [ isInvalid, setIsInvalid ] = useState(false);
 
     const validationSchema = Yup.object().shape({
-        stations : Yup.array().length(1).min(1).max(5).of(
+        stations : Yup.array().min(1).max(5).of(
             Yup.object().shape({
                 numOfWindows: Yup.number().min(1).max(5).required('This is a required field'),
                 name: Yup.string().required('This is a required field'),

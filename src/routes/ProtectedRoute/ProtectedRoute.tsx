@@ -7,7 +7,7 @@ const ProtectedRoute: FC<RouteProps> = ({...rest}) => {
     const token = localStorage.getItem('token');
     const decodedToken: DecodedToken | null = token ? jwt_decode(token.split(' ')[1]) : null;
 
-    return decodedToken?.type === 'Super' || 'Queue' || 'Station' ? (
+    return decodedToken?.type === 'Super' || 'Queue' || 'Station' || 'Flashboard' || 'Window' ? (
         <Route {...rest} />
     )   :   (
         <Redirect to='/' />
