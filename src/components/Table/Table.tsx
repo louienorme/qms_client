@@ -29,7 +29,8 @@ const Table: FC<TableProps> = ({
     // showColumnToggle = false,
     TableProps,
     TableContainerProps,
-    // ...rest
+    // ...rest,
+    withSearch
 }) => {
     const hasActionButtons = actionButtonCount > 0;
 
@@ -100,7 +101,7 @@ const Table: FC<TableProps> = ({
 
     return (
         <>
-            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+            {withSearch ? <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} /> : ''}
             <TableContainer
                 component={Paper}
                 {...TableContainerProps}

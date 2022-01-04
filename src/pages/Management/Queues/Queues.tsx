@@ -72,7 +72,7 @@ const Queues: FC = () => {
                     >
                         Create
                     </Button>
-                    <Table columns={columns} data={queues} />
+                    <Table withSearch={true} columns={columns} data={queues} />
                 </>
             ) : (
                 <Loader />

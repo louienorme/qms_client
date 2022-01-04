@@ -1,13 +1,42 @@
-import { FC } from 'react'
+import { FC, useState, useEffect } from 'react'
 
 import { TopNav } from 'components'
 import FirstStation from './FirstStation'
 import NthStation from './NthStation'
 
 const Window: FC = () => {
-    return (
-        <TopNav>
 
+    const [ window, setWindow ] = useState({
+        number: 2,
+        queue: 'Test'
+    });
+    
+    const renderContent = (station: number) => {
+        if (station === 1) {
+            return <FirstStation />
+        } 
+        else {
+            return <NthStation />
+        }
+    }
+
+    useEffect(() => {
+        const windowDetails = () => {
+            try {
+
+            } catch {
+
+            } finally {
+
+            }
+        }
+
+        windowDetails();
+    }, [])
+
+    return (
+        <TopNav station={window}>
+            {renderContent(window.number)}
         </TopNav>
     )
 }
