@@ -7,7 +7,7 @@ import NthStation from './NthStation'
 const Window: FC = () => {
 
     const [ window, setWindow ] = useState({
-        number: 1,
+        number: 2,
         queue: 'Test'
     });
     
