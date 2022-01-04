@@ -118,7 +118,7 @@ const Accounts: FC = () => {
                     >
                         Create
                     </Button>
-                    <Table withSearch={true} columns={columns} data={accounts} actionButtonCount={1} />
+                    <Table columns={columns} data={accounts} actionButtonCount={1} />
                     <CreateAccountModal 
                       open={createModalOpen}
                       onClose={closeCreateModal}
