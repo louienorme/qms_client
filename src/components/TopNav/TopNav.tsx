@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useState } from 'react'
+import { FC, MouseEvent, ReactNode, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
     AppBar,
@@ -28,7 +28,15 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-const TopNav: FC = ({ children }) => {
+interface Props {
+    children?: ReactNode;
+    station?: {
+        number: number;
+        queue: String;
+    }
+}
+
+const TopNav: FC<Props> = ({ children, station }) => {
     const classes = useStyles();
     const history = useHistory();
 
@@ -60,6 +68,11 @@ const TopNav: FC = ({ children }) => {
                         Queue Management System
                     </Typography>
                     <Box style={{ flexGrow: 1 }} />
+                    { station ? (
+                        <Typography style={{ marginRight: '1rem' }}>
+                            Station {station.number} - {station.queue}
+                        </Typography>
+                    ) : ''}
                     <IconButton onClick={handleClick}> 
                         <AccountCircle />
                     </IconButton>

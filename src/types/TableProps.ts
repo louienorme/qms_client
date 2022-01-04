@@ -38,4 +38,5 @@ export interface TableProps {
    * Props applied to the TableContainer component
    */
   TableContainerProps?: TableContainerProps;
+  withSearch: Boolean;
 }
