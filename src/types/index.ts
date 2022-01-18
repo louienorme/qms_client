@@ -7,3 +7,4 @@ export * from './IStation';
 export * from './IFlashboard';
 export * from './IWindowAccount';
 export * from './IWindow';
+export * from './IPool';
