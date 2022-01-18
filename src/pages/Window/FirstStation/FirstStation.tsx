@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState, useEffect } from 'react'
 import {
     Container,
     Grid,
@@ -17,8 +17,12 @@ import {
 } from '@material-ui/core'
 import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
-import { TextField } from 'formik-material-ui';
+import { TextField } from 'formik-material-ui'
 import { Eye, EyeOff } from 'mdi-material-ui'
+import jwt_decode from 'jwt-decode'
+
+import { createNumber, getOneAccount, getStationTickets } from 'services'
+import { IDecodedToken as DecodedToken } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -45,14 +49,56 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 const FirstStation: FC = () => {
-    const classes = useStyles();
+    const classes = useStyles();    
 
-    const handleClick = () => {
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [ numbers, setNumbers ] = useState<Number[]>([34, 32, 31, 30, 28,]);
 
+    const token: any = localStorage.getItem('token')
+    const payload: DecodedToken = jwt_decode(token.split(' ')[1]);
+
+    const handleClick = async () => {
+        try {
+            const { data } = await getOneAccount(payload._id);
+            const details = data.data[0];
+            const body = {
+                creator: details._id,
+                window: details.window
+            }
+
+            await createNumber(details.queueName, body)
+
+        } catch (err) {
+            console.error(err)
+        } finally {
+
+        }
     }
 
-    const numbers = [ 34, 32, 31, 30, 28, ]
+    useEffect(() => {
+        const recentNumbers = async () => {
+            const { data } = await getOneAccount(payload._id);
+            const details = data.data[0];
+            try {
+                const body = {
+                    queueName: details.queueName,
+                    station: details.station
+                }
 
+                const { data } =  await getStationTickets(body)
+                setNumbers(data.data);
+                console.log(body);
+
+            } catch (err) {
+
+            } finally {
+                
+            }
+        }
+
+        recentNumbers();
+    }, [])
+    
     return (
         <Container>
             <Grid container className={classes.row} spacing={2}>
@@ -67,6 +113,7 @@ const FirstStation: FC = () => {
                             fullWidth
                             color='primary'
                             size='large'
+                            onClick={handleClick}
                         >
                             Get Number
                         </Button>

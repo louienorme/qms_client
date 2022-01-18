@@ -33,6 +33,7 @@ interface Props {
     station?: {
         number: number;
         queue: String;
+        station: number;
     }
 }
 
@@ -70,7 +71,7 @@ const TopNav: FC<Props> = ({ children, station }) => {
                     <Box style={{ flexGrow: 1 }} />
                     { station ? (
                         <Typography style={{ marginRight: '1rem' }}>
-                            Station {station.number} - {station.queue}
+                            Station {station.station} - {station.queue}
                         </Typography>
                     ) : ''}
                     <IconButton onClick={handleClick}> 
