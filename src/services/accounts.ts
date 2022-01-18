@@ -5,6 +5,10 @@ export const getAccounts = () => {
     return axios.get(`${baseUrl}/accounts/`);
 }
 
+export const getOneAccount = (id: string) => {
+    return axios.get(`${baseUrl}/accounts/get/${id}`);
+}
+
 export const getWindowAccounts = (queueName: string) => {
     return axios.get(`${baseUrl}/accounts/windows/${queueName}`);
 }

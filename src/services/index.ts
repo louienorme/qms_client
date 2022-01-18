@@ -5,3 +5,4 @@ export * from './baseUrl';
 export * from './authService';
 export * from './accounts';
 export * from './queues';
+export * from './pools';
