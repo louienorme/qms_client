@@ -9,6 +9,14 @@ export const getOneAccount = (id: string) => {
     return axios.get(`${baseUrl}/accounts/get/${id}`);
 }
 
+export const updateAccount = (id: string, body: any) => {
+    return axios.put(`${baseUrl}/accounts/update/${id}`, body);
+}
+
+export const deleteAccount = (id: string) => {
+    return axios.delete(`${baseUrl}/accounts/delete/${id}`);
+}
+
 export const getWindowAccounts = (queueName: string) => {
     return axios.get(`${baseUrl}/accounts/windows/${queueName}`);
 }
