@@ -1,4 +1,5 @@
 export interface IAccount {
+    _id: string;
     adminId: String;
     adminType: String;
     status: Boolean;
@@ -8,9 +9,9 @@ export interface IAccount {
         lastName: String;
         nameExtension : String;
     };
-    address: String;
     contact: {
         email: String;
     };
     username: String;
+    permissions: Array<String>;
 }

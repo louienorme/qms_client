@@ -16,7 +16,7 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 import { IAccount } from 'types';
-import { postAccount } from 'services';
+import { updateAccount } from 'services'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
@@ -32,42 +32,40 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-interface createAccountModalProps extends DialogProps {
+interface editModalProps extends DialogProps {
+    account?: IAccount,
     onClose: () => void;
-    onCreate: (account: IAccount) => void;
+    onEdit: (account: IAccount) => void;
 }
 
-const CreateAccountModal: FC<createAccountModalProps> = ({
+const EditModal: FC<editModalProps> = ({
+    account,
     onClose,
-    onCreate,
+    onEdit,
     ...rest
 }) => {
     const classes = useStyles();
 
-    const [ adminType, setAdminType ] = useState('Super');
+    const { ...initialValues } = account;
+    
     const [ isInvalid, setIsInvalid ] = useState(false);
 
     const handleSubmit = async (values: any) => {
         try {
-            const reqBody = {
-                ...values,
-                permissions: []
-            }
 
-            const { data } = await postAccount(reqBody);
+            const { data } = await updateAccount(values._id, values);
             setIsInvalid(false);
+            
+            onEdit(data.data);
 
-            onCreate(data.data);
         } catch (err) {
             console.error(err);
             setIsInvalid(true);
         }
     }
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => setAdminType(event.target.value)
-
     const validationSchema = Yup.object().shape({
-        adminType: Yup.string().required('This is a required field'),
+        type: Yup.string().required('This is a required field'),
         fullName: Yup.object().shape({
             firstName: Yup.string().required('This is a required field'),
             middleName: Yup.string(),
@@ -97,20 +95,7 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
 
     return (
         <Formik
-            initialValues={{
-                adminType: 'Super',
-                fullName: {
-                    firstName: '',
-                    middleName: '',
-                    lastName: '',
-                    nameExtension: ''
-                },
-                address: '',
-                contact: {
-                    email: ''
-                },
-                permissions: []
-            }}
+            initialValues={initialValues}
             className={classes.header}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -129,7 +114,7 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
                     <Form>
                         <DialogTitle disableTypography>
                             <Typography variant='h4'>
-                                Create Account 
+                                Edit Account 
                             </Typography>
                         </DialogTitle>
                         <DialogContent>
@@ -179,13 +164,14 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
                               className={classes.inputBase}
                               component={TextField}
                               select
-                              value={adminType}
-                              onChange={handleChange}
                               variant='outlined'
                               autoFocus
-                              name='adminType'
+                              name='type'
                               label='Admin Type'
                               fullWidth
+                              InputProps={{
+                                readOnly: true,
+                              }}
                             >
                                 {selection.map(option => (
                                     <MenuItem key={option.value} value={option.value}>
@@ -220,14 +206,14 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
                                 type='submit'
                                 disabled={isSubmitting}
                             >
-                                Create
+                                Edit
                             </Button>
                         </DialogActions>
                     </Form>
                 </Dialog>
             )}
         </Formik>
-    );
-};
+    )
+}
 
-export default CreateAccountModal;
+export default EditModal
