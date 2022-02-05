@@ -24,3 +24,7 @@ export const getWindowNumber = (body: any) => {
 export const getStationTickets = (body: any) => {
     return axios.post(`${baseUrl}/pools/getTickets`, body);
 }
+
+export const getWindowTickets = (body: any) => {
+    return axios.post(`${baseUrl}/pools/getWindowTickets`, body);
+}

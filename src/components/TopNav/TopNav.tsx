@@ -34,10 +34,13 @@ interface Props {
         number: number;
         queue: String;
         station: number;
-    }
+    },
+    flashboard?: {
+        queue: String;
+    },
 }
 
-const TopNav: FC<Props> = ({ children, station }) => {
+const TopNav: FC<Props> = ({ children, station, flashboard }) => {
     const classes = useStyles();
     const history = useHistory();
 
@@ -69,6 +72,11 @@ const TopNav: FC<Props> = ({ children, station }) => {
                         Queue Management System
                     </Typography>
                     <Box style={{ flexGrow: 1 }} />
+                    { flashboard ? (
+                        <Typography style={{ marginRight: '1rem' }}>
+                           {flashboard.queue}
+                        </Typography>
+                    ) : ''}
                     { station ? (
                         <Typography style={{ marginRight: '1rem' }}>
                             Station {station.station} - {station.queue}

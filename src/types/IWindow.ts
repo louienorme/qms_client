@@ -1,8 +1,9 @@
 export interface IWindow {
+    _id: String;
     windowId: String,
     queueName: String,
-    stationNumber: Number,
+    stationNumber: number,
     status: Boolean,
-    windowNumber: Number,
+    windowNumber: number,
     admin: String
 }
