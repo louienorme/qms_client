@@ -21,7 +21,7 @@ import { TextField } from 'formik-material-ui'
 import { Eye, EyeOff } from 'mdi-material-ui'
 import jwt_decode from 'jwt-decode'
 
-import { createNumber, getOneAccount, getStationTickets } from 'services'
+import { createNumber, getOneAccount, getStationOneData} from 'services'
 import { IDecodedToken as DecodedToken } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => 
@@ -47,12 +47,18 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
+interface Props {
+    ticketCount: Array<any>;
+    lastNumberCreated: Array<any>;
+    numberCount: number;
+    recentNumbers: Array<any>
+}
 
 const FirstStation: FC = () => {
     const classes = useStyles();    
 
     const [ isLoading, setIsLoading ] = useState(true);
-    const [ numbers, setNumbers ] = useState<Number[]>([34, 32, 31, 30, 28,]);
+    const [ numbers, setNumbers ] = useState<Props>();
 
     const token: any = localStorage.getItem('token')
     const payload: DecodedToken = jwt_decode(token.split(' ')[1]);
@@ -82,22 +88,21 @@ const FirstStation: FC = () => {
             try {
                 const body = {
                     queueName: details.queueName,
-                    station: details.station
+                   _id: details._id
                 }
 
-                const { data } =  await getStationTickets(body)
+                const { data } =  await getStationOneData(body)
                 setNumbers(data.data);
-                console.log(body);
 
             } catch (err) {
-
+                console.error(err)
             } finally {
-                
+                setIsLoading(false)
             }
         }
 
         recentNumbers();
-    }, [])
+    }, [ numbers ])
     
     return (
         <Container>
@@ -129,7 +134,11 @@ const FirstStation: FC = () => {
                             <Grid item xs={12}>
                                 <Paper className={classes.details}>
                                     <Typography variant='h4'>
-                                        34
+                                        {
+                                            numbers?.ticketCount
+                                                ? numbers?.ticketCount[0].ticket
+                                                : 0
+                                        }
                                     </Typography>
                                     <Typography variant='overline'>
                                         Count
@@ -139,7 +148,11 @@ const FirstStation: FC = () => {
                             <Grid item xs={12}>
                                 <Paper className={classes.details}>
                                     <Typography variant='h4'>
-                                        34
+                                        {
+                                            numbers?.lastNumberCreated
+                                                ? numbers?.lastNumberCreated[0].ticket
+                                                : 0
+                                        }
                                     </Typography>
                                     <Typography variant='overline'>
                                         Last Number Created
@@ -149,7 +162,11 @@ const FirstStation: FC = () => {
                             <Grid item xs={12}>
                                 <Paper className={classes.details}>
                                     <Typography variant='h4'>
-                                        14
+                                        {
+                                            numbers?.ticketCount 
+                                                ? numbers?.numberCount
+                                                : 0
+                                        }
                                     </Typography>
                                     <Typography variant='overline'>
                                         Numbers Created
@@ -165,26 +182,30 @@ const FirstStation: FC = () => {
                             Recent Numbers
                         </Typography>
                         <br/>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableCell align='center'>
-                                        <Typography variant='h6'>
-                                            Number
-                                        </Typography>
-                                    </TableCell>
-                                </TableHead>
-                                <TableBody>
-                                    {numbers.map(num => (
-                                        <TableRow>
+                        {
+                            !numbers?.recentNumbers
+                                ? ''
+                                : <TableContainer component={Paper}>
+                                    <Table>
+                                        <TableHead>
                                             <TableCell align='center'>
-                                                {num}
+                                                <Typography variant='h6'>
+                                                    Ticket Number
+                                                </Typography>
                                             </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                                        </TableHead>
+                                            {numbers?.recentNumbers.map(num => (
+                                                <TableRow>
+                                                    <TableCell align='center'>
+                                                        {num.ticket}
+                                                    </TableCell>
+                                                </TableRow>
+                                            ))}
+                                        <TableBody>
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                        }
                     </Paper>
                 </Grid>
             </Grid>

@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const NthStation: FC = () => {
     const classes = useStyles();
 
-    const [ pools, setPools ] = useState<IPool[]>([]);
+    const [ poolsData, setPoolsData ] = useState<IPool[]>([]);
     const [ inWindow, setInWindow ] = useState();
     const [ windowNumber, setWindowNumber ] = useState<Number>()
     const [ ticketId , setTicketId ] = useState<String>()
@@ -137,7 +137,7 @@ const NthStation: FC = () => {
 
                 const { data } =  await getStationTickets(body)
                 setWindowNumber(details.window)
-                setPools(data.data);
+                setPoolsData(data.data);
 
             } catch (err) {
                 console.error(err)
@@ -169,7 +169,7 @@ const NthStation: FC = () => {
 
         pools();
         windowTicket();
-    }, [ pools, inWindow ])
+    }, [ poolsData, inWindow ])
 
     return (
         <Container>
@@ -237,7 +237,7 @@ const NthStation: FC = () => {
                         <hr/> <br/>
                         {isLoading ? <Loader /> : (
                             <>    {/** @ts-ignore */}
-                                <Table withSearch={false} columns={columns} data={pools} />
+                                <Table withSearch={false} columns={columns} data={poolsData} />
                             </>
                         )}
                     </Paper>
