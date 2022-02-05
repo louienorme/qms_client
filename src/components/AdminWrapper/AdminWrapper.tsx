@@ -25,7 +25,8 @@ import {
     ViewDashboard,
     AccountCircle,
     AccountBoxMultiple,
-    Backburger
+    Backburger,
+    Archive
 } from 'mdi-material-ui'
 
 const drawerWidth = 240
@@ -108,6 +109,11 @@ const AdminWrapper: FC = ({ children }) => {
             text: 'Management',
             icon: <AccountBoxMultiple />,
             path: '/management'
+        },
+        {
+            text: 'Archives',
+            icon: <Archive />,
+            path: '/archives'
         }
     ];
     
@@ -120,9 +126,6 @@ const AdminWrapper: FC = ({ children }) => {
               elevation={0}
             >
                 <Toolbar>
-                    <IconButton onClick={toggleDrawer}> 
-                        { drawerOpen ? <Backburger /> : <MenuIcon /> }
-                    </IconButton>
                     <Box style={{ flexGrow: 1 }} />
                     <IconButton onClick={handleClick}> 
                         <AccountCircle />

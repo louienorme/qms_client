@@ -183,14 +183,14 @@ const FirstStation: FC = () => {
                         </Typography>
                         <br/>
                         {
-                            numbers?.recentNumbers.length === 0
+                            !numbers?.recentNumbers
                                 ? ''
                                 : <TableContainer component={Paper}>
                                     <Table>
                                         <TableHead>
                                             <TableCell align='center'>
                                                 <Typography variant='h6'>
-                                                    Number
+                                                    Ticket Number
                                                 </Typography>
                                             </TableCell>
                                         </TableHead>
