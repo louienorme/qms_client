@@ -73,7 +73,7 @@ const Accounts: FC = () => {
         try {
             if (selectedAccount) {
                 await deleteAccount(selectedAccount._id)
-
+                
                 setAccounts(
                     accounts.filter((account) => account._id !== selectedAccount._id)
                 )

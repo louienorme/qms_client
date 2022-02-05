@@ -4,7 +4,7 @@ export interface IPool {
     user: String;
     queue: String;
     station: Number;
-    window: Number;
+    window: number;
     status: String;
     timeStarted: String;
     timeEnded: String;

@@ -1,19 +1,47 @@
 import { FC, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
-    Button
+    Button,
+    IconButton
 } from '@material-ui/core'
-import { Plus } from 'mdi-material-ui'
+import { Plus, Delete } from 'mdi-material-ui'
 
-import { Table, Loader, } from '../../../components';
-import { IQueue } from '../../../types';
-import { getQueues } from '../../../services';
+import { Table, Loader, DeleteDialog } from 'components';
+import { IQueue } from 'types';
+import { getQueues, deleteQueue } from 'services';
 
 const Queues: FC = () => {
     const history = useHistory();
 
     const [ queues, setQueues ] = useState<IQueue[]>([]);
     const [ isLoading, setIsLoading ] = useState(true);
+
+    const [ selectedQueue, setSelectedQueue ] = useState<IQueue | null>(
+        null
+    );
+    const [ deleteDialogOpen, setDeleteDialogOpen ] = useState(false);
+
+    const openDeleteDialog = (queue: IQueue) => {
+        setSelectedQueue(queue)
+        setDeleteDialogOpen(true)
+    };
+    const closeDeleteDialog = () => setDeleteDialogOpen(false);
+
+    const handleDeleteQueue = async () => {
+        try {
+            if (selectedQueue) {
+                await deleteQueue(selectedQueue.name)
+                
+                setQueues(
+                    queues.filter((queue) => queue.queueId !== selectedQueue.queueId)
+                )
+
+                closeDeleteDialog();
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     const columns = [
         {
@@ -42,6 +70,22 @@ const Queues: FC = () => {
             Header: 'Administrator',
             accessor: (originalRow: any) => `${originalRow.admin}`,
         },
+        {
+            arialLabel: 'actions',
+            id: 'actions',
+            Cell: (({ row }: any) => (
+                <>
+                    <IconButton
+                      size='small'
+                      edge='end'
+                      aria-label='delete account'
+                      onClick={() => openDeleteDialog(row.original)}
+                    >
+                        <Delete fontSize='small' />
+                    </IconButton>
+                </>
+            ))
+        }
     ]
 
     useEffect(() => {
@@ -72,7 +116,18 @@ const Queues: FC = () => {
                     >
                         Create
                     </Button>
-                    <Table withSearch={true} columns={columns} data={queues} />
+                    <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
+                    {selectedQueue && (
+                        <>
+                            <DeleteDialog
+                                open={deleteDialogOpen}
+                                onClose={closeDeleteDialog}
+                                onDelete={handleDeleteQueue}
+                                title='Delete Queue'
+                                itemName={`${selectedQueue.name}`}
+                            />
+                        </>
+                    )}
                 </>
             ) : (
                 <Loader />

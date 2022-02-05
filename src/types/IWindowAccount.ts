@@ -1,9 +1,9 @@
 export interface IWindowAccount {
     adminId: String;
-    status: Boolean;
+    status: number;
     queueName: String;
     station: Number;
-    window: Number;
+    window: number;
     username: String;
     password: String;
 }

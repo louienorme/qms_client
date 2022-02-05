@@ -5,7 +5,8 @@ import theme from './theme'
 
 import './App.css';
 import { 
-  AdminLogin, 
+  AdminLogin,
+  Archives, 
   Dashboard, 
   Management, 
   QueueCreation,
@@ -34,6 +35,9 @@ const App = () => {
 
           {/* Admin Management */}
           <ProtectedRoute exact path='/management' component={Management} />
+
+          {/* Admin Archives */}
+          <ProtectedRoute exact path='/archives' component={Archives} />
 
             {/* Queue Configuration */}
             <ProtectedRoute exact path='/management/queue-creation' component={QueueCreation} />
