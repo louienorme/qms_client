@@ -5,6 +5,8 @@ import {
     IconButton
 } from '@material-ui/core'
 import { Plus, Delete } from 'mdi-material-ui'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { Table, Loader, DeleteDialog } from 'components';
 import { IQueue } from 'types';
@@ -40,6 +42,7 @@ const Queues: FC = () => {
             }
         } catch (err) {
             console.error(err)
+            toast.error('Something went wrong!');
         }
     }
 
@@ -116,6 +119,13 @@ const Queues: FC = () => {
                     >
                         Create
                     </Button>
+                    <ToastContainer 
+                        position='bottom-left'
+                        theme='colored'
+                        draggable={false}
+                        closeOnClick
+                        autoClose={4000}
+                    />
                     <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
                     {selectedQueue && (
                         <>
