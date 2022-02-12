@@ -11,6 +11,8 @@ import {
     Plus,
     AccountEdit
 } from 'mdi-material-ui'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { Table, Loader, DeleteDialog } from 'components';
 import { CreateAccountModal, EditModal } from './modals';
@@ -58,6 +60,7 @@ const Accounts: FC = () => {
         setAccounts(newQuery);
 
         closeCreateModal();
+        toast.success('Account Created!')
     }
 
     const handleEditAccount = ( editAccount: IAccount ) => {
@@ -67,6 +70,7 @@ const Accounts: FC = () => {
 
         setAccounts(newQuery);
         closeEditModal();
+        toast.success('Account Updated!');
     }
  
     const handleDeleteAccount = async () => {
@@ -80,8 +84,10 @@ const Accounts: FC = () => {
 
                 closeDeleteDialog();
             }
+            toast.success('Account Deleted!');
         } catch (err) {
             console.error(err)
+            toast.error('Something went wrong!')
         }
     }
 
@@ -166,6 +172,13 @@ const Accounts: FC = () => {
                     >
                         Create
                     </Button>
+                    <ToastContainer 
+                        position='bottom-left'
+                        theme='colored'
+                        draggable={false}
+                        closeOnClick
+                        autoClose={4000}
+                    />
                     <Table withSearch={true} columns={columns} data={accounts} actionButtonCount={2} />
                     <CreateAccountModal 
                       open={createModalOpen}
