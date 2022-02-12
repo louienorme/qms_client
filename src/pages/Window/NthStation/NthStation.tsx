@@ -10,6 +10,8 @@ import {
     Theme,
 } from '@material-ui/core'
 import jwt_decode from 'jwt-decode'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { Loader, Table } from 'components'
 import { 
@@ -81,8 +83,10 @@ const NthStation: FC = () => {
                 window: details.window
             }
             await getNumber(body);
+            toast.success('Ticket Acquired!')
         } catch (err) {
             console.error(err)
+            toast.error('Something went wrong!')
         }
     }
 
@@ -99,8 +103,10 @@ const NthStation: FC = () => {
             }
             
             await nextNumber(body);
+            toast.success('Transaction Complete!')
         } catch (err) {
             console.error(err)
+            toast.error('Something went wrong!')
         }
     }
 
@@ -115,8 +121,10 @@ const NthStation: FC = () => {
                 id: ticketId
             }
             await returnNumber(body);
+            toast.success('Ticket Returned!')
         } catch (err) {
             console.error(err)
+            toast.error('Something went wrong!')
         }
     }
 
@@ -141,6 +149,7 @@ const NthStation: FC = () => {
 
             } catch (err) {
                 console.error(err)
+                toast.error('Something went wrong!')
             } finally {
                 setIsLoading(false)
             }
@@ -162,6 +171,7 @@ const NthStation: FC = () => {
 
             } catch (err) {
                 console.error(err)
+                toast.error('Something went wrong!')
             } finally {
                 setIsLoading(false)
             }
@@ -174,6 +184,13 @@ const NthStation: FC = () => {
     return (
         <Container>
             <Grid container className={classes.row} spacing={2}>
+                <ToastContainer 
+                    position='bottom-left'
+                    theme='colored'
+                    draggable={false}
+                    closeOnClick
+                    autoClose={4000}
+                />
                 <Grid item xs={6}>
                     <Paper elevation={3} className={classes.card}>
                         <Typography align='center'>

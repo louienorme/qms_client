@@ -11,12 +11,13 @@ import {
     createStyles,
     Theme
 } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
 import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui';
 import { Eye, EyeOff } from 'mdi-material-ui'
 import jwt_decode from 'jwt-decode'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { LoginBase } from '../../components'
 import { IAdminLogin, IDecodedToken as DecodedToken } from '../../types'
@@ -75,9 +76,10 @@ const AdminLogin: FC = () => {
             else {
                 return null;
             }
-
+        
         } catch (err) {
             console.error(err);
+            toast.error("Invalid Credentials!");
             setIsInvalid(true);
         }
     }
@@ -91,9 +93,13 @@ const AdminLogin: FC = () => {
             gutterBottom
             >Sign In</Typography>
             {isInvalid && (
-                <Alert severity='error' style={{ marginBottom: '2rem' }}>
-                Invalid credentials
-                </Alert>
+                <ToastContainer 
+                    position='bottom-left'
+                    theme='colored'
+                    draggable={false}
+                    closeOnClick
+                    autoClose={4000}
+                />
             )}
             <Formik
               initialValues={{

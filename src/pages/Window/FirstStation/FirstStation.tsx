@@ -18,8 +18,10 @@ import {
 import * as Yup from 'yup'
 import { Formik, Form, Field } from 'formik'
 import { TextField } from 'formik-material-ui'
-import { Eye, EyeOff } from 'mdi-material-ui'
+import { Eye, EyeOff, ToyBrickSearch } from 'mdi-material-ui'
 import jwt_decode from 'jwt-decode'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { createNumber, getOneAccount, getStationOneData} from 'services'
 import { IDecodedToken as DecodedToken } from 'types'
@@ -73,9 +75,11 @@ const FirstStation: FC = () => {
             }
 
             await createNumber(details.queueName, body)
+            toast.success('Ticket Number Created!')
 
         } catch (err) {
             console.error(err)
+            toast.error('Something went wrong!')
         } finally {
 
         }
@@ -107,6 +111,13 @@ const FirstStation: FC = () => {
     return (
         <Container>
             <Grid container className={classes.row} spacing={2}>
+                <ToastContainer 
+                    position='bottom-left'
+                    theme='colored'
+                    draggable={false}
+                    closeOnClick
+                    autoClose={4000}
+                />
                 <Grid item xs={4}> 
                     <Paper elevation={3} className={classes.card}>
                         <Typography>
