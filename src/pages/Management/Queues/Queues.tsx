@@ -9,14 +9,31 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { Table, Loader, DeleteDialog } from 'components';
-import { IQueue } from 'types';
-import { getQueues, deleteQueue } from 'services';
+import { IQueue, IAccount } from 'types';
+import { getQueues, getAccounts, deleteQueue } from 'services';
 
 const Queues: FC = () => {
     const history = useHistory();
 
     const [ queues, setQueues ] = useState<IQueue[]>([]);
+    const [ admins, setAdmins ] = useState<IAccount[]>([]);
     const [ isLoading, setIsLoading ] = useState(true);
+
+    const adminName = (id: string) => {
+        try {
+            for(let i = 0; i < admins.length; i++ ) {
+                if (admins[i]._id === id) {
+                    return `${admins[i].fullName.firstName} ${admins[i].fullName.lastName}`
+                } 
+                else {
+                    return `${admins[0].fullName.firstName} ${admins[0].fullName.lastName}`
+                }
+            }
+            
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     const [ selectedQueue, setSelectedQueue ] = useState<IQueue | null>(
         null
@@ -71,7 +88,7 @@ const Queues: FC = () => {
         },
         {
             Header: 'Administrator',
-            accessor: (originalRow: any) => `${originalRow.admin}`,
+            accessor: (originalRow: any) => adminName(originalRow.admin[0]),
         },
         {
             arialLabel: 'actions',
@@ -93,6 +110,7 @@ const Queues: FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+             
             try {
                 const { data } = await getQueues();
                 setQueues(data.data);
@@ -102,8 +120,22 @@ const Queues: FC = () => {
                 setIsLoading(false);
             }
         }
+
+        const fetchAccounts = async () => {
+             
+            try {
+                const { data } = await getAccounts();
+                setAdmins(data.data);
+                
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
+        }
         
         fetchData();
+        fetchAccounts();
     }, []);
 
     return (
