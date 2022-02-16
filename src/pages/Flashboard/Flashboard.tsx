@@ -128,7 +128,6 @@ const Flashboard: FC = () => {
                             windows.map((window) => (
                                 <Grid item>
                                     <Paper className={classes.card}>
-
                                     <Typography variant='h2'>
                                         {
                                             window.ticket !== 0 

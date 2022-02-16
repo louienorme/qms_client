@@ -1,9 +1,7 @@
-import { FC, Fragment, useState } from 'react'
+import { FC, Fragment, useState, ReactNode } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import {
     AppBar,
-    Collapse,
-    Fade,
     Box,
     Toolbar,
     Typography,
@@ -26,6 +24,7 @@ import {
     AccountCircle,
     AccountBoxMultiple,
     Backburger,
+    HumanQueue,
     Archive
 } from 'mdi-material-ui'
 
@@ -74,7 +73,12 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-const AdminWrapper: FC = ({ children }) => {
+interface Props {
+    children?: ReactNode;
+    station?: Boolean,
+}
+
+const AdminWrapper: FC<Props> = ({ children, station }) => {
     const classes = useStyles()
     const history = useHistory()
     const location = useLocation()
@@ -114,7 +118,12 @@ const AdminWrapper: FC = ({ children }) => {
             text: 'Archives',
             icon: <Archive />,
             path: '/archives'
-        }
+        },
+        {
+            text: 'Stations',
+            icon: <HumanQueue />,
+            path: '/station'
+        },
     ];
     
     return (

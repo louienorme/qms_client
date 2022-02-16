@@ -149,7 +149,6 @@ const NthStation: FC = () => {
 
             } catch (err) {
                 console.error(err)
-                toast.error('Something went wrong!')
             } finally {
                 setIsLoading(false)
             }
@@ -171,7 +170,6 @@ const NthStation: FC = () => {
 
             } catch (err) {
                 console.error(err)
-                toast.error('Something went wrong!')
             } finally {
                 setIsLoading(false)
             }
