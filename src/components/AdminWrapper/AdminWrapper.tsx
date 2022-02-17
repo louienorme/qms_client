@@ -119,11 +119,6 @@ const AdminWrapper: FC<Props> = ({ children, station }) => {
             icon: <Archive />,
             path: '/archives'
         },
-        {
-            text: 'Stations',
-            icon: <HumanQueue />,
-            path: '/station'
-        },
     ];
     
     return (

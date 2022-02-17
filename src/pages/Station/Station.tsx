@@ -15,13 +15,13 @@ import {
 } from 'mdi-material-ui'
 
 import { 
-    AdminWrapper,
+    TopNav,
 } from 'components'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
         fullWidth : {
-            width: 975
+            width: 1000
         }
     })
 )
@@ -30,69 +30,84 @@ const Station: FC = () => {
     const classes = useStyles();
 
     return (
-        <AdminWrapper>
-            <Typography variant='h4' gutterBottom>
+       <TopNav>
+           <Typography variant='h3' gutterBottom>
                 Stations
-            </Typography>
-            <Grid container spacing={2} direction='row'>
-                <Grid item xs={12}>
-                    <Accordion className={classes.fullWidth}>
-                        <AccordionSummary
-                            expandIcon={<ChevronDown />}
+           </Typography>
+           <hr></hr>
+           <br></br>
+           <Grid container spacing={2}>
+                <Grid item>
+                    <Accordion>
+                        <AccordionSummary   
+                            expandIcon={<ChevronDown/>}
                         >
-                            <Typography variant='h5'>
+                            <Typography className={classes.fullWidth} variant='h5'>
                                 Enrolment - Station 2
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Accordion className={classes.fullWidth}>
-                                <AccordionSummary
-                                    expandIcon={<ChevronDown />}
-                                >
-                                    <Typography>
-                                        Window 1
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Grid container direction='row'>
-                                        <Grid item xs={4}>
-                                            <Typography variant='overline'>
-                                                Status
-                                            </Typography>
+                            <div>
+                                <Accordion>
+                                    <AccordionSummary>   
+                                        <Grid container className={classes.fullWidth}>
+                                            <Grid item xs={6} >
+                                                <div>
+                                                    <Typography variant='overline'>
+                                                        Window Number
+                                                    </Typography>
+                                                    <Typography variant='h5'>
+                                                        1
+                                                    </Typography>
+                                                </div>
+                                            </Grid>
+                                            <Grid item xs={6} >
+                                                <div>
+                                                    <Typography variant='overline'>
+                                                        Status
+                                                    </Typography>
+                                                    <Typography variant='h5'>
+                                                        Transacting
+                                                    </Typography>
+                                                </div>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={4}>
-                                            <Typography variant='overline'>
-                                                Ticket
-                                            </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Grid container>
+                                            <Grid item xs={6} >
+                                                <div>
+                                                    <Typography variant='overline'>
+                                                        Ticket Number
+                                                    </Typography>
+                                                    <Typography variant='h5'>
+                                                        4
+                                                    </Typography>
+                                                </div>
+                                            </Grid>
+                                            <Grid item xs={6} >
+                                                <div>
+                                                    <Typography variant='overline'>
+                                                        Time Started
+                                                    </Typography>
+                                                    <Typography variant='h5'>
+                                                        13:41:23
+                                                    </Typography>
+                                                </div>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={4}>
-                                            <Typography variant='overline'>
-                                                Time Started
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Typography variant='h5'>
-                                                Transacting
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Typography variant='h5'>
-                                                4
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Typography variant='h5'>
-                                                12:31:00
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </AccordionDetails>
-                            </Accordion>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </div>      
                         </AccordionDetails>
                     </Accordion>
+                    
                 </Grid>
-            </Grid>
-        </AdminWrapper>
+                <Grid item>
+                   
+                </Grid>
+           </Grid>
+       </TopNav>
     )
 }
 
