@@ -105,7 +105,11 @@ const FirstStation: FC = () => {
             }
         }
 
-        recentNumbers();
+        const interval = setInterval (() => {
+            recentNumbers();
+        }, 2000)
+             
+        return () => clearInterval(interval)
     }, [ numbers ])
     
     return (

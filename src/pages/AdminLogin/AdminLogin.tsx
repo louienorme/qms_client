@@ -70,6 +70,9 @@ const AdminLogin: FC = () => {
             else if (token.type === 'Flashboard') {
                 history.push(`/flashboard`)
             }
+            else if (token.type === 'Station') {
+                history.push(`/station`)
+            }
             else if (token.type === 'Window') {
                 history.push(`/window`)
             }
