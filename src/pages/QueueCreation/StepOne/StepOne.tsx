@@ -18,8 +18,10 @@ import {
 } from 'mdi-material-ui'
 import { TextField } from 'formik-material-ui'
 import * as Yup from 'yup'
-import { IQueue } from 'types'
-import { stepOne } from 'services'
+import jwt_decode from 'jwt-decode'
+
+import { IQueue, IDecodedToken } from 'types'
+import { stepOne, getOneAccount } from 'services'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
@@ -50,9 +52,18 @@ const StepOne: FC<Props> = ({ handleNext }) => {
         name: Yup.string().required('This is a required field'),
     })
 
+    const token: any = localStorage.getItem('token')
+    const payload: IDecodedToken = jwt_decode(token.split(' ')[1]);
+
     const handleSubmit = async (newQueue: IQueue) => {
         try {
-            await stepOne(newQueue);
+            
+            const { data } = await getOneAccount(payload._id);    
+            const details = data.data[0];
+
+            const body = { ...newQueue, admin: details._id }
+
+            await stepOne(body);
             setIsInvalid(false);
             
             localStorage.removeItem('queue');

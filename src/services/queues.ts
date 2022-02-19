@@ -29,6 +29,14 @@ export const getStations = (queueName: string) => {
     return axios.get(`${baseUrl}/queue/stations/${queueName}`)
 } 
 
+export const getAdminStations = (id: string) => {
+    return axios.get(`${baseUrl}/queue/stations/admin/${id}`)
+} 
+
+export const getWindowStations = (id: string) => {
+    return axios.get(`${baseUrl}/queue/stations/windows/${id}`)
+} 
+
 export const getWindows = (queueName: string) => {
     return axios.get(`${baseUrl}/queue/windows/${queueName}`)
 } 

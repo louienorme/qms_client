@@ -28,8 +28,8 @@ import { Loader } from 'components'
 import { TextField } from 'formik-material-ui'
 import * as Yup from 'yup'
 import { IAccount } from 'types'
-import { stepTwo, getAccounts, createFlashboardsAccounts, 
-    stepThree, createWindowAccounts } from 'services'
+import { stepTwo, createFlashboardsAccounts, 
+    stepThree, createWindowAccounts, getAccountsByType } from 'services'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
@@ -102,8 +102,9 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
     useEffect(() => {
         const fetchAccounts = async () => {
             try {
-                const { data } = await getAccounts();
+                const { data } = await getAccountsByType('Station');
                 setAccounts(data.data)
+                console.log(accounts, data.data)
                 setAdmin(data.data[0].adminId);
 
             } catch (err) {

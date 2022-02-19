@@ -1,10 +1,10 @@
 import { FC, useState, useEffect } from 'react'
 
 import {
-    Typography
+    Typography,
 } from '@material-ui/core'
 
-import { AdminWrapper, Table, Loader } from '../../components' 
+import { AdminWrapper, Table, Loader, EmptyPage } from '../../components' 
 import { getArchives } from 'services'
 import { IArchive } from 'types'
 
@@ -13,17 +13,15 @@ const Archives: FC = () => {
     const [ isLoading, setIsLoading ] = useState(true)
     const [ archives, setArchives ] = useState<IArchive[]>([])
 
-    const dateFormatter = (datetime: any) => {
+    const timeFormatter = (datetime: any) => {
         let date = new Date(datetime);
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
         let hours = date.getHours();
         let minutes = date.getMinutes();
         let seconds = date.getSeconds()
 
-        return (`${month}/${day}/${year} - ${hours}:${minutes}:${seconds}`);
+        return (`${hours}:${minutes}:${seconds}`);
     }
+
 
     const columns = [
         {
@@ -44,10 +42,6 @@ const Archives: FC = () => {
             accessor: 'ticket'
         },
         {
-            Header: 'User',
-            accessor: 'user'
-        },
-        {
             Header: 'Queue',
             id: 'queue',
             accessor: 'queue'
@@ -66,11 +60,11 @@ const Archives: FC = () => {
         },
         {
             Header: 'Time Started',
-            accessor: (originalRow: any) => dateFormatter(originalRow.timeStarted),
+            accessor: (originalRow: any) => timeFormatter(originalRow.timeStarted),
         },
         {
             Header: 'Time Ended',
-            accessor: (originalRow: any) => dateFormatter(originalRow.timeEnded),
+            accessor: (originalRow: any) => timeFormatter(originalRow.timeEnded),
         }   
     ]
 
@@ -98,12 +92,21 @@ const Archives: FC = () => {
                 Archives
             </Typography>
             {
-                isLoading 
-                    ? <Loader />
-                    : <Table withSearch={true} columns={columns} data={archives} />
+                !isLoading ? (
+                        archives ? (
+                            <Table withSearch={true} columns={columns} data={archives} />
+                        ) : (
+                            <EmptyPage message='Oops! Where is everybody?' />
+                        )
+                ) : (
+                    <Loader />
+                )
+                   
             }
         </AdminWrapper>
     )
 }
+
+
 
 export default Archives

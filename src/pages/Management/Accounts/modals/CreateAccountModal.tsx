@@ -98,7 +98,7 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
     return (
         <Formik
             initialValues={{
-                adminType: 'Super',
+                adminType,
                 fullName: {
                     firstName: '',
                     middleName: '',
@@ -187,8 +187,8 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
                               label='Admin Type'
                               fullWidth
                             >
-                                {selection.map(option => (
-                                    <MenuItem key={option.value} value={option.value}>
+                                {selection.map((option, index) => (
+                                    <MenuItem key={index} value={option.value}>
                                         {option.label}
                                     </MenuItem>
                                 ))}
