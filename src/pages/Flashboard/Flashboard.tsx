@@ -58,7 +58,7 @@ const Flashboard: FC = () => {
                 const body = {
                     number: nthStations[0].stationNumber,
                     name: nthStations[0].name,
-                    queueName: nthStations[0].queueName
+                    queueName: nthStations[0].queueName,
                 }
                 setStationDetails(body)
                 setQueue({ queue: details.queueName })
@@ -112,7 +112,7 @@ const Flashboard: FC = () => {
                                         {
                                             window.ticket !== 0 
                                                 ? window.ticket
-                                                : ''
+                                                : 0
                                         }
                                     </Typography>
                                     <br/>

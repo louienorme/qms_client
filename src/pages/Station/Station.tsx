@@ -15,8 +15,8 @@ import {
 } from 'mdi-material-ui'
 import jwt_decode from 'jwt-decode'
 
-import { IDecodedToken  } from 'types'
-import { getWindowTickets, getOneAccount, getStations, getQueue } from 'services'
+import { IDecodedToken, IPool, IWindowAccount } from 'types'
+import { getWindowStations, getOneAccount, getAdminStations } from 'services'
 
 import { 
     TopNav,
@@ -49,6 +49,21 @@ const Station: FC = () => {
         return (`${hours}:${minutes}:${seconds}`);
     }
 
+    const statusChecker = (stat: number, station: number) => {
+        if (stat === 2) {
+            return 'Transacting'
+        } 
+        else if (stat === 1) {
+            if (station === 1) {
+                return 'Active'
+            }
+            return 'Waiting'
+        } 
+        else {
+            return 'Inactive'
+        }
+    }
+
     useEffect(() => {
         const fetchStations = async () => {
             const { data } = await getOneAccount(payload._id);    
@@ -56,9 +71,8 @@ const Station: FC = () => {
             try {   
                 
                 // @ts-ignore
-                const { data } = await getStations(queue);
-                const yourStations = data.data.filter((station: any) => station.admin[0] === details.adminId)
-                setStations(yourStations);
+                const { data } = await getAdminStations(details.adminId);
+                setStations(data.data);
                 
             } catch (err) {
                 console.error(err)
@@ -66,25 +80,14 @@ const Station: FC = () => {
         }
         
         const fetchData = async () => {
-            // @ts-ignore
-            const { data } = await getQueue(queue);    
-            const station = data.data.numOfStations;
+            const { data } = await getOneAccount(payload._id);    
+            const details = data.data[0]
             try {   
-                let stationArray = [];
+                
+                const { data } = await getWindowStations(details.adminId);
+                setWindowDetails(data.data)
 
-                for ( let i = 0; i < station; i++) {
- 
-                    const body = {
-                        queueName: queue,
-                        station: i + 1
-                    }
-
-                    const { data } = await getWindowTickets(body);
-                    stationArray.push(...data.data) 
-                    
-                }  
-                    setWindowDetails(stationArray)
-                    console.log(windowDetails, stationArray)
+                console.log(stations, windowDetails)
 
             } catch (err) {
                 console.error(err)
@@ -97,7 +100,7 @@ const Station: FC = () => {
         }, 2000)
              
         return () => clearInterval(interval)
-    }, [ windowDetails ])
+    }, [ windowDetails, stations ])
 
     return (
        <TopNav>
@@ -108,8 +111,8 @@ const Station: FC = () => {
            <br></br>
            <Grid container spacing={2}>
                 {
-                    stations.map((station) => (
-                        <Grid item>
+                    stations.map((station, index) => (
+                        <Grid item key={index}>
                             <Accordion>
                                 <AccordionSummary   
                                     expandIcon={<ChevronDown/>}
@@ -120,64 +123,7 @@ const Station: FC = () => {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <div>
-
-                                        {
-                                            windowDetails.map((window) => (
-                                                window.station === station.stationNumber
-                                                    ? <Accordion>
-                                                        <AccordionSummary>   
-                                                            <Grid container className={classes.fullWidth}>
-                                                                <Grid item xs={6} >
-                                                                    <div>
-                                                                        <Typography variant='overline'>
-                                                                            Window Number
-                                                                        </Typography>
-                                                                        <Typography variant='h5'>
-                                                                            { window ? window.window : 0}
-                                                                        </Typography>
-                                                                    </div>
-                                                                </Grid>
-                                                                <Grid item xs={6} >
-                                                                    <div>
-                                                                        <Typography variant='overline'>
-                                                                            Status
-                                                                        </Typography>
-                                                                        <Typography variant='h5'>
-                                                                            { window ? window.status: 'Waiting'}
-                                                                        </Typography>
-                                                                    </div>
-                                                                </Grid>
-                                                            </Grid>
-                                                        </AccordionSummary>
-                                                        <AccordionDetails>
-                                                            <Grid container>
-                                                                <Grid item xs={6} >
-                                                                    <div>
-                                                                        <Typography variant='overline'>
-                                                                            Ticket Number
-                                                                        </Typography>
-                                                                        <Typography variant='h5'>
-                                                                            { window ? window.ticket : 'N/A'}
-                                                                        </Typography>
-                                                                    </div>
-                                                                </Grid>
-                                                                <Grid item xs={6} >
-                                                                    <div>
-                                                                        <Typography variant='overline'>
-                                                                            Time Started
-                                                                        </Typography>
-                                                                        <Typography variant='h5'>
-                                                                            { window ? timeFormatter(window.timeStarted) : 'N/A'}
-                                                                        </Typography>
-                                                                    </div>
-                                                                </Grid>
-                                                            </Grid>
-                                                        </AccordionDetails>
-                                                    </Accordion>
-                                                : ''
-                                            ))
-                                        }
-
+                                        Under Construction
                                     </div>      
                                 </AccordionDetails>
                             </Accordion>
