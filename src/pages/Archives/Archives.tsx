@@ -96,7 +96,7 @@ const Archives: FC = () => {
                         archives ? (
                             <Table withSearch={true} columns={columns} data={archives} />
                         ) : (
-                            <EmptyPage />
+                            <EmptyPage message='Oops! Where is everybody?' />
                         )
                 ) : (
                     <Loader />

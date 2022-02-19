@@ -183,7 +183,7 @@ const Accounts: FC = () => {
                         accounts ? (
                             <Table withSearch={true} columns={columns} data={accounts} actionButtonCount={2} />
                         ) : (
-                            <EmptyPage />
+                            <EmptyPage message='It seems like no one was invited!' />
                         )
 
                     }

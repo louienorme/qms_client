@@ -162,7 +162,7 @@ const Queues: FC = () => {
                         queues ? (
                             <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
                         ) : (
-                            <EmptyPage />
+                            <EmptyPage message='It is quite peaceful here actually!' />
                         )
                     }
                     {selectedQueue && (

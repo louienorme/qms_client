@@ -32,7 +32,11 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-const EmptyPage: FC = () => {
+interface Props {
+    message: string;
+}
+
+const EmptyPage: FC<Props> = ({ message }) => {
     const classes = useStyles()
 
     return (
@@ -40,8 +44,8 @@ const EmptyPage: FC = () => {
             <Grid item>
                 <Container className={classes.emptyImgContainer}>
                     <img className={classes.emptyImg} alt='Login' src={Empty} />
-                    <Typography variant='h4' align='center'>
-                        Oops! There is no data here!
+                    <Typography variant='h5' align='center'>
+                        {message}
                     </Typography>
                 </Container>
             </Grid>
