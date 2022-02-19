@@ -11,6 +11,7 @@ import {
   Management, 
   QueueCreation,
   Flashboard,
+  Station,
   Window 
 } from './pages';
 import { ProtectedRoute } from './routes';
@@ -44,6 +45,9 @@ const App = () => {
 
           {/** Flashboard */}
           <ProtectedRoute exact path='/flashboard' component={Flashboard} />
+
+          {/** Station */}
+          <ProtectedRoute exact path='/station' component={Station} />
 
           {/** Window */}
           <ProtectedRoute exact path='/window' component={Window} />

@@ -13,8 +13,8 @@ import jwt_decode from 'jwt-decode'
 import {
     TopNav
 } from 'components'
-import { IDecodedToken, IPool, IStation, IWindow } from 'types'
-import { getWindowTickets, getOneAccount, getStations, getWindows } from 'services'
+import { IDecodedToken  } from 'types'
+import { getWindowTickets, getOneAccount, getStations, } from 'services'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -46,30 +46,6 @@ const Flashboard: FC = () => {
     const token: any = localStorage.getItem('token')
     const payload: IDecodedToken = jwt_decode(token.split(' ')[1]);
 
-    const renderStatus = async (status: string) => {
-        if (status === 'transacting') {
-            return (
-                <Typography variant='overline'>
-                    Transacting
-                </Typography>
-            )
-        }
-        else if (status === 'waiting') {
-            return (
-                <Typography variant='overline'>
-                    Waiting
-                </Typography>
-            )
-        } 
-        else {
-            return (
-                <Typography variant='overline'>
-                    Inactive
-                </Typography>
-            )
-        }
-    }
-
     useEffect(() => {
         const stationCount = async () => {
             const { data } = await getOneAccount(payload._id);    
@@ -82,7 +58,7 @@ const Flashboard: FC = () => {
                 const body = {
                     number: nthStations[0].stationNumber,
                     name: nthStations[0].name,
-                    queueName: nthStations[0].queueName
+                    queueName: nthStations[0].queueName,
                 }
                 setStationDetails(body)
                 setQueue({ queue: details.queueName })
@@ -110,8 +86,12 @@ const Flashboard: FC = () => {
             }
         }
 
-        stationCount();
-        flashboard();
+        const interval = setInterval (() => {
+            stationCount();
+            flashboard();
+        }, 2000)
+             
+        return () => clearInterval(interval)
     },[ windows ])
 
     return (
@@ -128,12 +108,11 @@ const Flashboard: FC = () => {
                             windows.map((window) => (
                                 <Grid item>
                                     <Paper className={classes.card}>
-
                                     <Typography variant='h2'>
                                         {
                                             window.ticket !== 0 
                                                 ? window.ticket
-                                                : ''
+                                                : 0
                                         }
                                     </Typography>
                                     <br/>

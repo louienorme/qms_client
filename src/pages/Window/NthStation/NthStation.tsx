@@ -13,7 +13,7 @@ import jwt_decode from 'jwt-decode'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { Loader, Table } from 'components'
+import { Loader, Table, EmptyPage } from 'components'
 import { 
     getOneAccount, 
     getStationTickets, 
@@ -86,7 +86,7 @@ const NthStation: FC = () => {
             toast.success('Ticket Acquired!')
         } catch (err) {
             console.error(err)
-            toast.error('Something went wrong!')
+            toast.error('The Station Pool is empty!')
         }
     }
 
@@ -144,12 +144,11 @@ const NthStation: FC = () => {
                 }
 
                 const { data } =  await getStationTickets(body)
+                setPoolsData(data.data)
                 setWindowNumber(details.window)
-                setPoolsData(data.data);
 
             } catch (err) {
                 console.error(err)
-                toast.error('Something went wrong!')
             } finally {
                 setIsLoading(false)
             }
@@ -171,14 +170,18 @@ const NthStation: FC = () => {
 
             } catch (err) {
                 console.error(err)
-                toast.error('Something went wrong!')
             } finally {
                 setIsLoading(false)
             }
         }
 
-        pools();
-        windowTicket();
+        const interval = setInterval (() => {
+            pools();
+            windowTicket();
+        }, 1000)
+             
+             
+        return () => clearInterval(interval)
     }, [ poolsData, inWindow ])
 
     return (
@@ -219,7 +222,9 @@ const NthStation: FC = () => {
                         {!inWindow ? (
                                 <Grid container justifyContent='center' className={classes.row} spacing={4}>
                                     <Grid item>
-                                        <Button variant='contained' color='primary' onClick={handleGet}>
+                                        <Button variant='contained' color='primary' onClick={handleGet}
+                                            disabled={ poolsData.length === 0 ? true : false  }
+                                        >
                                             Get Number
                                         </Button>
                                     </Grid>
@@ -253,8 +258,14 @@ const NthStation: FC = () => {
                         </Typography>
                         <hr/> <br/>
                         {isLoading ? <Loader /> : (
-                            <>    {/** @ts-ignore */}
-                                <Table withSearch={false} columns={columns} data={poolsData} />
+                            <>   
+                                {
+                                    poolsData.length !== 0 ? (
+                                        <Table withSearch={false} columns={columns} data={poolsData} />
+                                    ) : (
+                                        <EmptyPage message='This Station Pool is Empty!'/>
+                                    )
+                                }
                             </>
                         )}
                     </Paper>
