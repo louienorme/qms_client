@@ -4,7 +4,7 @@ import {
     Typography,
 } from '@material-ui/core'
 
-import { AdminWrapper, Table, Loader } from '../../components' 
+import { AdminWrapper, Table, Loader, EmptyPage } from '../../components' 
 import { getArchives } from 'services'
 import { IArchive } from 'types'
 
@@ -92,12 +92,21 @@ const Archives: FC = () => {
                 Archives
             </Typography>
             {
-                isLoading 
-                    ? <Loader />
-                    : <Table withSearch={true} columns={columns} data={archives} />
+                !isLoading ? (
+                        archives ? (
+                            <Table withSearch={true} columns={columns} data={archives} />
+                        ) : (
+                            <EmptyPage />
+                        )
+                ) : (
+                    <Loader />
+                )
+                   
             }
         </AdminWrapper>
     )
 }
+
+
 
 export default Archives

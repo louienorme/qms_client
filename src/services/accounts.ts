@@ -5,6 +5,10 @@ export const getAccounts = () => {
     return axios.get(`${baseUrl}/accounts/`);
 }
 
+export const getAccountsByType = (type: string) => {
+    return axios.get(`${baseUrl}/accounts/${type}`);
+}
+
 export const getOneAccount = (id: string) => {
     return axios.get(`${baseUrl}/accounts/get/${id}`);
 }

@@ -8,7 +8,7 @@ import { Plus, Delete } from 'mdi-material-ui'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { Table, Loader, DeleteDialog } from 'components';
+import { Table, Loader, DeleteDialog, EmptyPage } from 'components';
 import { IQueue, IAccount } from 'types';
 import { getQueues, getAccounts, deleteQueue } from 'services';
 
@@ -158,7 +158,13 @@ const Queues: FC = () => {
                         closeOnClick
                         autoClose={4000}
                     />
-                    <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
+                    {
+                        queues ? (
+                            <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
+                        ) : (
+                            <EmptyPage />
+                        )
+                    }
                     {selectedQueue && (
                         <>
                             <DeleteDialog

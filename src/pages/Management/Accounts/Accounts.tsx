@@ -14,7 +14,7 @@ import {
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { Table, Loader, DeleteDialog } from 'components';
+import { Table, Loader, DeleteDialog, EmptyPage } from 'components';
 import { CreateAccountModal, EditModal } from './modals';
 import { IAccount } from 'types';
 import { getAccounts, deleteAccount } from 'services';
@@ -179,7 +179,14 @@ const Accounts: FC = () => {
                         closeOnClick
                         autoClose={4000}
                     />
-                    <Table withSearch={true} columns={columns} data={accounts} actionButtonCount={2} />
+                    {
+                        accounts ? (
+                            <Table withSearch={true} columns={columns} data={accounts} actionButtonCount={2} />
+                        ) : (
+                            <EmptyPage />
+                        )
+
+                    }
                     <CreateAccountModal 
                       open={createModalOpen}
                       onClose={closeCreateModal}
