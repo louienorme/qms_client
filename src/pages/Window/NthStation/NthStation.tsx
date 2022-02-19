@@ -175,8 +175,13 @@ const NthStation: FC = () => {
             }
         }
 
-        pools();
-        windowTicket();
+        const interval = setInterval (() => {
+            pools();
+            windowTicket();
+        }, 1000)
+             
+             
+        return () => clearInterval(interval)
     }, [ poolsData, inWindow ])
 
     return (
@@ -258,7 +263,7 @@ const NthStation: FC = () => {
                                     poolsData.length !== 0 ? (
                                         <Table withSearch={false} columns={columns} data={poolsData} />
                                     ) : (
-                                        <EmptyPage message='The Station Pools is Empty!'/>
+                                        <EmptyPage message='This Station Pool is Empty!'/>
                                     )
                                 }
                             </>

@@ -86,8 +86,12 @@ const Flashboard: FC = () => {
             }
         }
 
-        stationCount();
-        flashboard();
+        const interval = setInterval (() => {
+            stationCount();
+            flashboard();
+        }, 2000)
+             
+        return () => clearInterval(interval)
     },[ windows ])
 
     return (

@@ -91,8 +91,12 @@ const Station: FC = () => {
             }
         }
 
-        fetchStations();
-        fetchData();
+        const interval = setInterval (() => {
+            fetchStations();
+            fetchData();
+        }, 2000)
+             
+        return () => clearInterval(interval)
     }, [ windowDetails ])
 
     return (
