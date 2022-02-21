@@ -7,10 +7,11 @@ import {
 import { Plus, Delete } from 'mdi-material-ui'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import jwt_decode from 'jwt-decode'
 
 import { Table, Loader, DeleteDialog, EmptyPage } from 'components';
-import { IQueue, IAccount } from 'types';
-import { getQueues, getAccounts, deleteQueue } from 'services';
+import { IQueue, IAccount, IDecodedToken } from 'types';
+import { getQueues, getAccounts, deleteQueue, getOneAccount } from 'services';
 
 const Queues: FC = () => {
     const history = useHistory();
@@ -63,6 +64,9 @@ const Queues: FC = () => {
         }
     }
 
+    const token: any = localStorage.getItem('token')
+    const payload: IDecodedToken = jwt_decode(token.split(' ')[1]);
+
     const columns = [
         {
             Header: 'No.',
@@ -110,10 +114,14 @@ const Queues: FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-             
+            const { data } = await getOneAccount(payload._id);
+            const details = data.data[0];
             try {
                 const { data } = await getQueues();
-                setQueues(data.data);
+
+                details.type === 'Queue' 
+                    ?  setQueues(data.data.filter((element: any) => details.id === element.admin[0] ? element : '' ))
+                    :  setQueues(data.data)
             } catch (err) {
                 console.error(err);
             } finally {
@@ -159,7 +167,7 @@ const Queues: FC = () => {
                         autoClose={4000}
                     />
                     {
-                        queues ? (
+                        queues.length !== 0 ? (
                             <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
                         ) : (
                             <EmptyPage message='It is quite peaceful here actually!' />

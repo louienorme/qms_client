@@ -63,8 +63,9 @@ const AdminLogin: FC = () => {
             setIsInvalid(false);
             localStorage.setItem('token', data.data);
             let token: any = jwt_decode(data.data.split(' ')[1])
+            localStorage.setItem('type', token.type);
 
-            if (token.type === 'Super') {
+            if (token.type === 'Super' || 'Queue') {
                 history.push('/dashboard')
             }
             else if (token.type === 'Flashboard') {
