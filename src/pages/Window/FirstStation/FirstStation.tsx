@@ -61,6 +61,7 @@ const FirstStation: FC = () => {
 
     const [ isLoading, setIsLoading ] = useState(true);
     const [ numbers, setNumbers ] = useState<Props>();
+    const [ windowNumber, setWindowNumber ] = useState<number>(0);
 
     const token: any = localStorage.getItem('token')
     const payload: DecodedToken = jwt_decode(token.split(' ')[1]);
@@ -94,9 +95,10 @@ const FirstStation: FC = () => {
                     queueName: details.queueName,
                    _id: details._id
                 }
-
+                
                 const { data } =  await getStationOneData(body)
                 setNumbers(data.data);
+                setWindowNumber(details.window)
 
             } catch (err) {
                 console.error(err)
@@ -114,6 +116,10 @@ const FirstStation: FC = () => {
     
     return (
         <Container>
+            <Typography variant='h5' align='center'>
+                Window {windowNumber}
+            </Typography>
+            <hr></hr>
             <Grid container className={classes.row} spacing={2}>
                 <ToastContainer 
                     position='bottom-left'
