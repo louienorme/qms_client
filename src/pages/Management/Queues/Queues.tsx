@@ -7,10 +7,11 @@ import {
 import { Plus, Delete } from 'mdi-material-ui'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import jwt_decode from 'jwt-decode'
 
 import { Table, Loader, DeleteDialog, EmptyPage } from 'components';
-import { IQueue, IAccount } from 'types';
-import { getQueues, getAccounts, deleteQueue } from 'services';
+import { IQueue, IAccount, IDecodedToken } from 'types';
+import { getQueues, getAccounts, deleteQueue, getOneAccount } from 'services';
 
 const Queues: FC = () => {
     const history = useHistory();
@@ -21,13 +22,11 @@ const Queues: FC = () => {
 
     const adminName = (id: string) => {
         try {
+
             for(let i = 0; i < admins.length; i++ ) {
                 if (admins[i]._id === id) {
                     return `${admins[i].fullName.firstName} ${admins[i].fullName.lastName}`
                 } 
-                else {
-                    return `${admins[0].fullName.firstName} ${admins[0].fullName.lastName}`
-                }
             }
             
         } catch (err) {
@@ -62,6 +61,9 @@ const Queues: FC = () => {
             toast.error('Something went wrong!');
         }
     }
+
+    const token: any = localStorage.getItem('token')
+    const payload: IDecodedToken = jwt_decode(token.split(' ')[1]);
 
     const columns = [
         {
@@ -110,10 +112,14 @@ const Queues: FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-             
+            const { data } = await getOneAccount(payload._id);
+            const details = data.data[0];
             try {
                 const { data } = await getQueues();
-                setQueues(data.data);
+
+                details.type === 'Queue' 
+                    ?  setQueues(data.data.filter((element: any) => element.admin[0] === details._id ? element : '' ))
+                    :  setQueues(data.data)
             } catch (err) {
                 console.error(err);
             } finally {
@@ -159,10 +165,10 @@ const Queues: FC = () => {
                         autoClose={4000}
                     />
                     {
-                        queues ? (
-                            <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
-                        ) : (
+                        queues.length === 0 ? (
                             <EmptyPage message='It is quite peaceful here actually!' />
+                        ) : (
+                            <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
                         )
                     }
                     {selectedQueue && (
