@@ -15,7 +15,7 @@ import {
 } from 'mdi-material-ui'
 import jwt_decode from 'jwt-decode'
 
-import { IDecodedToken, IPool, IWindowAccount } from 'types'
+import { IDecodedToken } from 'types'
 import { getWindowStations, getOneAccount, getAdminStations } from 'services'
 
 import { 
@@ -25,7 +25,7 @@ import {
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
         fullWidth : {
-            width: 1000
+            width: 700
         }
     })
 )
@@ -38,8 +38,7 @@ const Station: FC = () => {
 
     const token: any = localStorage.getItem('token')
     const payload: IDecodedToken = jwt_decode(token.split(' ')[1]);
-    const queue = localStorage.getItem('queue')
-
+    
     const timeFormatter = (datetime: any) => {
         let date = new Date(datetime);
         let hours = date.getHours();
@@ -64,6 +63,7 @@ const Station: FC = () => {
         }
     }
 
+    
     useEffect(() => {
         const fetchStations = async () => {
             const { data } = await getOneAccount(payload._id);    
@@ -84,11 +84,10 @@ const Station: FC = () => {
             const details = data.data[0]
             try {   
                 
-                const { data } = await getWindowStations(details.adminId);
-                setWindowDetails(data.data)
+                const result = await getWindowStations(details.adminId);
+                setWindowDetails(result.data.data)
 
-                console.log(stations, windowDetails)
-
+                console.log(windowDetails)
             } catch (err) {
                 console.error(err)
             }
@@ -123,7 +122,74 @@ const Station: FC = () => {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <div>
-                                        Under Construction
+                                        {
+                                            windowDetails.map((element: any) => {
+                                                if (element.station === station.stationNumber &&
+                                                    element.queueName === station.queueName) {
+                                                    return <Accordion>
+                                                    <AccordionSummary>   
+                                                        <Grid container className={classes.fullWidth}>
+                                                            <Grid item xs={6} >
+                                                                <div>
+                                                                    <Typography variant='overline'>
+                                                                        Window Number
+                                                                    </Typography>
+                                                                    <Typography variant='h5'>
+                                                                        {element.window}
+                                                                    </Typography>
+                                                                </div>
+                                                            </Grid>
+                                                            <Grid item xs={6} >
+                                                                <div>
+                                                                    <Typography variant='overline'>
+                                                                        Status
+                                                                    </Typography>
+                                                                    <Typography variant='h5'>
+                                                                        { statusChecker(element.status, element.station) }
+                                                                    </Typography>
+                                                                </div>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </AccordionSummary>
+                                                    {
+                                                    element.station !== 1 
+                                                        ? (
+                                                            <AccordionDetails>
+                                                                <Grid container>
+                                                                    <Grid item xs={6} >
+                                                                        <div>
+                                                                            <Typography variant='overline'>
+                                                                                Ticket Number
+                                                                            </Typography>
+                                                                            <Typography variant='h5'>
+                                                                                {element.ticket}
+                                                                            </Typography>
+                                                                        </div>
+                                                                    </Grid>
+                                                                    <Grid item xs={6} >
+                                                                        <div>
+                                                                            <Typography variant='overline'>
+                                                                                Time Started
+                                                                            </Typography>
+                                                                            <Typography variant='h5'>
+                                                                                {element.timeStarted ? timeFormatter(element.timeStarted) : element.timeStarted }
+                                                                            </Typography>
+                                                                        </div>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </AccordionDetails>
+                                                        ) : (
+                                                            ''
+                                                        )
+                                                        }
+                                                    </Accordion>
+                                                } 
+                                                else {
+                                                    return null
+                                                }
+                                                
+                                            })
+                                        }
                                     </div>      
                                 </AccordionDetails>
                             </Accordion>
