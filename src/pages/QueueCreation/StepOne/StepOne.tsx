@@ -21,7 +21,7 @@ import * as Yup from 'yup'
 import jwt_decode from 'jwt-decode'
 
 import { IQueue, IDecodedToken } from 'types'
-import { stepOne, getOneAccount } from 'services'
+import { stepOne } from 'services'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
@@ -58,10 +58,8 @@ const StepOne: FC<Props> = ({ handleNext }) => {
     const handleSubmit = async (newQueue: IQueue) => {
         try {
             
-            const { data } = await getOneAccount(payload._id);    
-            const details = data.data[0];
 
-            const body = { ...newQueue, admin: details._id }
+            const body = { ...newQueue, admin: payload._id }
 
             await stepOne(body);
             setIsInvalid(false);

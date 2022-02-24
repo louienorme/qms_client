@@ -13,11 +13,12 @@ import {
 } from 'mdi-material-ui'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import jwt_decode from 'jwt-decode'
 
 import { Table, Loader, DeleteDialog, EmptyPage } from 'components';
 import { CreateAccountModal, EditModal } from './modals';
-import { IAccount } from 'types';
-import { getAccounts, deleteAccount } from 'services';
+import { IAccount, IDecodedToken } from 'types';
+import { getAccounts, deleteAccount, getOneAccount } from 'services';
 
 const Accounts: FC = () => {
     // Notifiers
@@ -91,6 +92,9 @@ const Accounts: FC = () => {
         }
     }
 
+    const token: any = localStorage.getItem('token')
+    const payload: IDecodedToken = jwt_decode(token.split(' ')[1]);
+
     const columns = [
         {
             Header: 'No.',
@@ -119,35 +123,47 @@ const Accounts: FC = () => {
             arialLabel: 'actions',
             id: 'actions',
             Cell: (({ row }: any) => (
-                <>
-                    <IconButton
-                      size='small'
-                      edge='end'
-                      aria-label='account edit'
-                      onClick={() => openEditModal(row.original)}
-                    >
-                        <AccountEdit fontSize='small' />
-                    </IconButton>
-                    <IconButton
-                      size='small'
-                      edge='end'
-                      aria-label='delete account'
-                      onClick={() => openDeleteDialog(row.original)}
-                    >
-                        <Delete fontSize='small' />
-                    </IconButton>
+                <>  
+                    {
+                        payload.type !== 'Queue'
+                            ? (
+                                <>
+                                <IconButton
+                                    size='small'
+                                    edge='end'
+                                    aria-label='account edit'
+                                    onClick={() => openEditModal(row.original)}
+                                >
+                                    <AccountEdit fontSize='small' />
+                                </IconButton>
+                                <IconButton
+                                    size='small'
+                                    edge='end'
+                                    aria-label='delete account'
+                                    onClick={() => openDeleteDialog(row.original)}
+                                >
+                                    <Delete fontSize='small' />
+                                </IconButton>
+                                </>
+                            ) : (
+                                ''
+                            )
+                    }
                 </>
             ))
         }
     ]
 
-    
-
     useEffect(() => {
         const fetchData = async () => {
+            const { data } = await getOneAccount(payload._id);
+            const details = data.data[0];
             try {
                 const { data } = await getAccounts();
-                setAccounts(data.data);
+
+                details.type === 'Queue' 
+                    ?  setAccounts(data.data.filter((element: any) => element.type === 'Station' ? element : '' ))
+                    :  setAccounts(data.data)
             } catch (err) {
                 console.error(err);
             } finally {
@@ -180,7 +196,7 @@ const Accounts: FC = () => {
                         autoClose={4000}
                     />
                     {
-                        accounts ? (
+                        accounts.length !== 0 ? (
                             <Table withSearch={true} columns={columns} data={accounts} actionButtonCount={2} />
                         ) : (
                             <EmptyPage message='It seems like no one was invited!' />
@@ -188,6 +204,7 @@ const Accounts: FC = () => {
 
                     }
                     <CreateAccountModal 
+                      type={payload.type}
                       open={createModalOpen}
                       onClose={closeCreateModal}
                       onCreate={handleCreateAccount}

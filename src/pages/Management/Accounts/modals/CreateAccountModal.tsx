@@ -35,11 +35,13 @@ const useStyles = makeStyles((theme: Theme) =>
 interface createAccountModalProps extends DialogProps {
     onClose: () => void;
     onCreate: (account: IAccount) => void;
+    type: string;
 }
 
 const CreateAccountModal: FC<createAccountModalProps> = ({
     onClose,
     onCreate,
+    type,
     ...rest
 }) => {
     const classes = useStyles();
@@ -80,7 +82,7 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
         permissions: Yup.array()
     })
 
-    const selection = [
+    let selection = [
         {
             value: 'Super',
             label: 'Super Admin'
@@ -94,6 +96,15 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
             label: 'Station Admin'
         }
     ]
+
+    if (type === 'Queue') {
+        selection = [
+            {
+                value: 'Station',
+                label: 'Station Admin'
+            }
+        ]
+    } 
 
     return (
         <Formik
