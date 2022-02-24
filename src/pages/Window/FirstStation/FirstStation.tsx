@@ -150,7 +150,7 @@ const FirstStation: FC = () => {
                                 <Paper className={classes.details}>
                                     <Typography variant='h4'>
                                         {
-                                            numbers?.ticketCount
+                                            numbers?.ticketCount.length !== 0
                                                 ? numbers?.ticketCount[0].ticket
                                                 : 0
                                         }
@@ -164,7 +164,7 @@ const FirstStation: FC = () => {
                                 <Paper className={classes.details}>
                                     <Typography variant='h4'>
                                         {
-                                            numbers?.lastNumberCreated
+                                            numbers?.lastNumberCreated.length !== 0
                                                 ? numbers?.lastNumberCreated[0].ticket
                                                 : 0
                                         }
@@ -178,7 +178,7 @@ const FirstStation: FC = () => {
                                 <Paper className={classes.details}>
                                     <Typography variant='h4'>
                                         {
-                                            numbers?.ticketCount 
+                                            numbers?.ticketCount.length !== 0 
                                                 ? numbers?.numberCount
                                                 : 0
                                         }
@@ -198,9 +198,8 @@ const FirstStation: FC = () => {
                         </Typography>
                         <br/>
                         {
-                            !numbers?.recentNumbers
-                                ? ''
-                                : <TableContainer component={Paper}>
+                            numbers?.recentNumbers.length !== 0 
+                                ? <TableContainer component={Paper}>
                                     <Table>
                                         <TableHead>
                                             <TableCell align='center'>
@@ -220,6 +219,7 @@ const FirstStation: FC = () => {
                                         </TableBody>
                                     </Table>
                                 </TableContainer>
+                                : ''
                         }
                     </Paper>
                 </Grid>
