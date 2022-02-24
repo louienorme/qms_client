@@ -22,13 +22,11 @@ const Queues: FC = () => {
 
     const adminName = (id: string) => {
         try {
+
             for(let i = 0; i < admins.length; i++ ) {
                 if (admins[i]._id === id) {
                     return `${admins[i].fullName.firstName} ${admins[i].fullName.lastName}`
                 } 
-                else {
-                    return `${admins[0].fullName.firstName} ${admins[0].fullName.lastName}`
-                }
             }
             
         } catch (err) {
@@ -120,7 +118,7 @@ const Queues: FC = () => {
                 const { data } = await getQueues();
 
                 details.type === 'Queue' 
-                    ?  setQueues(data.data.filter((element: any) => details.id === element.admin[0] ? element : '' ))
+                    ?  setQueues(data.data.filter((element: any) => element.admin[0] === details._id ? element : '' ))
                     :  setQueues(data.data)
             } catch (err) {
                 console.error(err);
@@ -167,10 +165,10 @@ const Queues: FC = () => {
                         autoClose={4000}
                     />
                     {
-                        queues.length !== 0 ? (
-                            <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
-                        ) : (
+                        queues.length === 0 ? (
                             <EmptyPage message='It is quite peaceful here actually!' />
+                        ) : (
+                            <Table withSearch={true} columns={columns} data={queues} actionButtonCount={1} />
                         )
                     }
                     {selectedQueue && (
