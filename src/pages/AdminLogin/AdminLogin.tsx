@@ -67,6 +67,9 @@ const AdminLogin: FC = () => {
             if (token.type === 'Super') {
                 history.push('/dashboard')
             }
+            else if (token.type === 'Queue') {
+                history.push('/dashboard')
+            }
             else if (token.type === 'Flashboard') {
                 history.push(`/flashboard`)
             }
