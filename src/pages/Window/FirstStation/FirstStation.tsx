@@ -15,10 +15,6 @@ import {
     createStyles,
     Theme,
 } from '@material-ui/core'
-import * as Yup from 'yup'
-import { Formik, Form, Field } from 'formik'
-import { TextField } from 'formik-material-ui'
-import { Eye, EyeOff, ToyBrickSearch } from 'mdi-material-ui'
 import jwt_decode from 'jwt-decode'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -49,18 +45,12 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-interface Props {
-    ticketCount: Array<any>;
-    lastNumberCreated: Array<any>;
-    numberCount: number;
-    recentNumbers: Array<any>
-}
 
 const FirstStation: FC = () => {
     const classes = useStyles();    
 
     const [ isLoading, setIsLoading ] = useState(true);
-    const [ numbers, setNumbers ] = useState<Props>();
+    const [ numbers, setNumbers ] = useState<any>();
     const [ windowNumber, setWindowNumber ] = useState<number>(0);
 
     const token: any = localStorage.getItem('token')
@@ -97,7 +87,16 @@ const FirstStation: FC = () => {
                 }
                 
                 const { data } =  await getStationOneData(body)
-                setNumbers(data.data);
+                
+                data.data 
+                    ? setNumbers(data.data)
+                    : setNumbers({
+                        ticketCount: [],
+                        lastNumberCreated: [],
+                        numberCount: 0,
+                        recentNumbers: []
+                    })
+
                 setWindowNumber(details.window)
 
             } catch (err) {
@@ -116,7 +115,7 @@ const FirstStation: FC = () => {
     
     return (
         <Container>
-            <Typography variant='h5' align='center'>
+            <Typography variant='h6' align='center'>
                 Window {windowNumber}
             </Typography>
             <hr></hr>
@@ -155,8 +154,8 @@ const FirstStation: FC = () => {
                             <Grid item xs={12}>
                                 <Paper className={classes.details}>
                                     <Typography variant='h4'>
-                                        {
-                                            numbers?.ticketCount.length !== 0
+                                        {   
+                                            numbers?.ticketCount.length !== 0 
                                                 ? numbers?.ticketCount[0].ticket
                                                 : 0
                                         }
@@ -170,7 +169,7 @@ const FirstStation: FC = () => {
                                 <Paper className={classes.details}>
                                     <Typography variant='h4'>
                                         {
-                                            numbers?.lastNumberCreated.length !== 0
+                                            numbers?.lastNumberCreated.length !== 0 
                                                 ? numbers?.lastNumberCreated[0].ticket
                                                 : 0
                                         }
@@ -214,8 +213,8 @@ const FirstStation: FC = () => {
                                                 </Typography>
                                             </TableCell>
                                         </TableHead>
-                                            {numbers?.recentNumbers.map(num => (
-                                                <TableRow>
+                                            {numbers?.recentNumbers.map((num: any, index: any) => (
+                                                <TableRow key={index}>
                                                     <TableCell align='center'>
                                                         {num.ticket}
                                                     </TableCell>
