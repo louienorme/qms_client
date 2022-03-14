@@ -20,6 +20,7 @@ import { useTable, useGlobalFilter, useSortBy, usePagination } from 'react-table
 import { TableProps } from '../../types'
 import  GlobalFilter from '../GlobalFilter'
 
+
 const Table: FC<TableProps> = ({
     columns,
     data,
@@ -45,6 +46,9 @@ const Table: FC<TableProps> = ({
             },
         },
         table: {
+            width: hasActionButtons
+                ? '950px'
+                : '100%',
             '& th:last-child': {
             minWidth: hasActionButtons
                 ? theme.spacing(actionButtonCount === 1 ? 8 : actionButtonCount * 6)
