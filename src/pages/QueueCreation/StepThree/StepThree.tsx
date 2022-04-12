@@ -30,7 +30,8 @@ import {
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
         section: {
-            padding: theme.spacing(2)
+            margin: '0.5rem 0',
+            padding: theme.spacing(1)
         },
         box: {
             width: '100%',
@@ -123,6 +124,9 @@ const StepThree: FC<Props> = ({ handleNext }) => {
         <>
             {!isLoading ? (
                 <Grid component={Paper} className={classes.section} container spacing={2}>
+                    <Typography variant='h4'>
+                        Overview
+                    </Typography>
                     <Grid className={classes.section} item sm={12}>
                             <Typography variant='overline'>
                                 Queue Name
@@ -131,17 +135,19 @@ const StepThree: FC<Props> = ({ handleNext }) => {
                                 {   queue?.name } 
                             </Typography>
                     </Grid>
-                    <hr/>
                     <Grid className={classes.section} item sm={12}>
-                            <Typography variant='overline'>
-                                {  // @ts-ignore  
-                                    queue?.numOfStations > 1 
-                                        ? `${queue?.numOfStations} Stations` 
-                                        : `${queue?.numOfStations} Station`
-                                }
-                            </Typography>
+                        <Grid container>
+                            <Grid item sm={12}>
+                                <Typography variant='overline'>
+                                    {  // @ts-ignore  
+                                        queue?.numOfStations > 1 
+                                            ? `${queue?.numOfStations} Stations` 
+                                            : `${queue?.numOfStations} Station`
+                                    }
+                                </Typography>
+                            </Grid>
                             {stations.map((station, index) => (
-                                <div key={index}>
+                                <Grid item key={index} sm={6}>
                                     <Typography variant='h5'>
                                         Station { index + 1 } - {station.name}
                                     </Typography>
@@ -155,54 +161,68 @@ const StepThree: FC<Props> = ({ handleNext }) => {
                                                 : `${station.numOfWindows} Window`
                                         }
                                     </Typography>
-                                </div>
+                                    <br/>
+                                </Grid>
                             ))}
+                        </Grid>
                     </Grid>
-                    <hr/>
                     <Grid className={classes.section} item sm={12}>
-                        {windows.map((window, index) => (
-                            <div key={index}>
-                                <Typography variant='h5'>
-                                    {`Station ${window.station} - Window ${window.window}`}
-                                </Typography>
-                                <br/>
+                        <Grid container>
+                            <Grid item sm={12}>
                                 <Typography variant='overline'>
-                                    username
+                                    Window Accounts
                                 </Typography>
-                                <Typography variant='h5'>
-                                    {window.username}
-                                </Typography>
-                                <Typography variant='overline'>
-                                    Password
-                                </Typography>
-                                <Typography variant='h5'>
-                                    queue123
-                                </Typography>
-                            </div>
-                        ))}
+                            </Grid>
+                            {windows.map((window, index) => (
+                                <Grid item key={index} sm={6}>
+                                    <Typography variant='subtitle1'>
+                                        {`Station ${window.station} - Window ${window.window}`}
+                                    </Typography>
+                                    <Typography variant='overline'>
+                                        username
+                                    </Typography>
+                                    <Typography variant='h6'>
+                                        {window.username}
+                                    </Typography>
+                                    <Typography variant='overline'>
+                                        Password
+                                    </Typography>
+                                    <Typography variant='h6'>
+                                        queue123
+                                    </Typography>
+                                    <br/>
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Grid>
-                    <hr/>
                     <Grid className={classes.section} item sm={12}>
-                        {flashboards.map((flash, index) => (
-                            <div key={index}>
-                                <Typography variant='h5'>
-                                    {`Station ${flash.station} Flashboard`}
-                                </Typography>
-                                <br/>
+                        <Grid container>
+                            <Grid item sm={12}>
                                 <Typography variant='overline'>
-                                    username
+                                    Flashboard Accounts
                                 </Typography>
-                                <Typography variant='h5'>
-                                    {flash.username}
-                                </Typography>
-                                <Typography variant='overline'>
-                                    Password
-                                </Typography>
-                                <Typography variant='h5'>
-                                    queue123
-                                </Typography>
-                            </div>
-                        ))}
+                            </Grid>
+                            {flashboards.map((flash, index) => (
+                                <Grid item key={index}>
+                                    <Typography variant='subtitle1'>
+                                        {`Station ${flash.station} Flashboard`}
+                                    </Typography>
+                                    <Typography variant='overline'>
+                                        username
+                                    </Typography>
+                                    <Typography variant='h6'>
+                                        {flash.username}
+                                    </Typography>
+                                    <Typography variant='overline'>
+                                        Password
+                                    </Typography>
+                                    <Typography variant='h6'>
+                                        queue123
+                                    </Typography>
+                                    <br/>
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Grid>
                     <Box className={classes.box} >
                         <Button 

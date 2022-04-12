@@ -69,12 +69,19 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => setAdminType(event.target.value)
 
     const validationSchema = Yup.object().shape({
-        adminType: Yup.string().required('This is a required field'),
+        adminType: Yup.string()
+            .required('This is a required field'),
         fullName: Yup.object().shape({
-            firstName: Yup.string().required('This is a required field'),
-            middleName: Yup.string(),
-            lastName: Yup.string().required('This is a required field'),
-            nameExtension: Yup.string(),
+            firstName: Yup.string()
+                .required('This is a required field')
+                .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
+            middleName: Yup.string()
+                .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
+            lastName: Yup.string()
+                .required('This is a required field')
+                .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
+            nameExtension: Yup.string()
+                .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
         }),
         contact: Yup.object().shape({
             email: Yup.string().email('Email must be valid').required('This is a required field')
