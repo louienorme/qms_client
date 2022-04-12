@@ -70,7 +70,9 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
         stations : Yup.array().min(1).max(5).of(
             Yup.object().shape({
                 numOfWindows: Yup.number().min(1).max(5).required('This is a required field'),
-                name: Yup.string().required('This is a required field'),
+                name: Yup.string()
+                    .required('This is a required field')
+                    .matches(/[0-9a-zA-Z.-_]*/, "This field does not accept special characters such as &,=,',+,<,>"),
                 admin: Yup.array().of(
                     Yup.string().required('This is a required field')
                 )
