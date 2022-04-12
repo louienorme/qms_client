@@ -73,7 +73,7 @@ const EditModal: FC<editModalProps> = ({
             middleName: Yup.string()
                 .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
             lastName: Yup.string().required('This is a required field')
-                .matches(/[0-9a-zA-Z.+_-]+*/, "This field does not accept special characters such as &,=,',+,<,>"),
+                .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
             nameExtension: Yup.string()
                 .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
         }),
