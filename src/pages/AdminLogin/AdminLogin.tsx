@@ -42,10 +42,12 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-
 const loginSchema = Yup.object().shape({
-    username: Yup.string().required('This is a required field'),
-    password: Yup.string().required('This is a required field'),
+    username: Yup.string()
+        .required('This is a required field')
+        .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
+    password: Yup.string()
+        .required('This is a required field'),
 })
 
 const AdminLogin: FC = () => {
