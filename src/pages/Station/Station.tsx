@@ -25,7 +25,7 @@ import {
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
         fullWidth : {
-            width: 700
+            width: 1150
         }
     })
 )

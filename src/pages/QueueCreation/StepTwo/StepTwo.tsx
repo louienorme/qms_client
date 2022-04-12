@@ -12,6 +12,9 @@ import {
     Theme
 } from '@material-ui/core'
 import {
+    Alert
+} from '@material-ui/lab'
+import {
     Formik,
     Form,
     Field,
@@ -41,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         box: {
             display: 'flex',
-            margin: '1rem'
+            margin:  '1rem'
         },
         control: {
             display: 'flex',
@@ -70,7 +73,9 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
         stations : Yup.array().min(1).max(5).of(
             Yup.object().shape({
                 numOfWindows: Yup.number().min(1).max(5).required('This is a required field'),
-                name: Yup.string().required('This is a required field'),
+                name: Yup.string()
+                    .required('This is a required field')
+                    .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
                 admin: Yup.array().of(
                     Yup.string().required('This is a required field')
                 )
@@ -121,6 +126,14 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
         <>
             {!isLoading ? (
                 <Container className={classes.content}>
+                    <Alert severity='info' style={{ marginBottom: '1rem' }}>
+                        <Typography >
+                            Note:
+                        </Typography>
+                        <ul>
+                            <li>This version is only limited to 5 Stations maximum</li>
+                        </ul>
+                    </Alert>
                     <Formik
                     // @ts-ignore
                     initialValues={{
@@ -138,7 +151,7 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                         <Form>
                             <FieldArray 
                                 name='stations'
-                                render={({ push, remove }) => (
+                                render={({ push, remove, }) => (
                                     <>
                                         {values.stations.map((station, index) => (
                                             <div key={index} >
@@ -209,7 +222,8 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                                                             </Field>
                                                         )}
                                                     />
-                                                    <Box className={classes.box} >
+                                                </FormControl>                                             
+                                                <Box className={classes.box} >
                                                         {index !== 0 ? (
                                                             <Button 
                                                                 size='small'
@@ -222,23 +236,38 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                                                                 ''
                                                             )
                                                         }
-                                                    </Box>
-                                                </FormControl>
+                                                </Box>
                                             </div>
                                         ))}
                                         <Box className={classes.box} >
-                                            <Button 
-                                                size='small'
-                                                color='primary'
-                                                variant='contained'
-                                                onClick={() => push({
-                                                    name: '',
-                                                    numOfWindows: 1,
-                                                    admin: []
-                                                 })}
-                                                >
-                                                <Plus /> Add Station
-                                            </Button>
+                                            {
+                                                values.stations.length === 5 
+                                                    ? (
+                                                        <Button
+                                                            size='small'
+                                                            color='primary'
+                                                            disabled
+                                                            variant='contained'
+                                                            >
+                                                            <Plus /> Add Station
+                                                        </Button>
+                                                    )  : (
+                                                        <Button
+                                                            size='small'
+                                                            color='primary'
+                                                            variant='contained'
+                                                            onClick={() => push({
+                                                                name: '',
+                                                                numOfWindows: 1,
+                                                                admin: []
+                                                            })}
+                                                            >
+                                                            <Plus /> Add Station
+                                                        </Button>
+                                                    )
+                                                
+                                            }
+                                            
                                         </Box>
                                     </>
                                 )}
