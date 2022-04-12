@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         box: {
             display: 'flex',
-            margin: '1rem'
+            margin:  '1rem'
         },
         control: {
             display: 'flex',
@@ -151,7 +151,7 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                         <Form>
                             <FieldArray 
                                 name='stations'
-                                render={({ push, remove }) => (
+                                render={({ push, remove, }) => (
                                     <>
                                         {values.stations.map((station, index) => (
                                             <div key={index} >
@@ -222,7 +222,8 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                                                             </Field>
                                                         )}
                                                     />
-                                                    <Box className={classes.box} >
+                                                </FormControl>                                             
+                                                <Box className={classes.box} >
                                                         {index !== 0 ? (
                                                             <Button 
                                                                 size='small'
@@ -235,23 +236,38 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                                                                 ''
                                                             )
                                                         }
-                                                    </Box>
-                                                </FormControl>
+                                                </Box>
                                             </div>
                                         ))}
                                         <Box className={classes.box} >
-                                            <Button 
-                                                size='small'
-                                                color='primary'
-                                                variant='contained'
-                                                onClick={() => push({
-                                                    name: '',
-                                                    numOfWindows: 1,
-                                                    admin: []
-                                                 })}
-                                                >
-                                                <Plus /> Add Station
-                                            </Button>
+                                            {
+                                                values.stations.length === 5 
+                                                    ? (
+                                                        <Button
+                                                            size='small'
+                                                            color='primary'
+                                                            disabled
+                                                            variant='contained'
+                                                            >
+                                                            <Plus /> Add Station
+                                                        </Button>
+                                                    )  : (
+                                                        <Button
+                                                            size='small'
+                                                            color='primary'
+                                                            variant='contained'
+                                                            onClick={() => push({
+                                                                name: '',
+                                                                numOfWindows: 1,
+                                                                admin: []
+                                                            })}
+                                                            >
+                                                            <Plus /> Add Station
+                                                        </Button>
+                                                    )
+                                                
+                                            }
+                                            
                                         </Box>
                                     </>
                                 )}
