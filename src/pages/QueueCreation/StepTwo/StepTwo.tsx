@@ -12,6 +12,9 @@ import {
     Theme
 } from '@material-ui/core'
 import {
+    Alert
+} from '@material-ui/lab'
+import {
     Formik,
     Form,
     Field,
@@ -123,6 +126,14 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
         <>
             {!isLoading ? (
                 <Container className={classes.content}>
+                    <Alert severity='info' style={{ marginBottom: '1rem' }}>
+                        <Typography >
+                            Note:
+                        </Typography>
+                        <ul>
+                            <li>This version is only limited to 5 Stations maximum</li>
+                        </ul>
+                    </Alert>
                     <Formik
                     // @ts-ignore
                     initialValues={{
