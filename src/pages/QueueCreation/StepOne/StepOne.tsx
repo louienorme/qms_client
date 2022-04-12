@@ -51,7 +51,7 @@ const StepOne: FC<Props> = ({ handleNext }) => {
     const validationSchema = Yup.object().shape({
         name: Yup.string()
             .required('This is a required field')
-            .matches(/[0-9a-zA-Z.-_]*/, "This field does not accept special characters such as &,=,',+,<,>"),
+            .matches(/[0-9a-zA-Z.+_-]+/, "This field does not accept special characters such as &,=,',+,<,>"),
     })
 
     const token: any = localStorage.getItem('token')
