@@ -159,11 +159,6 @@ const AdminLogin: FC = () => {
                     </Button>
                 </Form>
             </Formik>
-            <Typography>
-                <Link component={RouterLink} to='#'>
-                    Forgot Password?
-                </Link>
-            </Typography>
         </Container>
         </LoginBase>
     )
