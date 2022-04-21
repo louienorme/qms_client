@@ -45,12 +45,12 @@ const BarGraph = () => {
           },
           title: {
             display: true,
-            text: 'Ticket By Queue per Month',
+            text: 'Tickets Created By Queue ',
           },
         },
       };
 
-      const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+      const labels = ['January', ];
       const dataset1 = [ 12, 15, 11, 8, 14, 20, 24]
       const dataset2 = [ 10, 14, 11, 6, 21, 27, 19]
       const dataset3 = [ 7, 26, 14, 9, 26, 20, 17]
