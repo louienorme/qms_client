@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import jwt_decode from 'jwt-decode'
 import { ToastContainer, toast } from 'react-toastify'
+import { Howl, Howler } from 'howler'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { Loader, Table, EmptyPage } from 'components'
@@ -23,6 +24,7 @@ import {
     returnNumber, 
 } from 'services'
 import { IDecodedToken, IPool } from 'types'
+import RecallSound from '../../../assets/Recall_Sound.mp3';
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -129,7 +131,11 @@ const NthStation: FC = () => {
     }
 
     const handleRecall = async () => {
-
+        Howler.volume(1.0)
+        const sound = new Howl({
+            src: [RecallSound]
+        })
+        sound.play()
     }
 
     useEffect(() => {
@@ -237,7 +243,7 @@ const NthStation: FC = () => {
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant='outlined' color='primary'>
+                                        <Button variant='outlined' color='primary' onClick={handleRecall}>
                                             Recall
                                         </Button>       
                                     </Grid>
