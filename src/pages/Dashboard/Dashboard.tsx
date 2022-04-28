@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import {
     Typography,
@@ -13,6 +13,7 @@ import { AdminWrapper } from '../../components'
 import LineGraph from './LineGraph'
 import PieGraph from './PieGraph'
 import BarGraph from './BarGraph'
+import { getDashboardData } from 'services'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -37,6 +38,26 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Dashboard: FC = () => {
     const classes = useStyles();
+
+    const [ isLoading, setIsLoading ] = useState(true)
+    const [ dashboardData, setDashboardData ] = useState<any[]>([])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+
+                const { data } = await getDashboardData()
+                setDashboardData(data.data)
+                console.log(dashboardData)
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        fetchData()
+    }, [ ])
+
     return (
         <AdminWrapper> 
             <Typography variant='h4' gutterBottom>
@@ -47,7 +68,7 @@ const Dashboard: FC = () => {
                 <Grid item>
                     <Paper className={classes.paper}>
                         <Typography variant='h4'>
-                            3
+                            0
                         </Typography>
                         <Typography variant='overline'>
                             Active Queues
@@ -60,7 +81,7 @@ const Dashboard: FC = () => {
                             3
                         </Typography>
                         <Typography variant='overline'>
-                            Average Ticket per Day
+                            Overall Tickets Created
                         </Typography>
                     </Paper>
                 </Grid>
@@ -106,7 +127,7 @@ const Dashboard: FC = () => {
                             45
                         </Typography>
                         <Typography variant='overline'>
-                            Average Tickets created per day
+                            Average Tickets Completed
                         </Typography>
                     </Paper>
                 </Grid>
