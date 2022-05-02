@@ -131,6 +131,9 @@ const AdminWrapper: FC<Props> = ({ children, station }) => {
             >
                 <Toolbar>
                     <Box style={{ flexGrow: 1 }} />
+                    <Typography>
+                            
+                    </Typography>
                     <IconButton onClick={handleClick}> 
                         <AccountCircle />
                     </IconButton>
@@ -147,7 +150,7 @@ const AdminWrapper: FC<Props> = ({ children, station }) => {
                         vertical: 'top',
                         horizontal: 'right',
                       }}
-                    >
+                    >   
                         <MenuItem onClick={signOut} >Sign out</MenuItem>
                     </Menu>
                 </Toolbar>

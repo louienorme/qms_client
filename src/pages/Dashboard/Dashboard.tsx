@@ -53,11 +53,18 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
+
+
+
 const Dashboard: FC = () => {
     const classes = useStyles();
 
     const [ isLoading, setIsLoading ] = useState(true)
-    const [ dashboardData, setDashboardData ] = useState<any[]>([])
+    const [ dashboardData, setDashboardData ] = useState<any>()
+
+    const sAdder = (duration: number) => {
+        if(duration != 1) return 's '
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -72,8 +79,12 @@ const Dashboard: FC = () => {
             }
         }
 
-        fetchData()
-    }, [ ])
+        const interval = setInterval (() => {
+            fetchData()
+        }, 2000)
+             
+        return () => clearInterval(interval)
+    }, [dashboardData])
 
     return (
         <AdminWrapper> 
@@ -86,7 +97,7 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                                0 
+                                { dashboardData ? dashboardData.activeQueues.length + 1 : 0}
                             </Typography>
                             <Typography variant='overline'>
                                 Active Queues 
@@ -98,7 +109,7 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                                23
+                                { dashboardData ? dashboardData.totalCompleted.length + 1 : 0}
                             </Typography>
                             <Typography variant='overline'>
                                 Total Completed Transactions
@@ -112,7 +123,7 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                               3
+                                { dashboardData ? dashboardData.ticketCreated.length + 1 : 0}
                             </Typography>
                             <Typography variant='overline'>
                                 Overall Tickets Created
@@ -124,7 +135,7 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                               13
+                                { dashboardData ? dashboardData.totalReturns.length + 1 : 0}
                             </Typography>
                             <Typography variant='overline'>
                                 Overall Returns
@@ -138,7 +149,18 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                               3
+                               {
+                                   dashboardData
+                                        ? dashboardData.averageDuration.hours
+                                            ? dashboardData.averageDuration.hours + "hr" + sAdder(dashboardData.averageDuration.hours)
+                                                + dashboardData.averageDuration.minutes + "min" + sAdder(dashboardData.averageDuration.hours) 
+                                                + Math.round(dashboardData.averageDuration.seconds) + "s"
+                                            :  dashboardData.averageDuration.minutes 
+                                                ? dashboardData.averageDuration.minutes + "min" + sAdder(dashboardData.averageDuration.hours) 
+                                                    + Math.round(dashboardData.averageDuration.seconds) + "s"
+                                                : Math.round(dashboardData.averageDuration.seconds) + "s"
+                                        : 0
+                               }
                             </Typography>
                             <Typography variant='overline'>
                                 Average Transaction Duration
@@ -150,7 +172,7 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                                3
+                                {dashboardData ? Math.round(dashboardData.averageTicketsCompleted) : 0}
                             </Typography>
                             <Typography variant='overline'>
                                 Average Tickets Completed
