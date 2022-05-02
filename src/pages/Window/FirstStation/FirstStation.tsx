@@ -140,7 +140,7 @@ const FirstStation: FC = () => {
                             size='large'
                             onClick={handleClick}
                         >
-                            Get Number
+                            Create Number
                         </Button>
                     </Paper>
                 </Grid>

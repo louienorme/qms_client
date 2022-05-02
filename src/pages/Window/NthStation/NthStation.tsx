@@ -7,12 +7,19 @@ import {
     Button,
     makeStyles,
     createStyles,
+    IconButton,
     Theme,
 } from '@material-ui/core'
 import jwt_decode from 'jwt-decode'
 import { ToastContainer, toast } from 'react-toastify'
 import { Howl, Howler } from 'howler'
 import 'react-toastify/dist/ReactToastify.css'
+import Tooltip from '@material-ui/core/Tooltip';
+import {
+    ArrowRight,
+    VolumeHigh,
+    KeyboardReturn
+} from 'mdi-material-ui'
 
 import { Loader, Table, EmptyPage } from 'components'
 import { 
@@ -85,6 +92,13 @@ const NthStation: FC = () => {
                 window: details.window
             }
             await getNumber(body);
+            
+            Howler.volume(1.0)
+            const sound = new Howl({
+                src: [RecallSound]
+            })
+            sound.play()
+            
             toast.success('Ticket Acquired!')
         } catch (err) {
             console.error(err)
@@ -238,19 +252,25 @@ const NthStation: FC = () => {
                             ) : (
                                 <Grid container justifyContent='center' className={classes.row} spacing={6}>
                                     <Grid item>
-                                        <Button variant='contained' color='primary' onClick={handleNext}>
-                                            Next
-                                        </Button>
+                                        <Tooltip title='Next'>
+                                            <IconButton style={{ backgroundColor: '#2155CD', color: 'white' }} onClick={handleNext}>
+                                                <ArrowRight />
+                                            </IconButton>
+                                        </Tooltip>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant='outlined' color='primary' onClick={handleRecall}>
-                                            Recall
-                                        </Button>       
+                                        <Tooltip title='Recall'>
+                                            <IconButton style={{ backgroundColor: '#446A46', color: 'white' }} onClick={handleRecall}>
+                                                <VolumeHigh />
+                                            </IconButton>
+                                        </Tooltip>       
                                     </Grid>
                                     <Grid item>
-                                        <Button variant='contained' onClick={handleReturn}>
-                                            Return
-                                        </Button>
+                                        <Tooltip title='Return'>
+                                            <IconButton style={{ backgroundColor: '#FD5D5D', color: 'white' }} onClick={handleReturn}>
+                                                <KeyboardReturn />
+                                            </IconButton>
+                                        </Tooltip>  
                                     </Grid>
                                 </Grid>
                             )
