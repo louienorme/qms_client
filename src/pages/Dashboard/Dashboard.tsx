@@ -101,7 +101,7 @@ const Dashboard: FC = () => {
                                 23
                             </Typography>
                             <Typography variant='overline'>
-                                Average Completed Transactions
+                                Total Completed Transactions
                             </Typography>
                         </div>
                         <div style={{flexGrow: 1}}></div>
@@ -127,7 +127,7 @@ const Dashboard: FC = () => {
                                13
                             </Typography>
                             <Typography variant='overline'>
-                                Average Returns
+                                Overall Returns
                             </Typography>
                         </div>
                         <div style={{flexGrow: 1}}></div>
