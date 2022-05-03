@@ -22,6 +22,7 @@ import LineGraph from './LineGraph'
 import PieGraph from './PieGraph'
 import BarGraph from './BarGraph'
 import { getDashboardData } from 'services'
+import { IArchive, IQueue } from 'types'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -61,9 +62,13 @@ const Dashboard: FC = () => {
 
     const [ isLoading, setIsLoading ] = useState(true)
     const [ dashboardData, setDashboardData ] = useState<any>()
+    const [ completedData, setCompletedData ] = useState<number>()
+    const [ returnedData, setReturnedData ] = useState<number>()
+    const [ activeQueues, setActiveQueues ] = useState<IQueue[]>([])
+    const [ ticketsCreated, setTicketsCreated ] = useState<IArchive[]>([])
 
     const sAdder = (duration: number) => {
-        if(duration != 1) return 's '
+        if(duration !== 1) return 's '
     }
 
     useEffect(() => {
@@ -72,8 +77,12 @@ const Dashboard: FC = () => {
 
                 const { data } = await getDashboardData()
                 setDashboardData(data.data)
-                console.log(dashboardData)
+                setCompletedData(data.data.ticketCreated.length)
+                setReturnedData(data.data.totalReturns.length)
+                setActiveQueues(data.data.activeQueues)
+                setTicketsCreated(data.data.ticketCreated)
 
+                setIsLoading(false)
             } catch (err) {
                 console.error(err);
             }
@@ -97,7 +106,7 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                                { dashboardData ? dashboardData.activeQueues.length + 1 : 0}
+                                { dashboardData ? dashboardData.activeQueues.length: 0}
                             </Typography>
                             <Typography variant='overline'>
                                 Active Queues 
@@ -109,7 +118,7 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                                { dashboardData ? dashboardData.totalCompleted.length + 1 : 0}
+                                { dashboardData ? dashboardData.totalCompleted.length : 0}
                             </Typography>
                             <Typography variant='overline'>
                                 Total Completed Transactions
@@ -123,7 +132,7 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                                { dashboardData ? dashboardData.ticketCreated.length + 1 : 0}
+                                { dashboardData ? dashboardData.ticketCreated.length : 0}
                             </Typography>
                             <Typography variant='overline'>
                                 Overall Tickets Created
@@ -135,7 +144,7 @@ const Dashboard: FC = () => {
                     <Paper className={classes.paper}>
                         <div className={classes.displayBlock}> 
                             <Typography variant='h6'>
-                                { dashboardData ? dashboardData.totalReturns.length + 1 : 0}
+                                { dashboardData ? dashboardData.totalReturns.length : 0}
                             </Typography>
                             <Typography variant='overline'>
                                 Overall Returns
@@ -185,10 +194,10 @@ const Dashboard: FC = () => {
             </Grid>
             <Grid container spacing={2} style={{ marginBottom: '1rem'}}>
                 <Grid className={classes.lineGraph} item>
-                    <BarGraph />
+                    <BarGraph active={activeQueues} tickets={ticketsCreated} />
                 </Grid>
                 <Grid item>
-                    <PieGraph />
+                    <PieGraph completed={completedData} returned={returnedData} />
                 </Grid>
             </Grid>
         </AdminWrapper>
