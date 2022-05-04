@@ -2,7 +2,7 @@ import axios from 'axios';
 import { baseUrl } from 'services';
 
 export const createNumber = (queueName: string, body: any) => {
-    return axios.put(`${baseUrl}/pools/getTicket/${queueName}`, body);
+    return axios.post(`${baseUrl}/pools/getTicket/${queueName}`, body);
 }
 
 export const getNumber = (body: any) => {
