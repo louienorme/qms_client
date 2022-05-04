@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { FC } from 'react'
 
 import {
     Chart as ChartJS,
@@ -9,9 +9,12 @@ import {
   } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
-const PieGraph: FC = () => {
+interface GraphProps {
+  completed?: number,
+  returned?: number
+}
 
-    const [ pieData, setPieData ] = useState()
+const PieGraph: FC<GraphProps> = ( graphData ) => {
 
     ChartJS.register(
         ArcElement,
@@ -39,31 +42,19 @@ const PieGraph: FC = () => {
         datasets: [
           {
             label: 'Service Done',
-            data: [83, 32,],
+            data: [ graphData.completed, graphData.returned ],
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
+              '#205375',
+              '#F8CB2E',
             ],
             borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
+              '#205375',
+              '#F8CB2E',
             ],
             borderWidth: 1,
           },
         ],
       };
-
-      useEffect(() => {
-        const renderData = async () => {
-            try {
-
-            } catch (err) {
-                console.error(err)
-            }
-        }
-
-        renderData()
-      }, [])
 
     return (
         <> 

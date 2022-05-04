@@ -151,6 +151,7 @@ const AdminLogin: FC = () => {
                     />
                     <Button
                       variant='contained'
+                      color='primary'
                       fullWidth
                       size='large'
                       type='submit'
