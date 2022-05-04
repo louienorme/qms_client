@@ -28,7 +28,6 @@ import { IDecodedToken as DecodedToken } from 'types'
 
 const contactSchema = Yup.object().shape({
     contactNumber: Yup.string()
-        .phone('PH')
         .required(),
 })
 
@@ -77,10 +76,10 @@ const FirstStation: FC = () => {
             const details = data.data[0];
             const body = {
                 creator: details._id,
-                contact,
+                contact: contact.contactNumber,
                 window: details.window
-            }
-
+            }   
+                
             await createNumber(details.queueName, body)
             toast.success('Ticket Number Created!')
 
