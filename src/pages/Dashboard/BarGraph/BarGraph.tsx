@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react'
+import { FC } from 'react'
 
 import {
     Paper,
@@ -16,6 +16,8 @@ import {
     Legend,
   } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { IQueue, IArchive } from 'types';
+import { Ticket } from 'mdi-material-ui';
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -25,7 +27,12 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-const BarGraph = () => {
+interface GraphProps {
+  active: IQueue[],
+  tickets: IArchive[]
+}
+
+const BarGraph: FC<GraphProps> = (graphData) => {
     const classes = useStyles()
 
     ChartJS.register(
@@ -37,7 +44,7 @@ const BarGraph = () => {
         Legend
       );
 
-      const options = {
+    const options = {
         responsive: true,
         plugins: {
           legend: {
@@ -48,48 +55,45 @@ const BarGraph = () => {
             text: 'Tickets Created By Queue ',
           },
         },
-      };
+    };
 
-      const labels = ['January', ];
-      const dataset1 = [ 12, 15, 11, 8, 14, 20, 24]
-      const dataset2 = [ 10, 14, 11, 6, 21, 27, 19]
-      const dataset3 = [ 7, 26, 14, 9, 26, 20, 17]
+      const colors = ['#006E7F', '#F8CB2E', '#EE5007', '#B22727', 
+        '#0E185F', '#2FA4FF', '#00FFDD', '#E8FFC2']
 
-      const data = {
-        labels,
-        datasets: [
-          {
-            label: 'Queue 1',
-            data: dataset1,
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          },
-          {
-            label: 'Queue 2',
-            data: dataset2,
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-          },
-          {
-            label: 'Queue 3',
-            data: dataset3,
-            borderColor: 'dark',
-            backgroundColor: 'green',
-          },
-        ],
-      };
+      const labels = [''];
+      
+      let dataFilter = () => {
+        let finalDataset: any = [];
+        
+        for (let i = 0; i < graphData.active.length; i++) {
+          let ticketArray: any = [];
 
-      useEffect(() => {
-        const renderData = async () => {
-            try {
+          let dataset = {
+            label: graphData.active[i].name,
+            data: [],
+            borderColor: 'white',
+            backgroundColor: 'white',
+          }
 
-            } catch (err) {
-                console.error(err)
-            }
+          const count = graphData.tickets
+            .filter(ticket => graphData.active[i].name === ticket.queue)
+
+          ticketArray.push(count.length)
+          
+          dataset = { ...dataset, 
+            data: ticketArray, 
+            borderColor: colors[i], 
+            backgroundColor: colors[i]
+          };
+
+
+          finalDataset.push(dataset)
         }
-
-        renderData()
-      }, [])
+        console.log(finalDataset)
+        return { labels, datasets: finalDataset }
+      }
+    
+      const data = dataFilter()
 
     return (
         <Paper className={classes.barGraph}>

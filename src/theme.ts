@@ -7,6 +7,11 @@ const theme = createMuiTheme({
         fontWeightRegular: 500,
         fontWeightMedium: 600,
         fontWeightBold: 700,
+    },
+    palette: {
+        primary: {
+            main: '#2155CD'
+        }
     }
 })
 

@@ -15,12 +15,21 @@ import {
     createStyles,
     Theme,
 } from '@material-ui/core'
+import * as Yup from 'yup'
+import 'yup-phone'
+import { Formik, Form, Field } from 'formik'
+import { TextField } from 'formik-material-ui';
 import jwt_decode from 'jwt-decode'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { createNumber, getOneAccount, getStationOneData} from 'services'
 import { IDecodedToken as DecodedToken } from 'types'
+
+const contactSchema = Yup.object().shape({
+    contactNumber: Yup.string()
+        .required(),
+})
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -42,6 +51,11 @@ const useStyles = makeStyles((theme: Theme) =>
             textAlign: 'center',
             marginBottom: '1rem'
         },
+        field: {
+            marginTop: 20,
+            marginBottom: 20,
+            display: 'block'
+        },
     })
 )
 
@@ -56,15 +70,16 @@ const FirstStation: FC = () => {
     const token: any = localStorage.getItem('token')
     const payload: DecodedToken = jwt_decode(token.split(' ')[1]);
 
-    const handleClick = async () => {
+    const handleClick = async (contact: any) => {
         try {
             const { data } = await getOneAccount(payload._id);
             const details = data.data[0];
             const body = {
                 creator: details._id,
+                contact: contact.contactNumber,
                 window: details.window
-            }
-
+            }   
+                
             await createNumber(details.queueName, body)
             toast.success('Ticket Number Created!')
 
@@ -72,7 +87,7 @@ const FirstStation: FC = () => {
             console.error(err)
             toast.error('Something went wrong!')
         } finally {
-
+            setIsLoading(false)
         }
     }
 
@@ -132,16 +147,34 @@ const FirstStation: FC = () => {
                         <Typography>
                             Get Queue Number
                         </Typography>
-                        <br/><br/>
-                        <Button
-                            variant='contained'
-                            fullWidth
-                            color='primary'
-                            size='large'
-                            onClick={handleClick}
-                        >
-                            Get Number
-                        </Button>
+                        <Formik
+                            initialValues={{
+                                contactNumber: ''
+                            }}
+                            onSubmit={handleClick}
+                            validationSchema={contactSchema}
+                        >   
+                            <Form>
+                                <Field
+                                    className={classes.field}
+                                    component={TextField}
+                                    variant='outlined'
+                                    fullWidth
+                                    required
+                                    name='contactNumber'
+                                    label='Contact Number'
+                                    />
+                                <Button
+                                    variant='contained'
+                                    fullWidth
+                                    color='primary'
+                                    size='large'
+                                    type='submit'
+                                >
+                                    Create Number
+                                </Button>
+                            </Form>
+                        </Formik>
                     </Paper>
                 </Grid>
                 <Grid item xs={4}> 
