@@ -157,13 +157,13 @@ const Dashboard: FC = () => {
                                {
                                    dashboardData
                                         ? dashboardData.averageDuration.hours
-                                            ? dashboardData.averageDuration.hours + "hr/s"
-                                                + dashboardData.averageDuration.minutes + "min/s" 
-                                                + Math.round(dashboardData.averageDuration.seconds) + "s"
+                                            ? dashboardData.averageDuration.hours + "hr/s "
+                                                + dashboardData.averageDuration.minutes + "min/s " 
+                                                + Math.round(dashboardData.averageDuration.seconds) + "s "
                                             :  dashboardData.averageDuration.minutes 
-                                                ? dashboardData.averageDuration.minutes + "min/s" 
-                                                    + Math.round(dashboardData.averageDuration.seconds) + "s"
-                                                : Math.round(dashboardData.averageDuration.seconds) + "s"
+                                                ? dashboardData.averageDuration.minutes + "min/s " 
+                                                    + Math.round(dashboardData.averageDuration.seconds) + "s "
+                                                : Math.round(dashboardData.averageDuration.seconds) + "s "
                                         : 0
                                }
                             </Typography>
