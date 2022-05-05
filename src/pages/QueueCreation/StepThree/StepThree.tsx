@@ -226,14 +226,6 @@ const StepThree: FC<Props> = ({ handleNext }) => {
                     </Grid>
                     <Box className={classes.box} >
                         <Button 
-                            size='small'
-                            type='submit'
-                            variant='outlined'
-                            style={{ marginRight: '1rem' }}
-                            >
-                            Discard
-                        </Button>
-                        <Button 
                             onClick={handleNext}
                             size='small'
                             type='submit'
