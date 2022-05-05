@@ -67,10 +67,6 @@ const Dashboard: FC = () => {
     const [ activeQueues, setActiveQueues ] = useState<IQueue[]>([])
     const [ ticketsCreated, setTicketsCreated ] = useState<IArchive[]>([])
 
-    const sAdder = (duration: number) => {
-        if(duration !== 1) return 's '
-    }
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -161,11 +157,11 @@ const Dashboard: FC = () => {
                                {
                                    dashboardData
                                         ? dashboardData.averageDuration.hours
-                                            ? dashboardData.averageDuration.hours + "hr" + sAdder(dashboardData.averageDuration.hours)
-                                                + dashboardData.averageDuration.minutes + "min" + sAdder(dashboardData.averageDuration.hours) 
+                                            ? dashboardData.averageDuration.hours + "hr/s"
+                                                + dashboardData.averageDuration.minutes + "min/s" 
                                                 + Math.round(dashboardData.averageDuration.seconds) + "s"
                                             :  dashboardData.averageDuration.minutes 
-                                                ? dashboardData.averageDuration.minutes + "min" + sAdder(dashboardData.averageDuration.hours) 
+                                                ? dashboardData.averageDuration.minutes + "min/s" 
                                                     + Math.round(dashboardData.averageDuration.seconds) + "s"
                                                 : Math.round(dashboardData.averageDuration.seconds) + "s"
                                         : 0
