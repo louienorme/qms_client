@@ -27,8 +27,8 @@ import { createNumber, getOneAccount, getStationOneData} from 'services'
 import { IDecodedToken as DecodedToken } from 'types'
 
 const contactSchema = Yup.object().shape({
+    user: Yup.string().required(),
     contactNumber: Yup.string()
-        .required(),
 })
 
 const useStyles = makeStyles((theme: Theme) => 
@@ -70,14 +70,15 @@ const FirstStation: FC = () => {
     const token: any = localStorage.getItem('token')
     const payload: DecodedToken = jwt_decode(token.split(' ')[1]);
 
-    const handleClick = async (contact: any) => {
+    const handleClick = async (userInfo: any) => {
         try {
             const { data } = await getOneAccount(payload._id);
             const details = data.data[0];
             const body = {
                 creator: details._id,
-                contact: contact.contactNumber,
-                window: details.window
+                contact: userInfo.contactNumber,
+                window: details.window,
+                user: userInfo.user
             }   
                 
             await createNumber(details.queueName, body)
@@ -149,6 +150,7 @@ const FirstStation: FC = () => {
                         </Typography>
                         <Formik
                             initialValues={{
+                                user: '',
                                 contactNumber: ''
                             }}
                             onSubmit={handleClick}
@@ -161,6 +163,14 @@ const FirstStation: FC = () => {
                                     variant='outlined'
                                     fullWidth
                                     required
+                                    name='user'
+                                    label='Name'
+                                    />
+                                <Field
+                                    className={classes.field}
+                                    component={TextField}
+                                    variant='outlined'
+                                    fullWidth
                                     name='contactNumber'
                                     label='Contact Number'
                                     />

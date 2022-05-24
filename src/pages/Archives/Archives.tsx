@@ -38,8 +38,12 @@ const Archives: FC = () => {
             accessor: 'poolId'
         },
         {
-            Header: 'Ticket Number',
+            Header: 'Ticket',
             accessor: 'ticket'
+        },
+        {
+            Header: 'Name',
+            accessor: 'user'
         },
         {
             Header: 'Queue',

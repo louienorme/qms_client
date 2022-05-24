@@ -1,6 +1,7 @@
 import { FC, Fragment, useState, ReactNode } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import {
+    Container,
     AppBar,
     Box,
     Toolbar,
@@ -30,34 +31,53 @@ import {
 
 const drawerWidth = 240
 
-const useStyles = makeStyles((theme: Theme) => 
+interface Props {
+    children?: ReactNode;
+    station?: Boolean,
+}
+
+const AdminWrapper: FC<Props> = ({ children, station }) => {
+    const [drawerOpen, setDrawerOpen] = useState(true);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const open = Boolean(anchorEl);
+
+    const useStyles = makeStyles((theme: Theme) => 
     createStyles({
         page: {
-            padding: theme.spacing(2)
+            padding: theme.spacing(2),
+            marginLeft: '25px',
+            marginRight: '25px',
         },
         root: {
-            display: 'flex'
+            height: '100vh',
+            transition: theme.transitions.create(['margin'], {
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+            ...(drawerOpen && {  
+                marginLeft: drawerWidth,
+                transition: theme.transitions.create(['margin'], {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.leavingScreen,
+                  }),
+            })
         },
         active: {
             background: '#f4f4f4'
         }, 
         drawer: {
             width: drawerWidth,
-            flexShrink: 0,
             boxSizing: 'border-box'
         },
         drawerPaper: {
             width: drawerWidth,
+            
         },
         drawerContent: {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-        },
-        title: {
-            padding: theme.spacing(2),
-            display: 'flex',
-            alignItems: 'center'
         },
         brandName: {
             fontSize: theme.typography.pxToRem(12),
@@ -66,27 +86,26 @@ const useStyles = makeStyles((theme: Theme) =>
             textAlign: 'left'
         },
         appBar: {
-            width: `calc(100% - ${drawerWidth}px)`,
-            marginLeft: drawerWidth,
+            transition: theme.transitions.create(['margin', 'width'], {
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.leavingScreen,
+              }),
+            ...(drawerOpen && {
+                width: `calc(100% - ${drawerWidth}px)`,
+                marginLeft: `${drawerWidth}px`,
+                transition: theme.transitions.create(['margin', 'width'], {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.enteringScreen,
+                })
+            })
         },
         toolbar: theme.mixins.toolbar,
     })
 )
 
-interface Props {
-    children?: ReactNode;
-    station?: Boolean,
-}
-
-const AdminWrapper: FC<Props> = ({ children, station }) => {
     const classes = useStyles()
     const history = useHistory()
     const location = useLocation()
-
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-    const open = Boolean(anchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -125,14 +144,26 @@ const AdminWrapper: FC<Props> = ({ children, station }) => {
         <div className={classes.root}>
             {/* App Bar */}
             <AppBar
-              className={classes.appBar}
+              className={ drawerOpen ? classes.appBar : ''}
               position='fixed'
               elevation={0}
             >
                 <Toolbar>
+                    <IconButton onClick={toggleDrawer}>
+                        {
+                            drawerOpen 
+                                ? <Backburger />
+                                : <MenuIcon />
+                        }
+                    </IconButton>
+                    <div className={classes.brandName}>
+                        <Typography>
+                            Queue Management System
+                        </Typography>
+                    </div>
                     <Box style={{ flexGrow: 1 }} />
                     <Typography>
-                            
+                        
                     </Typography>
                     <IconButton onClick={handleClick}> 
                         <AccountCircle />
@@ -158,19 +189,14 @@ const AdminWrapper: FC<Props> = ({ children, station }) => {
 
             {/* Side Drawer */}
             <Drawer
-              className={ classes.drawer }
-              variant='permanent'
+              className={ drawerOpen ? classes.drawer : '' }
+              variant='persistent'
               anchor='left'
-              classes={ { paper: classes.drawerPaper }}
+              classes={ { paper: drawerOpen ? classes.drawerPaper : '' }}
+              open={drawerOpen}
             >
                 <div className={classes.drawerContent} > 
-                    <div className={classes.title}>
-                        <Avatar>Q</Avatar>
-                        <Typography className={classes.brandName} >
-                            Queue Management System
-                        </Typography>
-                    </div>
-
+                    <div className={classes.toolbar}></div>
                     {/** Link Items */}
                     <List>  
                         {menuItems.map((item, index) => (
