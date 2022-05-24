@@ -89,7 +89,7 @@ const BarGraph: FC<GraphProps> = (graphData) => {
 
           finalDataset.push(dataset)
         }
-        console.log(finalDataset)
+        
         return { labels, datasets: finalDataset }
       }
     
