@@ -53,6 +53,7 @@ const NthStation: FC = () => {
 
     const [ poolsData, setPoolsData ] = useState<IPool[]>([]);
     const [ inWindow, setInWindow ] = useState();
+    const [ inWindowName, setInWindowName ] = useState();
     const [ windowNumber, setWindowNumber ] = useState<Number>()
     const [ ticketId , setTicketId ] = useState<String>()
 
@@ -186,7 +187,9 @@ const NthStation: FC = () => {
 
                 const { data } = await getWindowNumber(body);
                 setInWindow(data.data.ticket);
+                setInWindowName(data.data.user);
                 setTicketId(data.data._id);
+                console.log(data.data)
 
             } catch (err) {
                 console.error(err)
@@ -202,7 +205,7 @@ const NthStation: FC = () => {
              
              
         return () => clearInterval(interval)
-    }, [ poolsData, inWindow ])
+    }, [ poolsData, inWindow, inWindowName ])
 
     return (
         <Container>
@@ -230,6 +233,9 @@ const NthStation: FC = () => {
                                 <Paper className={classes.cardWindow} elevation={5}>
                                     <Typography variant='h4'>   
                                         {inWindow}
+                                    </Typography>
+                                    <Typography variant='overline'>   
+                                        {inWindowName}
                                     </Typography>
                                 </Paper>
                                 <br/>
