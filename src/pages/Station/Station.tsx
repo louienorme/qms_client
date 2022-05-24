@@ -111,7 +111,7 @@ const Station: FC = () => {
            <Grid container spacing={2}>
                 {
                     stations.map((station, index) => (
-                        <Grid item key={index}>
+                        <Grid item key={index} xs={12} sm={12}>
                             <Accordion>
                                 <AccordionSummary   
                                     expandIcon={<ChevronDown/>}
