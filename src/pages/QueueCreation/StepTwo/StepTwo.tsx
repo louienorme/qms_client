@@ -37,7 +37,7 @@ import { stepTwo, createFlashboardsAccounts,
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({  
         content: {
-            margin: '2rem auto',
+            margin: '1rem auto',
         },
         input: {
             margin: '1rem',
