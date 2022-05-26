@@ -22,6 +22,9 @@ import { TextField } from 'formik-material-ui';
 import jwt_decode from 'jwt-decode'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import {
+    Alert
+} from '@material-ui/lab'
 
 import { createNumber, getOneAccount, getStationOneData} from 'services'
 import { IDecodedToken as DecodedToken } from 'types'
@@ -36,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
         row: {
             display: 'flex',
             flexDirection: 'row',
+            marginTop: '1rem'
         },
         column: {
             display: 'flex',
@@ -44,7 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         card: {
             padding: theme.spacing(3),
-            textAlign: 'center'
         },
         details: {
             padding: theme.spacing(2),
@@ -76,7 +79,7 @@ const FirstStation: FC = () => {
             const details = data.data[0];
             const body = {
                 creator: details._id,
-                contact: userInfo.contactNumber,
+                contact: `+${userInfo.contactNumber}`,
                 window: details.window,
                 user: userInfo.user
             }   
@@ -145,9 +148,17 @@ const FirstStation: FC = () => {
                 />
                 <Grid item xs={4}> 
                     <Paper elevation={3} className={classes.card}>
-                        <Typography>
+                        <Typography align='center' gutterBottom>
                             Get Queue Number
                         </Typography>
+                        <Alert severity='info' style={{ marginBottom: '1rem' }}>
+                            <Typography >
+                                Note:
+                            </Typography>
+                            <ul>
+                                <li>Contact Number should start in 63 </li>
+                            </ul>
+                    </Alert>
                         <Formik
                             initialValues={{
                                 user: '',
@@ -189,7 +200,7 @@ const FirstStation: FC = () => {
                 </Grid>
                 <Grid item xs={4}> 
                     <Paper elevation={3} className={classes.card}>
-                        <Typography>
+                        <Typography align='center'>
                             Queue Details
                         </Typography>
                         <br/>
@@ -231,7 +242,7 @@ const FirstStation: FC = () => {
                                                 : 0
                                         }
                                     </Typography>
-                                    <Typography variant='overline'>
+                                    <Typography variant='overline' >
                                         Numbers Created
                                     </Typography>
                                 </Paper>
@@ -241,7 +252,7 @@ const FirstStation: FC = () => {
                 </Grid>
                 <Grid item xs={4}> 
                     <Paper elevation={3} className={classes.card}>
-                        <Typography>
+                        <Typography align='center'>
                             Recent Numbers
                         </Typography>
                         <br/>
