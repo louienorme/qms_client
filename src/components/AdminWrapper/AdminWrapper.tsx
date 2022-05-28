@@ -28,6 +28,7 @@ import {
     HumanQueue,
     Archive
 } from 'mdi-material-ui'
+import Footer from '../Footer'
 
 const drawerWidth = 240
 
@@ -222,6 +223,7 @@ const AdminWrapper: FC<Props> = ({ children, station }) => {
                 <div className={classes.toolbar}></div>
                 { children }
             </div>
+            <Footer />
         </div>
     )
 }
