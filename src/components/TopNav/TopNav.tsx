@@ -15,6 +15,7 @@ import {
 import {
     AccountCircle,
 } from 'mdi-material-ui'
+import Footer from '../Footer'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -109,6 +110,7 @@ const TopNav: FC<Props> = ({ children, station, flashboard }) => {
                 <div className={classes.toolbar} ></div>
                 { children }
             </div>
+            <Footer />
         </div>
     )
 }
