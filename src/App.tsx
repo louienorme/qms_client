@@ -30,6 +30,22 @@ const App = () => {
           {/* Auth */}
           <Redirect exact from='/' to='/login' />
           <Route exact path='/login' component={AdminLogin} />
+
+          <Route 
+              exact path='/privacy-policy' 
+              component={() => {
+                window.location.replace('https://docs.google.com/document/d/1lP1PcdQ2ZQF2n0usWSXZpVrORnvReOrn/edit?usp=sharing&ouid=109011932954638739441&rtpof=true&sd=true');
+                return null;
+              }}
+          />
+
+          <Route 
+              exact path='/terms-and-conditions'
+              component={() => {
+                window.location.replace('https://docs.google.com/document/d/1fCVLokJEA6TD5atGjGxYdkSynF0mr0Xd/edit?usp=sharing&ouid=109011932954638739441&rtpof=true&sd=true');
+                return null;
+              }}
+          />
           
           {/* Admin Dashboard */}
           <ProtectedRoute exact path='/dashboard' component={Dashboard} />
