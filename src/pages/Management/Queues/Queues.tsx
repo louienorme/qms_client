@@ -55,6 +55,7 @@ const Queues: FC = () => {
                 )
 
                 closeDeleteDialog();
+                toast.success('Queue deleted succesfully!')
             }
         } catch (err) {
             console.error(err)
