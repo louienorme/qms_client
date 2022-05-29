@@ -174,7 +174,7 @@ const StepThree: FC<Props> = ({ handleNext }) => {
                                 </Typography>
                             </Grid>
                             {windows.map((window, index) => (
-                                <Grid item key={index} sm={6}>
+                                <Grid item key={index} sm={6} >
                                     <Typography variant='subtitle1'>
                                         {`Station ${window.station} - Window ${window.window}`}
                                     </Typography>
@@ -203,7 +203,7 @@ const StepThree: FC<Props> = ({ handleNext }) => {
                                 </Typography>
                             </Grid>
                             {flashboards.map((flash, index) => (
-                                <Grid item key={index}>
+                                <Grid item key={index} style={{ marginRight: '1rem' }}>
                                     <Typography variant='subtitle1'>
                                         {`Station ${flash.station} Flashboard`}
                                     </Typography>

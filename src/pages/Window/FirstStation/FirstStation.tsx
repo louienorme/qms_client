@@ -30,7 +30,7 @@ import { createNumber, getOneAccount, getStationOneData} from 'services'
 import { IDecodedToken as DecodedToken } from 'types'
 
 const contactSchema = Yup.object().shape({
-    user: Yup.string().required(),
+    user: Yup.string().required("Name is a required field."),
     contactNumber: Yup.string()
 })
 
