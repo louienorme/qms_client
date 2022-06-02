@@ -70,7 +70,7 @@ const TopNav: FC<Props> = ({ children, station, flashboard }) => {
             >
                 <Toolbar>
                     <Typography onClick={() => history.push('/')}>
-                        Queue Management System
+                        Saint Genevieve School of Pateros, Inc.
                     </Typography>
                     <Box style={{ flexGrow: 1 }} />
                     { flashboard ? (

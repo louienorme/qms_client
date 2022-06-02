@@ -43,6 +43,8 @@ const Flashboard: FC = () => {
     const [ windows, setWindows ] = useState<any[]>([])
     const [ queue, setQueue ] = useState({ queue:'testing' })
 
+    let date = new Date().toLocaleString();
+
     const token: any = localStorage.getItem('token')
     const payload: IDecodedToken = jwt_decode(token.split(' ')[1]);
 
@@ -96,19 +98,29 @@ const Flashboard: FC = () => {
 
     return (
         <TopNav flashboard={queue}>
-            <Typography variant='h4'>
-                {`Station ${stationDetails?.number} - ${stationDetails?.name}`}
-            </Typography>
+            <div style={{ display: 'flex' }}>
+                <Typography variant='h4' gutterBottom>
+                    {`Station ${stationDetails?.number} - ${stationDetails?.name}`}
+                </Typography>
+                <div style={{ flexGrow: 1 }}></div>
+                <Typography variant='h4' align='right'>
+                    {date}
+                </Typography>
+            </div>
             <hr/>
             <Container>
                 <Grid container>
-                    <Grid item sm={12}>
+                    <Grid item sm={6}>
                         <Grid container justifyContent='center' className={classes.grid} spacing={2}>
                         {
                             windows.map((window) => (
                                 <Grid item>
                                     <Paper className={classes.card}>
-                                    <Typography variant='h2'>
+                                    <Typography variant='h5'>
+                                        Window {window.window}
+                                    </Typography>
+                                    <br/>
+                                    <Typography variant='h1'>
                                         {
                                             window.ticket !== 0 
                                                 ? window.ticket
@@ -116,18 +128,20 @@ const Flashboard: FC = () => {
                                         }
                                     </Typography>
                                     <br/>
-                                    <Typography variant='overline'>
-                                        Window {window.window}
-                                    </Typography>
-                                    <br/><br/>
-                                    <Typography variant='overline'>
-                                        {window.status  }
+                                    <Typography variant='h5'>
+                                        {window.status === 'transacting'
+                                            ? 'Now Serving'
+                                            : 'Waiting'
+                                        }
                                     </Typography>
                                     </Paper>
                                 </Grid>
                             ))
                         }
                         </Grid>
+                    </Grid>
+                    <Grid item sm={6}>
+                        {/** Add MArquee */}
                     </Grid>
                 </Grid>
             </Container>
