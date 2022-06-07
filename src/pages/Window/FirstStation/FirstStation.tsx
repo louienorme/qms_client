@@ -30,8 +30,11 @@ import { createNumber, getOneAccount, getStationOneData} from 'services'
 import { IDecodedToken as DecodedToken } from 'types'
 
 const contactSchema = Yup.object().shape({
-    user: Yup.string().required("Name is a required field."),
+    user: Yup.string()
+        .required("Name is a required field.")
+        .matches(/^[0-9a-zA-Z.+_-]+$/, "This field does not accept special characters such as &,=,',+,<,>"),
     contactNumber: Yup.string()
+        .matches(/^[0-9.+_-]+$/, "This field does not accept special characters such as &,=,',+,<,>"),
 })
 
 const useStyles = makeStyles((theme: Theme) => 
