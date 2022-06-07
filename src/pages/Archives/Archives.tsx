@@ -13,13 +13,10 @@ const Archives: FC = () => {
     const [ isLoading, setIsLoading ] = useState(true)
     const [ archives, setArchives ] = useState<IArchive[]>([])
 
-    const timeFormatter = (datetime: any) => {
-        let date = new Date(datetime);
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let seconds = date.getSeconds()
+    const datetimeFormatter = (datetime: any) => {
+        let date = new Date(datetime).toLocaleString();
 
-        return (`${hours}:${minutes}:${seconds}`);
+        return (`${date}`);
     }
 
 
@@ -32,10 +29,6 @@ const Archives: FC = () => {
             cellStyle: {
                 width: 25
             },
-        },
-        {
-            Header: 'Pool ID',
-            accessor: 'poolId'
         },
         {
             Header: 'Ticket',
@@ -63,12 +56,12 @@ const Archives: FC = () => {
             accessor: 'action'
         },
         {
-            Header: 'Time Started',
-            accessor: (originalRow: any) => timeFormatter(originalRow.timeStarted),
+            Header: 'Datetime Started',
+            accessor: (originalRow: any) => datetimeFormatter(originalRow.timeStarted),
         },
         {
-            Header: 'Time Ended',
-            accessor: (originalRow: any) => timeFormatter(originalRow.timeEnded),
+            Header: 'Datetime Ended',
+            accessor: (originalRow: any) => datetimeFormatter(originalRow.timeEnded),
         }   
     ]
 

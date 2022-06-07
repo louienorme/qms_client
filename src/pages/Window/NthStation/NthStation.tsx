@@ -61,15 +61,6 @@ const NthStation: FC = () => {
 
     const columns = [
         {
-            Header: 'No.',
-            id: 'row',
-            filterable: false,
-            accessor: (row: any, index: number) => index + 1,
-            cellStyle : {
-                width: 100
-            }
-        },
-        {
             Header: 'Ticket Number',
             id: 'number',
             accessor: 'ticket'
@@ -189,7 +180,6 @@ const NthStation: FC = () => {
                 setInWindow(data.data.ticket);
                 setInWindowName(data.data.user);
                 setTicketId(data.data._id);
-                console.log(data.data)
 
             } catch (err) {
                 console.error(err)

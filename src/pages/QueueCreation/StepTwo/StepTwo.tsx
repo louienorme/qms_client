@@ -72,10 +72,10 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
     const validationSchema = Yup.object().shape({
         stations : Yup.array().min(1).max(5).of(
             Yup.object().shape({
-                numOfWindows: Yup.number().min(1).max(5).required('This is a required field'),
+                numOfWindows: Yup.number().min(2).max(5).required('This is a required field'),
                 name: Yup.string()
                     .required('This is a required field')
-                    .matches(/^[0-9a-zA-Z.+_-]+$/, "This field does not accept special characters such as &,=,',+,<,>"),
+                    .matches(/^[0-9a-zA-Z .+_-]+$/, "This field does not accept special characters such as &,=,',+,<,>"),
                 admin: Yup.array().of(
                     Yup.string().required('This is a required field')
                 )
@@ -142,7 +142,12 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                                 name: '',
                                 numOfWindows: 1,
                                 admin: [`account[${0}]`]
-                            }
+                            },
+                            {  
+                                name: '',
+                                numOfWindows: 1,
+                                admin: [`account[${0}]`]
+                            },
                         ]
                     }}
                     validationSchema={validationSchema}
@@ -224,7 +229,7 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                                                     />
                                                 </FormControl>                                             
                                                 <Box className={classes.box} >
-                                                        {index !== 0 ? (
+                                                        {index < 2 ? (
                                                             <Button 
                                                                 size='small'
                                                                 variant='contained'
