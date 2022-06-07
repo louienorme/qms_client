@@ -180,7 +180,6 @@ const NthStation: FC = () => {
                 setInWindow(data.data.ticket);
                 setInWindowName(data.data.user);
                 setTicketId(data.data._id);
-                console.log(data.data)
 
             } catch (err) {
                 console.error(err)

@@ -120,7 +120,7 @@ const FirstStation: FC = () => {
                     })
 
                 setWindowNumber(details.window)
-
+                console.log(data.data)
             } catch (err) {
                 console.error(err)
             } finally {
@@ -169,6 +169,7 @@ const FirstStation: FC = () => {
                             }}
                             onSubmit={handleClick}
                             validationSchema={contactSchema}
+                            enableReinitialize
                         >   
                             <Form>
                                 <Field
