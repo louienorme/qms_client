@@ -32,9 +32,9 @@ import { IDecodedToken as DecodedToken } from 'types'
 const contactSchema = Yup.object().shape({
     user: Yup.string()
         .required("Name is a required field.")
-        .matches(/^[0-9a-zA-Z.+_-]+$/, "This field does not accept special characters such as &,=,',+,<,>"),
+        .matches(/^[0-9a-zA-Z .+_-]+$/, "This field does not accept special characters such as &,=,',+,<,>"),
     contactNumber: Yup.string()
-        .matches(/^[0-9.+_-]+$/, "This field does not accept special characters such as &,=,',+,<,>"),
+        .matches(/^[0-9 .+_-]+$/, "This field does not accept special characters such as &,=,',+,<,>"),
 })
 
 const useStyles = makeStyles((theme: Theme) => 
@@ -120,7 +120,7 @@ const FirstStation: FC = () => {
                     })
 
                 setWindowNumber(details.window)
-
+                console.log(data.data)
             } catch (err) {
                 console.error(err)
             } finally {
@@ -169,6 +169,7 @@ const FirstStation: FC = () => {
                             }}
                             onSubmit={handleClick}
                             validationSchema={contactSchema}
+                            enableReinitialize
                         >   
                             <Form>
                                 <Field
