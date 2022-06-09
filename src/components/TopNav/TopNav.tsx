@@ -69,7 +69,7 @@ const TopNav: FC<Props> = ({ children, station, flashboard }) => {
               elevation={0}
             >
                 <Toolbar>
-                    <Typography onClick={() => history.push('/')}>
+                    <Typography style={{ textTransform: 'uppercase' }} onClick={() => history.push('/')}>
                         Saint Genevieve School of Pateros, Inc.
                     </Typography>
                     <Box style={{ flexGrow: 1 }} />
