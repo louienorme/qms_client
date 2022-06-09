@@ -70,9 +70,9 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
     const [ isInvalid, setIsInvalid ] = useState(false);
 
     const validationSchema = Yup.object().shape({
-        stations : Yup.array().min(1).max(5).of(
+        stations : Yup.array().min(2).max(5).of(
             Yup.object().shape({
-                numOfWindows: Yup.number().min(2).max(5).required('This is a required field'),
+                numOfWindows: Yup.number().min(1).max(5).required('This is a required field'),
                 name: Yup.string()
                     .required('This is a required field')
                     .matches(/^[0-9a-zA-Z .+_-]+$/, "This field does not accept special characters such as &,=,',+,<,>"),
