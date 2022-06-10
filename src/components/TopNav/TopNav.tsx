@@ -70,7 +70,7 @@ const TopNav: FC<Props> = ({ children, station, flashboard }) => {
             >
                 <Toolbar>
                     <Typography style={{ textTransform: 'uppercase' }} onClick={() => history.push('/')}>
-                        Saint Genevieve School of Pateros, Inc.
+                        Saint Genevieve School of Pateros, Metro Manila, Inc.
                     </Typography>
                     <Box style={{ flexGrow: 1 }} />
                     { flashboard ? (
@@ -110,7 +110,6 @@ const TopNav: FC<Props> = ({ children, station, flashboard }) => {
                 <div className={classes.toolbar} ></div>
                 { children }
             </div>
-            <Footer />
         </div>
     )
 }

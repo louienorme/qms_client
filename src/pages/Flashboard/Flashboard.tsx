@@ -43,7 +43,9 @@ const Flashboard: FC = () => {
     const [ windows, setWindows ] = useState<any[]>([])
     const [ queue, setQueue ] = useState({ queue:'testing' })
 
-    let date = new Date().toLocaleString();
+    const options: any = { year: 'numeric', month: 'long', day: 'numeric' };
+    let date = new Date().toLocaleDateString('en-PH', options);
+    let time = new Date().toLocaleTimeString();
 
     const token: any = localStorage.getItem('token')
     const payload: IDecodedToken = jwt_decode(token.split(' ')[1]);
@@ -100,11 +102,11 @@ const Flashboard: FC = () => {
         <TopNav flashboard={queue}>
             <div style={{ display: 'flex' }}>
                 <Typography variant='h4' gutterBottom>
-                    {`Station ${stationDetails?.number} - ${stationDetails?.name}`}
+                    {`${stationDetails?.name}`}
                 </Typography>
                 <div style={{ flexGrow: 1 }}></div>
                 <Typography variant='h4' align='right'>
-                    {date}
+                    {`${date} - ${time}`}
                 </Typography>
             </div>
             <hr/>
@@ -116,11 +118,14 @@ const Flashboard: FC = () => {
                             windows.map((window) => (
                                 <Grid item>
                                     <Paper className={classes.card}>
-                                    <Typography variant='h5'>
-                                        Window {window.window}
+                                    <Typography style={{ textTransform: 'uppercase' }} variant='h5'>
+                                        {window.status === 'transacting'
+                                            ? 'Now Serving'
+                                            : 'Waiting'
+                                        }
                                     </Typography>
                                     <br/>
-                                    <Typography variant='h1'>
+                                    <Typography style={{ fontSize: '150px' }} variant='h1'>
                                         {
                                             window.ticket !== 0 
                                                 ? window.ticket
@@ -128,12 +133,6 @@ const Flashboard: FC = () => {
                                         }
                                     </Typography>
                                     <br/>
-                                    <Typography variant='h5'>
-                                        {window.status === 'transacting'
-                                            ? 'Now Serving'
-                                            : 'Waiting'
-                                        }
-                                    </Typography>
                                     </Paper>
                                 </Grid>
                             ))
