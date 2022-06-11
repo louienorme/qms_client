@@ -67,7 +67,7 @@ const NthStation: FC = () => {
         },
         {
             Header: 'Status',
-            accessor: 'status',
+            accessor: (originalRow: any) => originalRow.status === 'waiting' ? 'Waiting' : 'Transacting',
         },
     ]
 

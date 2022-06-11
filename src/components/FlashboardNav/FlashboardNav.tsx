@@ -15,7 +15,6 @@ import {
 import {
     AccountCircle,
 } from 'mdi-material-ui'
-import Footer from '../Footer'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -31,14 +30,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
     children?: ReactNode;
-    station?: {
-        number: number;
+    flashboard?: {
         queue: String;
-        station: number;
     },
 }
 
-const TopNav: FC<Props> = ({ children, station }) => {
+const TopNav: FC<Props> = ({ children, flashboard }) => {
     const classes = useStyles();
     const history = useHistory();
 
@@ -66,13 +63,13 @@ const TopNav: FC<Props> = ({ children, station }) => {
               elevation={0}
             >
                 <Toolbar>
-                    <Typography style={{ textTransform: 'uppercase' }} onClick={() => history.push('/')}>
+                    <Typography style={{ textTransform: 'uppercase', fontSize: '35px' }} onClick={() => history.push('/')}>
                         Saint Genevieve School of Pateros, Metro Manila, Inc.
                     </Typography>
                     <Box style={{ flexGrow: 1 }} />
-                    { station ? (
+                    { flashboard ? (
                         <Typography style={{ marginRight: '1rem' }}>
-                             Station {station.station} - {station.queue}
+                           { /**flashboard.queue*/}
                         </Typography>
                     ) : ''}
                     <IconButton onClick={handleClick}> 
@@ -102,7 +99,6 @@ const TopNav: FC<Props> = ({ children, station }) => {
                 <div className={classes.toolbar} ></div>
                 { children }
             </div>
-            <Footer />
         </div>
     )
 }

@@ -8,10 +8,13 @@ import {
     createStyles,
     Theme
 } from '@material-ui/core'
+import {
+    Skeleton
+} from '@material-ui/lab'
 import jwt_decode from 'jwt-decode'
 
 import {
-    TopNav
+    FlashboardNav
 } from 'components'
 import { IDecodedToken  } from 'types'
 import { getWindowTickets, getOneAccount, getStations, } from 'services'
@@ -24,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: '0.5rem'
         },
         card: {
-            padding: theme.spacing(10),
+            padding: theme.spacing(5),
             textAlign: 'center'
         }
     })
@@ -43,7 +46,8 @@ const Flashboard: FC = () => {
     const [ windows, setWindows ] = useState<any[]>([])
     const [ queue, setQueue ] = useState({ queue:'testing' })
 
-    let date = new Date().toLocaleString();
+    let date = new Date().toLocaleDateString('en-PH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    let time = new Date().toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' });
 
     const token: any = localStorage.getItem('token')
     const payload: IDecodedToken = jwt_decode(token.split(' ')[1]);
@@ -91,21 +95,30 @@ const Flashboard: FC = () => {
         const interval = setInterval (() => {
             stationCount();
             flashboard();
-        }, 2000)
+        }, 1000)
              
         return () => clearInterval(interval)
     },[ windows ])
 
     return (
-        <TopNav flashboard={queue}>
-            <div style={{ display: 'flex' }}>
-                <Typography variant='h4' gutterBottom>
-                    {`Station ${stationDetails?.number} - ${stationDetails?.name}`}
-                </Typography>
+        <FlashboardNav flashboard={queue}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                {
+                    stationDetails 
+                        ? <Typography style={{ fontSize: '35px' }} variant='h4'>
+                                {`${stationDetails?.name}`}
+                          </Typography>
+                        : <Skeleton height='60px' width='250px' variant='text' />
+
+                }
                 <div style={{ flexGrow: 1 }}></div>
-                <Typography variant='h4' align='right'>
-                    {date}
-                </Typography>
+                {
+                    date && time 
+                        ? <Typography style={{ fontSize: '35px' }} variant='h4' align='right'>
+                                {`${date} - ${time}`}
+                          </Typography>
+                        : <Skeleton height='60px' width='250px' variant='text' />
+                }
             </div>
             <hr/>
             <Container>
@@ -116,22 +129,18 @@ const Flashboard: FC = () => {
                             windows.map((window) => (
                                 <Grid item>
                                     <Paper className={classes.card}>
-                                    <Typography variant='h5'>
-                                        Window {window.window}
+                                    <Typography style={{ textTransform: 'uppercase', fontSize: '50px' }} variant='h5'>
+                                        {window.status === 'transacting'
+                                            ? 'Now Serving'
+                                            : 'Waiting'
+                                        }
                                     </Typography>
                                     <br/>
-                                    <Typography variant='h1'>
+                                    <Typography style={{ fontSize: '200px' }} variant='h1'>
                                         {
                                             window.ticket !== 0 
                                                 ? window.ticket
                                                 : 0
-                                        }
-                                    </Typography>
-                                    <br/>
-                                    <Typography variant='h5'>
-                                        {window.status === 'transacting'
-                                            ? 'Now Serving'
-                                            : 'Waiting'
                                         }
                                     </Typography>
                                     </Paper>
@@ -145,7 +154,7 @@ const Flashboard: FC = () => {
                     </Grid>
                 </Grid>
             </Container>
-        </TopNav>
+        </FlashboardNav>
     )
 }
 

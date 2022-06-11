@@ -179,7 +179,7 @@ const FirstStation: FC = () => {
                                     fullWidth
                                     required
                                     name='user'
-                                    label='Name'
+                                    label='Full Name'
                                     />
                                 <Field
                                     className={classes.field}
