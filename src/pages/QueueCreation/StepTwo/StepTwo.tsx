@@ -229,7 +229,7 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                                                     />
                                                 </FormControl>                                             
                                                 <Box className={classes.box} >
-                                                        {index < 3 ? (
+                                                        {index < 2 ? (
                                                             <Button 
                                                                 size='small'
                                                                 variant='contained'
