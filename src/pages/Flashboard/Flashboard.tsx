@@ -11,13 +11,16 @@ import {
 import {
     Skeleton
 } from '@material-ui/lab'
+import ReactPlayer from 'react-player/lazy'
 import jwt_decode from 'jwt-decode'
+
 
 import {
     FlashboardNav
 } from 'components'
 import { IDecodedToken  } from 'types'
 import { getWindowTickets, getOneAccount, getStations, } from 'services'
+import SGSP_AD from '../../assets/SGSP_AD.mp4'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -27,9 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: '0.5rem'
         },
         card: {
-            padding: theme.spacing(5),
+            padding: theme.spacing(6),
             textAlign: 'center'
-        }
+        },
     })
 )
 
@@ -105,7 +108,7 @@ const Flashboard: FC = () => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 {
                     stationDetails 
-                        ? <Typography style={{ fontSize: '35px' }} variant='h4'>
+                        ? <Typography style={{ fontSize: '45px' }} variant='h4'>
                                 {`${stationDetails?.name}`}
                           </Typography>
                         : <Skeleton height='60px' width='250px' variant='text' />
@@ -114,22 +117,23 @@ const Flashboard: FC = () => {
                 <div style={{ flexGrow: 1 }}></div>
                 {
                     date && time 
-                        ? <Typography style={{ fontSize: '35px' }} variant='h4' align='right'>
+                        ? <Typography style={{ fontSize: '45px' }} variant='h4' align='right'>
                                 {`${date} - ${time}`}
                           </Typography>
                         : <Skeleton height='60px' width='250px' variant='text' />
                 }
             </div>
             <hr/>
+            <br/>
             <Container>
-                <Grid container>
-                    <Grid item sm={6}>
+                <Grid container alignItems='center' justifyContent='center'>
+                    <Grid item sm={4}>
                         <Grid container justifyContent='center' className={classes.grid} spacing={2}>
                         {
                             windows.map((window) => (
                                 <Grid item>
                                     <Paper className={classes.card}>
-                                    <Typography style={{ textTransform: 'uppercase', fontSize: '50px' }} variant='h5'>
+                                    <Typography style={{ textTransform: 'uppercase', fontSize: '40px' }} variant='h5'>
                                         {window.status === 'transacting'
                                             ? 'Now Serving'
                                             : 'Waiting'
@@ -149,8 +153,14 @@ const Flashboard: FC = () => {
                         }
                         </Grid>
                     </Grid>
-                    <Grid item sm={6}>
-                        {/** Add MArquee */}
+                    <Grid item sm={8}>
+                        <ReactPlayer 
+                            url='https://www.youtube.com/watch?v=UNl-lMp0Ds4'
+                            playing={true}
+                            loop={true}
+                            height='400px'
+                            width='800px'
+                        />
                     </Grid>
                 </Grid>
             </Container>
