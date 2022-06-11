@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode, useState } from 'react'
+import { FC, ReactNode, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
     AppBar,
@@ -15,6 +15,7 @@ import {
 import {
     AccountCircle,
 } from 'mdi-material-ui'
+import Marquee from 'react-fast-marquee'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -99,6 +100,11 @@ const TopNav: FC<Props> = ({ children, flashboard }) => {
                 <div className={classes.toolbar} ></div>
                 { children }
             </div>
+            <Marquee style={{ marginTop: '1rem' }} speed={50}>
+                <Typography style={{ fontSize: '50px', marginRight: '30rem' }}>
+                    Welcome to SGSP! We are on a Queuing System PILOT TESTING to serve you better. Thank you for your cooperation!  
+                </Typography>
+            </Marquee>   
         </div>
     )
 }
