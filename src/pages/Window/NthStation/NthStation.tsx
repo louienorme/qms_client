@@ -199,7 +199,12 @@ const NthStation: FC = () => {
 
     return (
         <Container>
-            <Grid container className={classes.row} spacing={2}>
+            <Grid 
+                container 
+                className={classes.row} 
+                spacing={2}
+                justifyContent='center'
+            >
                 <ToastContainer 
                     position='bottom-left'
                     theme='colored'
@@ -207,7 +212,7 @@ const NthStation: FC = () => {
                     closeOnClick
                     autoClose={4000}
                 />
-                <Grid item xs={6}>
+                <Grid item sm={12} md={6} lg={6}>
                     <Paper elevation={3} className={classes.card}>
                         <Typography align='center'>
                             Window {windowNumber}
@@ -273,7 +278,7 @@ const NthStation: FC = () => {
                         }
                     </Paper>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={12} md={6} lg={6}>
                     <Paper elevation={3} className={classes.card}>
                         <Typography align='center'>
                             Queue

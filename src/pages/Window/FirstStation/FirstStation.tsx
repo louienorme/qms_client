@@ -141,7 +141,12 @@ const FirstStation: FC = () => {
                 Window {windowNumber}
             </Typography>
             <hr></hr>
-            <Grid container className={classes.row} spacing={2}>
+            <Grid 
+                container 
+                className={classes.row} 
+                spacing={2}
+                justifyContent='center'
+            >
                 <ToastContainer 
                     position='bottom-left'
                     theme='colored'
@@ -149,7 +154,7 @@ const FirstStation: FC = () => {
                     closeOnClick
                     autoClose={4000}
                 />
-                <Grid item xs={4}> 
+                <Grid item sm={12} md={4} lg={4}> 
                     <Paper elevation={3} className={classes.card}>
                         <Typography align='center' gutterBottom>
                             Get Queue Number
@@ -202,7 +207,7 @@ const FirstStation: FC = () => {
                         </Formik>
                     </Paper>
                 </Grid>
-                <Grid item xs={4}> 
+                <Grid item sm={12} md={4} lg={4}> 
                     <Paper elevation={3} className={classes.card}>
                         <Typography align='center'>
                             Queue Details
@@ -254,7 +259,7 @@ const FirstStation: FC = () => {
                         </Grid>
                     </Paper>
                 </Grid>
-                <Grid item xs={4}> 
+                <Grid item sm={12} md={4} lg={4}> 
                     <Paper elevation={3} className={classes.card}>
                         <Typography align='center'>
                             Recent Numbers

@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
             width: "100%",
             height: "100%",
             marginBottom: theme.spacing(6)
-        }
+        },
+        toolbar: theme.mixins.toolbar
     })
 )
 
@@ -45,8 +46,14 @@ const LoginBase: FC<LoginBaseProps> = ({ children }) => {
     const classes = useStyles();
 
     return (
-        <Grid container className={classes.root} >
-            <Grid item md={6} lg={7}>
+        <Grid 
+            container 
+            className={classes.root} 
+            alignItems='center'
+            justifyContent='center'
+        >
+            <div className={classes.toolbar}></div>
+            <Grid item sm={12} md={6} lg={7}>
                 <Container className={classes.loginImgContainer}>
                     <img className={classes.loginImg} alt='Login' src={Login} />
                     <Typography variant='h5' align='center'>
@@ -54,7 +61,7 @@ const LoginBase: FC<LoginBaseProps> = ({ children }) => {
                     </Typography>
                 </Container>
             </Grid>
-            <Grid item md={6} lg={5} className={classes.loginForm} >
+            <Grid item sm={12} md={6} lg={5} className={classes.loginForm} >
                 {children} 
             </Grid>
         </Grid>
