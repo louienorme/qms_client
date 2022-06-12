@@ -20,7 +20,6 @@ import {
 } from 'components'
 import { IDecodedToken  } from 'types'
 import { getWindowTickets, getOneAccount, getStations, } from 'services'
-import SGSP_AD from '../../assets/SGSP_AD.mp4'
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
