@@ -218,7 +218,7 @@ const NthStation: FC = () => {
                     theme='colored'
                     draggable={false}
                     closeOnClick
-                    autoClose={4000}
+                    autoClose={2000}
                 />
                 <Grid item sm={12} md={6} lg={6}>
                     <Paper elevation={3} className={classes.card}>
