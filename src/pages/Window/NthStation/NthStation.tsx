@@ -78,6 +78,7 @@ const NthStation: FC = () => {
         const { data } = await getOneAccount(payload._id);    
         const details = data.data[0];
         try {
+            setIsLoading(true)
             const body = {
                 queueName: details.queueName,
                 station: details.station,
@@ -95,14 +96,16 @@ const NthStation: FC = () => {
         } catch (err) {
             console.error(err)
             toast.error('The Station Pool is empty!')
+        } finally {
+            setIsLoading(false)
         }
     }
 
     const handleNext = async () => {
         const { data } = await getOneAccount(payload._id);    
         const details = data.data[0];
-        
         try {
+            setIsLoading(true)
             const body = {
                 queueName: details.queueName,
                 station: details.station,
@@ -115,6 +118,8 @@ const NthStation: FC = () => {
         } catch (err) {
             console.error(err)
             toast.error('Something went wrong!')
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -122,6 +127,7 @@ const NthStation: FC = () => {
         const { data } = await getOneAccount(payload._id);    
         const details = data.data[0];
         try {
+            setIsLoading(true)
             const body = {
                 queueName: details.queueName,
                 station: details.station,
@@ -133,6 +139,8 @@ const NthStation: FC = () => {
         } catch (err) {
             console.error(err)
             toast.error('Something went wrong!')
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -244,7 +252,11 @@ const NthStation: FC = () => {
                                 <Grid container justifyContent='center' className={classes.row} spacing={4}>
                                     <Grid item>
                                         <Button variant='contained' color='primary' onClick={handleGet}
-                                            disabled={ poolsData.length === 0 ? true : false  }
+                                            disabled={ 
+                                                poolsData.length === 0 || isLoading === true
+                                                    ? true 
+                                                    : false  
+                                                }
                                         >
                                             Get Number
                                         </Button>
@@ -254,21 +266,33 @@ const NthStation: FC = () => {
                                 <Grid container justifyContent='center' className={classes.row} spacing={6}>
                                     <Grid item>
                                         <Tooltip title='Next'>
-                                            <IconButton style={{ backgroundColor: '#2155CD', color: 'white' }} onClick={handleNext}>
+                                            <IconButton 
+                                                style={{ backgroundColor: '#2155CD', color: 'white' }} 
+                                                onClick={handleNext}
+                                                disabled={ isLoading === true ? true : false }
+                                            >
                                                 <ArrowRight />
                                             </IconButton>
                                         </Tooltip>
                                     </Grid>
                                     <Grid item>
                                         <Tooltip title='Recall'>
-                                            <IconButton style={{ backgroundColor: '#446A46', color: 'white' }} onClick={handleRecall}>
+                                            <IconButton 
+                                                style={{ backgroundColor: '#446A46', color: 'white' }} 
+                                                onClick={handleRecall}
+                                                disabled={ isLoading === true ? true : false }
+                                            >
                                                 <VolumeHigh />
                                             </IconButton>
                                         </Tooltip>       
                                     </Grid>
                                     <Grid item>
                                         <Tooltip title='Return'>
-                                            <IconButton style={{ backgroundColor: '#FD5D5D', color: 'white' }} onClick={handleReturn}>
+                                            <IconButton 
+                                                style={{ backgroundColor: '#FD5D5D', color: 'white' }} 
+                                                onClick={handleReturn}
+                                                disabled={ isLoading === true ? true : false }
+                                            >
                                                 <KeyboardReturn />
                                             </IconButton>
                                         </Tooltip>  
