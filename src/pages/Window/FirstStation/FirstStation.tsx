@@ -172,7 +172,10 @@ const FirstStation: FC = () => {
                                 user: '',
                                 contactNumber: ''
                             }}
-                            onSubmit={handleClick}
+                            onSubmit={(values, { resetForm }) => {
+                                handleClick(values)
+                                resetForm()
+                            }}
                             validationSchema={contactSchema}
                             enableReinitialize
                         >   
