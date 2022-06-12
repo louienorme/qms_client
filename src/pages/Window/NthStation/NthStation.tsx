@@ -199,7 +199,7 @@ const NthStation: FC = () => {
         const interval = setInterval (() => {
             pools();
             windowTicket();
-        }, 1000)
+        }, 2000)
              
              
         return () => clearInterval(interval)
