@@ -152,7 +152,7 @@ const FirstStation: FC = () => {
                     theme='colored'
                     draggable={false}
                     closeOnClick
-                    autoClose={4000}
+                    autoClose={2000}
                 />
                 <Grid item sm={12} md={4} lg={4}> 
                     <Paper elevation={3} className={classes.card}>
