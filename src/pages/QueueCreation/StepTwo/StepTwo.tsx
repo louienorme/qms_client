@@ -141,12 +141,12 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                             {  
                                 name: '',
                                 numOfWindows: 1,
-                                admin: [`account[${0}]`]
+                                admin: []
                             },
                             {  
                                 name: '',
                                 numOfWindows: 1,
-                                admin: [`account[${0}]`]
+                                admin: []
                             },
                         ]
                     }}
@@ -229,7 +229,7 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
                                                     />
                                                 </FormControl>                                             
                                                 <Box className={classes.box} >
-                                                        {index < 2 ? (
+                                                        {index > 1 ? (
                                                             <Button 
                                                                 size='small'
                                                                 variant='contained'
