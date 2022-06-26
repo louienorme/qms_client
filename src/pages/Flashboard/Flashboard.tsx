@@ -107,7 +107,7 @@ const Flashboard: FC = () => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 {
                     stationDetails 
-                        ? <Typography style={{ fontSize: '45px' }} variant='h4'>
+                        ? <Typography style={{ fontSize: '40px' }} variant='h4'>
                                 {`${stationDetails?.name}`}
                           </Typography>
                         : <Skeleton height='60px' width='250px' variant='text' />
@@ -116,7 +116,7 @@ const Flashboard: FC = () => {
                 <div style={{ flexGrow: 1 }}></div>
                 {
                     date && time 
-                        ? <Typography style={{ fontSize: '45px' }} variant='h4' align='right'>
+                        ? <Typography style={{ fontSize: '40px' }} variant='h4' align='right'>
                                 {`${date} - ${time}`}
                           </Typography>
                         : <Skeleton height='60px' width='250px' variant='text' />
