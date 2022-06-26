@@ -64,7 +64,7 @@ const TopNav: FC<Props> = ({ children, flashboard }) => {
               elevation={0}
             >
                 <Toolbar>
-                    <Typography style={{ textTransform: 'uppercase', fontSize: '35px' }} onClick={() => history.push('/')}>
+                    <Typography style={{ textTransform: 'uppercase', fontSize: '30px' }} onClick={() => history.push('/')}>
                         Saint Genevieve School of Pateros, Metro Manila, Inc.
                     </Typography>
                     <Box style={{ flexGrow: 1 }} />
@@ -100,7 +100,7 @@ const TopNav: FC<Props> = ({ children, flashboard }) => {
                 <div className={classes.toolbar} ></div>
                 { children }
             </div>
-            <Marquee style={{ marginTop: '1rem' }} speed={50}>
+            <Marquee speed={200}>
                 <Typography style={{ fontSize: '50px', marginRight: '30rem' }}>
                     Welcome to SGSP! We are on a Queuing System PILOT TESTING to serve you better. Thank you for your cooperation!  
                 </Typography>
