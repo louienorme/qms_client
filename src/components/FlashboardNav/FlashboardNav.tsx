@@ -102,7 +102,7 @@ const TopNav: FC<Props> = ({ children, flashboard }) => {
             </div>
             <Marquee speed={200}>
                 <Typography style={{ fontSize: '50px', marginRight: '30rem' }}>
-                    Welcome to SGSP! We are on a Queuing System PILOT TESTING to serve you better. Thank you for your cooperation!  
+                    Welcome to SGSP! We are on a Queuing System BETA TESTING to serve you better. Thank you for your cooperation!  
                 </Typography>
             </Marquee>   
         </div>
