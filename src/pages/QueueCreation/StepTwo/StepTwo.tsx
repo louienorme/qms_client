@@ -29,6 +29,8 @@ import {
 } from 'mdi-material-ui'
 import { Loader } from 'components'
 import { TextField } from 'formik-material-ui'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import * as Yup from 'yup'
 import { IAccount } from 'types'
 import { stepTwo, createFlashboardsAccounts, 
@@ -98,8 +100,8 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
             setIsInvalid(false);
             handleNext();
 
-        } catch(error) {
-            console.error(error);
+        } catch(error: any) {
+            toast.error(`${error.response.data.message}`)
             setIsInvalid(true);
         }
     }
@@ -126,6 +128,13 @@ const StepTwo: FC<Props> = ({ handleNext }) => {
         <>
             {!isLoading ? (
                 <Container className={classes.content}>
+                    <ToastContainer 
+                        position='bottom-left'
+                        theme='colored'
+                        draggable={false}
+                        closeOnClick
+                        autoClose={4000}
+                    />
                     <Alert severity='info' style={{ marginBottom: '1rem' }}>
                         <Typography >
                             Note:

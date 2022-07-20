@@ -90,9 +90,8 @@ const FirstStation: FC = () => {
             await createNumber(details.queueName, body)
             toast.success('Ticket Number Created!')
 
-        } catch (err) {
-            console.error(err)
-            toast.error('Something went wrong!')
+        } catch (error: any) {
+            toast.error(`${error.response.data.message}`)
         } finally {
             setIsLoading(false)
         }

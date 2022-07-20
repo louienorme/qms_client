@@ -17,6 +17,8 @@ import {
     HumanQueue
 } from 'mdi-material-ui'
 import { TextField } from 'formik-material-ui'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import * as Yup from 'yup'
 import jwt_decode from 'jwt-decode'
 
@@ -71,8 +73,8 @@ const StepOne: FC<Props> = ({ handleNext }) => {
             localStorage.setItem('queue', newQueue.name);
             handleNext();
 
-        } catch (err) {
-            console.error(err);
+        } catch (error: any) {
+            toast.error(`${error.response.data.message}`)
             setIsInvalid(true);
         }
     }
@@ -91,6 +93,13 @@ const StepOne: FC<Props> = ({ handleNext }) => {
               onSubmit={handleSubmit}
             >
                 <Form autoComplete='off'>
+                    <ToastContainer 
+                        position='bottom-left'
+                        theme='colored'
+                        draggable={false}
+                        closeOnClick
+                        autoClose={4000}
+                    />
                     <Field
                       className={classes.input}
                       component={TextField}

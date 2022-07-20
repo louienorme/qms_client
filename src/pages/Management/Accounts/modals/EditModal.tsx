@@ -15,6 +15,8 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { IAccount } from 'types';
 import { updateAccount } from 'services'
 
@@ -58,9 +60,8 @@ const EditModal: FC<editModalProps> = ({
             
             onEdit(data.data);
 
-        } catch (err) {
-            console.error(err);
-            setIsInvalid(true);
+        } catch (error: any) {
+            toast.error(`${error.response.data.message}`)
         }
     }
 
@@ -117,6 +118,13 @@ const EditModal: FC<editModalProps> = ({
                   disableEscapeKeyDown={isSubmitting}
                 >
                     <Form>
+                        <ToastContainer 
+                            position='bottom-left'
+                            theme='colored'
+                            draggable={false}
+                            closeOnClick
+                            autoClose={4000}
+                        />
                         <DialogTitle disableTypography>
                             <Typography variant='h4'>
                                 Edit Account 

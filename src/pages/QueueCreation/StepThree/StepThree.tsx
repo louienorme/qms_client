@@ -203,7 +203,7 @@ const StepThree: FC<Props> = ({ handleNext }) => {
                                 </Typography>
                             </Grid>
                             {flashboards.map((flash, index) => (
-                                <Grid item key={index} style={{ marginRight: '1rem' }}>
+                                <Grid item key={index} sm={6}>
                                     <Typography variant='subtitle1'>
                                         {`Station ${flash.station} Flashboard`}
                                     </Typography>

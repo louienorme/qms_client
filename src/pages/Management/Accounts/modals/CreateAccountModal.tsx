@@ -13,6 +13,8 @@ import {
     Theme
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 import { IAccount } from 'types';
@@ -60,9 +62,11 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
             setIsInvalid(false);
 
             onCreate(data.data);
-        } catch (err) {
-            console.error(err);
+
+            
+        } catch (error: any) {
             setIsInvalid(true);
+            toast.error(`${error.response.data.message}`)
         }
     }
 
@@ -145,6 +149,13 @@ const CreateAccountModal: FC<createAccountModalProps> = ({
                   disableEscapeKeyDown={isSubmitting}
                 >
                     <Form>
+                        <ToastContainer 
+                            position='bottom-left'
+                            theme='colored'
+                            draggable={false}
+                            closeOnClick
+                            autoClose={4000}
+                        />
                         <DialogTitle disableTypography>
                             <Typography variant='h4'>
                                 Create Account 

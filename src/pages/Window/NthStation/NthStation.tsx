@@ -93,9 +93,8 @@ const NthStation: FC = () => {
             sound.play()
             
             toast.success('Ticket Acquired!')
-        } catch (err) {
-            console.error(err)
-            toast.error('The Station Pool is empty!')
+        } catch (error: any) {
+            toast.error(`${error.response.data.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -115,9 +114,8 @@ const NthStation: FC = () => {
             
             await nextNumber(body);
             toast.success('Transaction Complete!')
-        } catch (err) {
-            console.error(err)
-            toast.error('Something went wrong!')
+        } catch (error: any) {
+            toast.error(`${error.response.data.message}`)
         } finally {
             setIsLoading(false)
         }
@@ -136,10 +134,9 @@ const NthStation: FC = () => {
             }
             await returnNumber(body);
             toast.success('Ticket Returned!')
-        } catch (err) {
-            console.error(err)
-            toast.error('Something went wrong!')
-        } finally {
+        } catch (error: any) {
+            toast.error(`${error.response.data.message}`)
+        }  finally {
             setIsLoading(false)
         }
     }

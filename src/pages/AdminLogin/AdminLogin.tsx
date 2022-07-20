@@ -85,9 +85,8 @@ const AdminLogin: FC = () => {
                 return null;
             }
         
-        } catch (err) {
-            console.error(err);
-            toast.error("Invalid Credentials!");
+        } catch (error: any) {
+            toast.error(`${error.response.data.message}`)
             setIsInvalid(true);
         }
     }
