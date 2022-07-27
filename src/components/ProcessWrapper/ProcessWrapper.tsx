@@ -33,7 +33,7 @@ const ProcessWrapper: FC = ({ children }) => {
               elevation={0}
             >
                 <Toolbar>
-                    <IconButton onClick={() => history.push('/management')}>
+                    <IconButton onClick={() => history.push('/management')} style={{ color: 'white' }}>
                         <ArrowLeft />
                     </IconButton>
                 </Toolbar>

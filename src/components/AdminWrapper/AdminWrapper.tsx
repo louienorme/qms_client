@@ -150,7 +150,7 @@ const AdminWrapper: FC<Props> = ({ children, station }) => {
               elevation={0}
             >
                 <Toolbar>
-                    <IconButton onClick={toggleDrawer}>
+                    <IconButton onClick={toggleDrawer} style={{ color: 'white' }}>
                         {
                             drawerOpen 
                                 ? <Backburger />
@@ -166,7 +166,7 @@ const AdminWrapper: FC<Props> = ({ children, station }) => {
                     <Typography>
                         
                     </Typography>
-                    <IconButton onClick={handleClick}> 
+                    <IconButton onClick={handleClick} style={{ color: 'white' }}> 
                         <AccountCircle />
                     </IconButton>
                     <Menu

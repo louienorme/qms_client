@@ -73,7 +73,7 @@ const TopNav: FC<Props> = ({ children, flashboard }) => {
                            { /**flashboard.queue*/}
                         </Typography>
                     ) : ''}
-                    <IconButton onClick={handleClick}> 
+                    <IconButton onClick={handleClick} style={{ color: 'white' }}> 
                         <AccountCircle />
                     </IconButton>
                     <Menu
