@@ -75,7 +75,7 @@ const TopNav: FC<Props> = ({ children, station }) => {
                              Station {station.station} - {station.queue}
                         </Typography>
                     ) : ''}
-                    <IconButton onClick={handleClick}> 
+                    <IconButton onClick={handleClick} style={{ color: 'white' }}> 
                         <AccountCircle />
                     </IconButton>
                     <Menu
